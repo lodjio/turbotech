@@ -24,6 +24,35 @@ body {
   letter-spacing: 2px;
 }
 
+.build-msg {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #888;
+  letter-spacing: 0.5px;
+}
+
+.li-icon {
+  background: #0A66C2;
+  color: white;
+  font-weight: 700;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-right: 6px;
+  font-size: 0.9rem;
+}
+
+.linkedin-btn {
+  display: inline-block;
+  margin-top: 15px;
+  color: #0A66C2;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.linkedin-btn:hover {
+  text-decoration: underline;
+}
+
 .footer {
   margin-top: 80px;
   padding: 20px 0;
