@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  background: #050505;
+  color: #e6e6e6;
+  font-family: 'Comfortaa', sans-serif;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.logo {
+  font-size: 3rem;
+  color: #0B2CFF;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  margin-top: 20px;
+  color: #bbbbbb;
+}
+
+.countdown {
+  margin-top: 40px;
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+
+.footer {
+  margin-top: 80px;
+  padding: 20px 0;
+  color: #777;
+  font-size: 0.9rem;
+}
