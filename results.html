@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lodj.io Results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f3f6f9;
+      color: #1f3344;
+    }
+
+    .header {
+      background: #102c3f;
+      color: #fff;
+      padding: 18px 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-family: 'Comfortaa', sans-serif;
+      font-size: 1.45rem;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: #cde6f2;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .summary-wrap {
+      max-width: 1280px;
+      margin: 22px auto 0;
+      padding: 0 20px;
+    }
+
+    .summary-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr 0.9fr 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .summary-box {
+      min-height: 54px;
+      border: 1px solid #d7e0e7;
+      border-radius: 10px;
+      background: #fafcfd;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .summary-label {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #7b93a5;
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .summary-value {
+      font-size: 0.98rem;
+      color: #244055;
+      font-weight: 600;
+    }
+
+    .summary-btn {
+      min-height: 54px;
+      border: 0;
+      border-radius: 10px;
+      padding: 0 20px;
+      background: #ef4b58;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 22px auto 50px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar,
+    .content-top,
+    .hotel-card,
+    .promo-strip {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+    }
+
+    .sidebar {
+      padding: 22px;
+      position: sticky;
+      top: 102px;
+    }
+
+    .sidebar h3 {
+      margin: 0 0 20px;
+      font-size: 1.25rem;
+    }
+
+    .filter-group {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #edf1f4;
+    }
+
+    .filter-group:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .filter-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #223a4e;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 10px 0;
+      font-size: 0.95rem;
+      color: #4a6679;
+    }
+
+    .filter-option input {
+      accent-color: #1ea3d2;
+      width: 16px;
+      height: 16px;
+    }
+
+    .range-line {
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #1ea3d2, #b7d9e8);
+      margin: 14px 0 10px;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #7290a4;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .content-top {
+      padding: 18px 20px;
+    }
+
+    .results-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .results-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #1f3344;
+    }
+
+    .results-sub {
+      font-size: 0.95rem;
+      color: #6e8798;
+      margin-top: 4px;
+    }
+
+    .sort-select {
+      border: 1px solid #d6e0e7;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 0.95rem;
+      color: #274359;
+      background: #fafcfd;
+      outline: none;
+    }
+
+    .promo-strip {
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: linear-gradient(135deg, #12354b, #1b6788);
+      color: #fff;
+    }
+
+    .promo-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .promo-sub {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .promo-chip-wrap {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .promo-chip {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .hotel-card {
+      display: grid;
+      grid-template-columns: 320px 1fr 220px;
+      overflow: hidden;
+    }
+
+    .hotel-image {
+      position: relative;
+      min-height: 250px;
+      background: #ddd;
+    }
+
+    .hotel-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge-row {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      backdrop-filter: blur(6px);
+    }
+
+    .badge.sponsored {
+      background: rgba(30, 163, 210, 0.92);
+    }
+
+    .badge.trending {
+      background: rgba(239, 75, 88, 0.92);
+    }
+
+    .badge.top {
+      background: rgba(16, 44, 63, 0.92);
+    }
+
+    .hotel-body {
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hotel-topline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .stars {
+      color: #f2b01e;
+      letter-spacing: 1px;
+      font-size: 0.95rem;
+    }
+
+    .rating-pill {
+      background: #e8f7fd;
+      color: #0d84b7;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+    }
+
+    .hotel-name {
+      margin: 0;
+      font-size: 1.35rem;
+      color: #1e3447;
+    }
+
+    .location {
+      color: #638093;
+      font-size: 0.95rem;
+    }
+
+    .location strong {
+      color: #2d4b5f;
+    }
+
+    .hotel-desc {
+      color: #537082;
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+
+    .amenities {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    .amenity {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #f2f7fa;
+      color: #446273;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .meta-line {
+      font-size: 0.9rem;
+      color: #5f7d90;
+      font-weight: 500;
+    }
+
+    .hotel-price {
+      padding: 20px;
+      border-left: 1px solid #edf1f4;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      background: #fcfdff;
+    }
+
+    .save-note {
+      font-size: 0.82rem;
+      color: #0f86b8;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .strike {
+      color: #9fb0bc;
+      font-size: 0.92rem;
+      text-decoration: line-through;
+      text-align: right;
+    }
+
+    .price {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #1e3447;
+      text-align: right;
+      line-height: 1;
+    }
+
+    .per-night {
+      font-size: 0.88rem;
+      color: #738ea0;
+      text-align: right;
+    }
+
+    .tax-note {
+      font-size: 0.8rem;
+      color: #8ca0ae;
+      text-align: right;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .primary-btn {
+      background: #ef4b58;
+      color: #fff;
+      border: 0;
+    }
+
+    .secondary-btn {
+      background: #fff;
+      color: #1b6788;
+      border: 1px solid #cfe0e8;
+    }
+
+    .floating-note {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      background: #102c3f;
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 12px;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.18);
+      font-size: 0.9rem;
+      max-width: 290px;
+    }
+
+    @media (max-width: 1100px) {
+      .summary-card {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .page {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .hotel-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hotel-price {
+        border-left: 0;
+        border-top: 1px solid #edf1f4;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .summary-card {
+        grid-template-columns: 1fr;
+      }
+
+      .results-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hotel-image {
+        min-height: 220px;
+      }
+
+      .price,
+      .per-night,
+      .tax-note,
+      .strike,
+      .save-note {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">lodj.io</a>
+      <div class="nav-links">
+        <a href="demo.html">New search</a>
+        <a href="demo.html">Flights</a>
+        <a href="demo.html">Stays</a>
+        <a href="demo.html">Activities</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-wrap">
+    <div class="summary-card">
+      <div class="summary-box">
+        <div class="summary-label">Destination</div>
+        <div class="summary-value">Trending stays and escapes</div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-label">Check-in</div>
+        <div class="summary-value">Any selected date</div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-label">Check-out</div>
+        <div class="summary-value">Any selected date</div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-label">Guests</div>
+        <div class="summary-value">2 Adults, 1 Room</div>
+      </div>
+
+      <button class="summary-btn" onclick="window.location.href='demo.html'">Modify search</button>
+    </div>
+  </div>
+
+  <div class="page">
+    <aside class="sidebar">
+      <h3>Filter by</h3>
+
+      <div class="filter-group">
+        <div class="filter-title">Popular filters</div>
+        <label class="filter-option"><input type="checkbox" checked> Breakfast included</label>
+        <label class="filter-option"><input type="checkbox"> Free cancellation</label>
+        <label class="filter-option"><input type="checkbox" checked> Pay later</label>
+        <label class="filter-option"><input type="checkbox"> Beachfront</label>
+        <label class="filter-option"><input type="checkbox"> Family friendly</label>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Price range</div>
+        <div class="range-line"></div>
+        <div class="range-labels">
+          <span>SAR 300</span>
+          <span>SAR 3,500+</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Star rating</div>
+        <label class="filter-option"><input type="checkbox" checked> 5 star</label>
+        <label class="filter-option"><input type="checkbox" checked> 4 star</label>
+        <label class="filter-option"><input type="checkbox"> 3 star</label>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Top destinations</div>
+        <label class="filter-option"><input type="checkbox" checked> Jeddah</label>
+        <label class="filter-option"><input type="checkbox" checked> Mykonos</label>
+        <label class="filter-option"><input type="checkbox" checked> Phuket</label>
+        <label class="filter-option"><input type="checkbox"> Krabi</label>
+        <label class="filter-option"><input type="checkbox"> Hong Kong</label>
+        <label class="filter-option"><input type="checkbox"> Red Sea</label>
+        <label class="filter-option"><input type="checkbox"> AlUla</label>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="content-top">
+        <div class="results-head">
+          <div>
+            <div class="results-title">68 properties found</div>
+            <div class="results-sub">Sponsored placements and trending destinations shown for demo purposes</div>
+          </div>
+
+          <select class="sort-select">
+            <option>Sort by: Recommended</option>
+            <option>Price: Low to High</option>
+            <option>Price: High to Low</option>
+            <option>Guest Rating</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="promo-strip">
+        <div>
+          <div class="promo-title">Trending now</div>
+          <div class="promo-sub">High intent searches in the last 24 hours</div>
+        </div>
+
+        <div class="promo-chip-wrap">
+          <div class="promo-chip">Jeddah</div>
+          <div class="promo-chip">Mykonos</div>
+          <div class="promo-chip">Phuket</div>
+          <div class="promo-chip">Krabi</div>
+          <div class="promo-chip">Hong Kong</div>
+          <div class="promo-chip">Red Sea</div>
+          <div class="promo-chip">AlUla</div>
+        </div>
+      </div>
+
+      <article class="hotel-card">
+        <div class="hotel-image">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" alt="Red Sea resort">
+          <div class="badge-row">
+            <div class="badge sponsored">Sponsored</div>
+            <div class="badge trending">Trending</div>
+          </div>
+        </div>
+
+        <div class="hotel-body">
+          <div class="hotel-topline">
+            <div class="stars">★★★★★</div>
+            <div class="rating-pill">9.1 Excellent</div>
+          </div>
+
+          <h2 class="hotel-name">Nurai Red Sea Resort & Spa</h2>
+          <div class="location"><strong>Red Sea, Saudi Arabia</strong> • Beachfront villas • Private transfer available</div>
+
+          <div class="hotel-desc">
+            High-conversion leisure product positioned for premium GCC demand. Large villas, sea-facing inventory, strong family appeal, and a polished luxury narrative that screams “book me before the finance team asks questions.”
+          </div>
+
+          <div class="amenities">
+            <div class="amenity">Breakfast included</div>
+            <div class="amenity">Private beach</div>
+            <div class="amenity">Airport transfer</div>
+            <div class="amenity">Free cancellation</div>
+          </div>
+
+          <div class="meta-line">Booked 14 times in the last 48 hours</div>
+        </div>
+
+        <div class="hotel-price">
+          <div>
+            <div class="save-note">Save 18% today</div>
+            <div class="strike">SAR 2,850</div>
+            <div class="price">SAR 2,335</div>
+            <div class="per-night">per night</div>
+            <div class="tax-note">Includes taxes and fees</div>
+          </div>
+
+          <div class="cta-group">
+            <a href="#" class="primary-btn">See availability</a>
+            <a href="#" class="secondary-btn">View details</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="hotel-card">
+        <div class="hotel-image">
+          <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80" alt="Mykonos hotel">
+          <div class="badge-row">
+            <div class="badge sponsored">Sponsored</div>
+            <div class="badge top">Top pick</div>
+          </div>
+        </div>
+
+        <div class="hotel-body">
+          <div class="hotel-topline">
+            <div class="stars">★★★★★</div>
+            <div class="rating-pill">8.9 Very Good</div>
+          </div>
+
+          <h2 class="hotel-name">Aegean Blue Mykonos Suites</h2>
+          <div class="location"><strong>Mykonos, Greece</strong> • Near Psarou Beach • Rooftop sunset lounge</div>
+
+          <div class="hotel-desc">
+            Strong outbound leisure fit with broad aspirational appeal. This one exists to make your demo feel expensive and Mediterranean, which is exactly what a lot of users click first anyway.
+          </div>
+
+          <div class="amenities">
+            <div class="amenity">Sea view</div>
+            <div class="amenity">Breakfast included</div>
+            <div class="amenity">Infinity pool</div>
+            <div class="amenity">Pay later</div>
+          </div>
+
+          <div class="meta-line">Limited inventory left for this rate</div>
+        </div>
+
+        <div class="hotel-price">
+          <div>
+            <div class="save-note">Member exclusive deal</div>
+            <div class="strike">SAR 1,920</div>
+            <div class="price">SAR 1,645</div>
+            <div class="per-night">per night</div>
+            <div class="tax-note">Taxes included</div>
+          </div>
+
+          <div class="cta-group">
+            <a href="#" class="primary-btn">See availability</a>
+            <a href="#" class="secondary-btn">View details</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="hotel-card">
+        <div class="hotel-image">
+          <img src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1200&q=80" alt="Phuket hotel">
+          <div class="badge-row">
+            <div class="badge trending">Trending</div>
+          </div>
+        </div>
+
+        <div class="hotel-body">
+          <div class="hotel-topline">
+            <div class="stars">★★★★☆</div>
+            <div class="rating-pill">8.7 Very Good</div>
+          </div>
+
+          <h2 class="hotel-name">Andaman Pearl Phuket Bay</h2>
+          <div class="location"><strong>Phuket, Thailand</strong> • Family resort • Free shuttle to Patong</div>
+
+          <div class="hotel-desc">
+            Reliable volume driver for leisure demos. Phuket always pulls clicks. Pretending otherwise would be like pretending airlines enjoy distribution cost discussions.
+          </div>
+
+          <div class="amenities">
+            <div class="amenity">Family rooms</div>
+            <div class="amenity">Airport shuttle</div>
+            <div class="amenity">Pool access</div>
+            <div class="amenity">Free breakfast</div>
+          </div>
+
+          <div class="meta-line">Trending destination for Eid and summer breaks</div>
+        </div>
+
+        <div class="hotel-price">
+          <div>
+            <div class="save-note">Best seller this week</div>
+            <div class="strike">SAR 980</div>
+            <div class="price">SAR 790</div>
+            <div class="per-night">per night</div>
+            <div class="tax-note">Includes taxes and charges</div>
+          </div>
+
+          <div class="cta-group">
+            <a href="#" class="primary-btn">See availability</a>
+            <a href="#" class="secondary-btn">View details</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="hotel-card">
+        <div class="hotel-image">
+          <img src="https://images.unsplash.com/photo-1526481280695-3c4691b1b34d?auto=format&fit=crop&w=1200&q=80" alt="AlUla hotel">
+          <div class="badge-row">
+            <div class="badge sponsored">Sponsored</div>
+          </div>
+        </div>
+
+        <div class="hotel-body">
+          <div class="hotel-topline">
+            <div class="stars">★★★★★</div>
+            <div class="rating-pill">9.3 Exceptional</div>
+          </div>
+
+          <h2 class="hotel-name">Canyon Edge AlUla Retreat</h2>
+          <div class="location"><strong>AlUla, Saudi Arabia</strong> • Desert experience • Curated cultural activities</div>
+
+          <div class="hotel-desc">
+            Premium domestic destination with strong storytelling value. Excellent for a polished KSA supply demo because it feels modern, experiential, and expensive in a good way.
+          </div>
+
+          <div class="amenities">
+            <div class="amenity">Desert views</div>
+            <div class="amenity">Luxury tents</div>
+            <div class="amenity">Dining included</div>
+            <div class="amenity">Guided tours</div>
+          </div>
+
+          <div class="meta-line">High engagement from premium domestic traffic</div>
+        </div>
+
+        <div class="hotel-price">
+          <div>
+            <div class="save-note">Featured partner rate</div>
+            <div class="strike">SAR 2,250</div>
+            <div class="price">SAR 1,990</div>
+            <div class="per-night">per night</div>
+            <div class="tax-note">Excludes local tourism fee</div>
+          </div>
+
+          <div class="cta-group">
+            <a href="#" class="primary-btn">See availability</a>
+            <a href="#" class="secondary-btn">View details</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="hotel-card">
+        <div class="hotel-image">
+          <img src="https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?auto=format&fit=crop&w=1200&q=80" alt="Hong Kong hotel">
+          <div class="badge-row">
+            <div class="badge trending">Trending</div>
+            <div class="badge top">Top pick</div>
+          </div>
+        </div>
+
+        <div class="hotel-body">
+          <div class="hotel-topline">
+            <div class="stars">★★★★★</div>
+            <div class="rating-pill">8.8 Very Good</div>
+          </div>
+
+          <h2 class="hotel-name">Victoria Harbour Grand Hong Kong</h2>
+          <div class="location"><strong>Hong Kong</strong> • Harbour view • Steps from MTR and shopping</div>
+
+          <div class="hotel-desc">
+            Sharp city product for APAC demand positioning. Great for making the results page look diversified instead of just beach resorts and pretty lies.
+          </div>
+
+          <div class="amenities">
+            <div class="amenity">Harbour view</div>
+            <div class="amenity">Business lounge</div>
+            <div class="amenity">Flexible cancellation</div>
+            <div class="amenity">Premium location</div>
+          </div>
+
+          <div class="meta-line">Frequently searched from GCC outbound traffic</div>
+        </div>
+
+        <div class="hotel-price">
+          <div>
+            <div class="save-note">Flash offer</div>
+            <div class="strike">SAR 1,380</div>
+            <div class="price">SAR 1,120</div>
+            <div class="per-night">per night</div>
+            <div class="tax-note">Taxes and fees included</div>
+          </div>
+
+          <div class="cta-group">
+            <a href="#" class="primary-btn">See availability</a>
+            <a href="#" class="secondary-btn">View details</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="hotel-card">
+        <div class="hotel-image">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Krabi hotel">
+          <div class="badge-row">
+            <div class="badge sponsored">Sponsored</div>
+          </div>
+        </div>
+
+        <div class="hotel-body">
+          <div class="hotel-topline">
+            <div class="stars">★★★★☆</div>
+            <div class="rating-pill">8.5 Very Good</div>
+          </div>
+
+          <h2 class="hotel-name">Krabi Horizon Beach Resort</h2>
+          <div class="location"><strong>Krabi, Thailand</strong> • Oceanfront stay • Island hopping packages</div>
+
+          <div class="hotel-desc">
+            Easy add-on destination for a stronger Thailand cluster. Also helps your search results look curated rather than randomly assembled by a sleep-deprived intern.
+          </div>
+
+          <div class="amenities">
+            <div class="amenity">Beachfront</div>
+            <div class="amenity">Island tours</div>
+            <div class="amenity">Pool bar</div>
+            <div class="amenity">Family stay</div>
+          </div>
+
+          <div class="meta-line">Strong conversion on short-haul leisure searches</div>
+        </div>
+
+        <div class="hotel-price">
+          <div>
+            <div class="save-note">Sponsored placement</div>
+            <div class="strike">SAR 840</div>
+            <div class="price">SAR 675</div>
+            <div class="per-night">per night</div>
+            <div class="tax-note">Includes taxes and service fees</div>
+          </div>
+
+          <div class="cta-group">
+            <a href="#" class="primary-btn">See availability</a>
+            <a href="#" class="secondary-btn">View details</a>
+          </div>
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <div class="floating-note">
+    Demo mode only. Results are static and shown regardless of selected dates or filters.
+  </div>
+</body>
+</html>
