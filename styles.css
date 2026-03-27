@@ -53,6 +53,26 @@ body {
   text-decoration: underline;
 }
 
+/* DEMO BUTTON */
+.demo-btn {
+  display: block;
+  margin: 25px auto 0;
+  padding: 14px 26px;
+  background: #0B2CFF;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+
+.demo-btn:hover {
+  background: #081fcc;
+  transform: translateY(-2px);
+}
+
 .footer {
   margin-top: 80px;
   padding: 20px 0;
