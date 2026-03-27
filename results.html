@@ -23,7 +23,7 @@
       --input-bg: rgba(255, 255, 255, 0.05);
       --shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
       --danger: #ef4b58;
-      --success: #20b486;
+      --warn: #ffb648;
     }
 
     body.light-mode {
@@ -300,17 +300,28 @@
       font-weight: 700;
     }
 
+    #resultsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
     .result-card {
       display: grid;
-      grid-template-columns: 280px 1fr 220px;
+      grid-template-columns: 280px 1fr 230px;
       overflow: hidden;
       position: relative;
       border: 2px solid transparent;
     }
 
-    .result-card.distress {
+    .result-card.hotel-distress {
       border-color: var(--danger);
       animation: distressPulse 1.6s infinite;
+    }
+
+    .result-card.flight-featured {
+      border-color: var(--warn);
+      animation: flightPulse 1.8s infinite;
     }
 
     @keyframes distressPulse {
@@ -325,6 +336,21 @@
       100% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(239, 75, 88, 0);
+      }
+    }
+
+    @keyframes flightPulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 182, 72, 0.28);
+      }
+      50% {
+        transform: scale(1.004);
+        box-shadow: 0 0 0 12px rgba(255, 182, 72, 0);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 182, 72, 0);
       }
     }
 
@@ -362,8 +388,13 @@
       background: var(--danger);
     }
 
-    .badge.trending {
+    .badge.featured {
       background: var(--brand);
+    }
+
+    .badge.business {
+      background: var(--warn);
+      color: #111;
     }
 
     .badge.sponsored {
@@ -450,12 +481,20 @@
       gap: 14px;
     }
 
-    .distress-note {
+    .price-note {
       font-size: 0.72rem;
-      color: var(--danger);
+      color: var(--brand);
       text-align: right;
       font-weight: 700;
       line-height: 1.55;
+    }
+
+    .price-note.distress {
+      color: var(--danger);
+    }
+
+    .price-note.flight {
+      color: var(--warn);
     }
 
     .strike {
@@ -518,7 +557,7 @@
       position: fixed;
       right: 16px;
       bottom: 16px;
-      max-width: 300px;
+      max-width: 320px;
       background: var(--bg-elevated);
       color: var(--text-soft);
       border: 1px solid var(--border);
@@ -579,7 +618,7 @@
         max-width: none;
       }
 
-      .distress-note,
+      .price-note,
       .strike,
       .price,
       .per-unit,
@@ -640,8 +679,8 @@
         <div class="filter-group">
           <div class="filter-title">Promotions</div>
           <label class="filter-option"><input type="checkbox" checked> Distress Deals</label>
+          <label class="filter-option"><input type="checkbox" checked> Featured</label>
           <label class="filter-option"><input type="checkbox" checked> Sponsored</label>
-          <label class="filter-option"><input type="checkbox" checked> Trending</label>
         </div>
 
         <div class="filter-group">
@@ -652,16 +691,13 @@
           <label class="filter-option"><input type="checkbox"> Mykonos</label>
           <label class="filter-option"><input type="checkbox"> Phuket</label>
           <label class="filter-option"><input type="checkbox"> Krabi</label>
-          <label class="filter-option"><input type="checkbox"> Hong Kong</label>
-          <label class="filter-option"><input type="checkbox"> Red Sea</label>
-          <label class="filter-option"><input type="checkbox"> AlUla</label>
         </div>
 
         <div class="filter-group">
-          <div class="filter-title">Why this converts</div>
-          <label class="filter-option"><input type="checkbox" checked> High discount depth</label>
-          <label class="filter-option"><input type="checkbox" checked> Urgency messaging</label>
-          <label class="filter-option"><input type="checkbox" checked> Animated highlight</label>
+          <div class="filter-title">Demo logic</div>
+          <label class="filter-option"><input type="checkbox" checked> Hotel spacing fixed</label>
+          <label class="filter-option"><input type="checkbox" checked> Flight bundle pricing</label>
+          <label class="filter-option"><input type="checkbox" checked> Business class urgency</label>
         </div>
       </aside>
 
@@ -670,12 +706,12 @@
           <div class="results-head">
             <div>
               <div class="results-title" id="resultsTitle">5 hotel results</div>
-              <div class="results-sub">The first two results are always Distress Deals and the pricing simulates based on the search context.</div>
+              <div class="results-sub" id="resultsSub">Hotels use stronger distress logic. Flights use softer urgency with one business class bundle offer.</div>
             </div>
 
             <select class="sort-select">
               <option>Sort by: Recommended</option>
-              <option>Sort by: Distress Deal First</option>
+              <option>Sort by: Featured First</option>
               <option>Sort by: Lowest Price</option>
               <option>Sort by: Highest Discount</option>
             </select>
@@ -684,15 +720,14 @@
 
         <div class="promo-strip">
           <div>
-            <div class="promo-title">Distress Deal engine</div>
-            <div class="promo-sub">Simulated discounts, urgency messaging and highlighted inventory across flights, stays and activities.</div>
+            <div class="promo-title">Revised pricing logic</div>
+            <div class="promo-sub">Hotel results have stronger distress discounting. Flight results highlight the first two without overcooking the whole page.</div>
           </div>
 
           <div class="promo-chip-wrap">
-            <div class="promo-chip">50% to 75% off</div>
-            <div class="promo-chip">5 results per vertical</div>
-            <div class="promo-chip">Comfortaa branding</div>
-            <div class="promo-chip">iPhone friendly</div>
+            <div class="promo-chip">Hotel distress 50% to 75%</div>
+            <div class="promo-chip">Flight bundle 20%</div>
+            <div class="promo-chip">Business class urgency</div>
           </div>
         </div>
 
@@ -702,27 +737,22 @@
   </div>
 
   <div class="floating-note">
-    Demo mode only. Results, urgency and discounts are simulated. Good enough to impress people. Not good enough to fool finance forever.
+    Demo mode only. Hotels and flights now behave differently on purpose. That is called product thinking, not inconsistency.
   </div>
 
   <script>
     const modeToggle = document.getElementById('modeToggle');
 
     function applyTheme(theme) {
-      if (theme === 'light') {
-        document.body.classList.add('light-mode');
-      } else {
-        document.body.classList.remove('light-mode');
-      }
+      if (theme === 'light') document.body.classList.add('light-mode');
+      else document.body.classList.remove('light-mode');
       localStorage.setItem('lodj-theme', theme);
     }
 
-    const savedTheme = localStorage.getItem('lodj-theme') || 'dark';
-    applyTheme(savedTheme);
+    applyTheme(localStorage.getItem('lodj-theme') || 'dark');
 
     modeToggle.addEventListener('click', () => {
-      const nextTheme = document.body.classList.contains('light-mode') ? 'dark' : 'light';
-      applyTheme(nextTheme);
+      applyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light');
     });
 
     const params = new URLSearchParams(window.location.search);
@@ -731,6 +761,7 @@
     const endDate = params.get('end') || 'Any selected date';
     const from = params.get('from') || 'Anywhere';
     const to = params.get('to') || 'Trending destinations';
+    const pax = params.get('pax') || '';
 
     document.getElementById('summaryType').textContent =
       searchType === 'flights' ? 'Flights' :
@@ -751,7 +782,7 @@
       'Popular booking right now'
     ];
 
-    const distressDiscounts = [50, 55, 60, 65, 70, 75];
+    const hotelDiscounts = [50, 55, 60, 65, 70, 75];
 
     function seededHash(str) {
       let h = 0;
@@ -762,21 +793,21 @@
       return Math.abs(h);
     }
 
-    const seedBase = seededHash(`${searchType}|${startDate}|${endDate}|${from}|${to}`);
+    const seedBase = seededHash(`${searchType}|${startDate}|${endDate}|${from}|${to}|${pax}`);
 
     function pickBySeed(list, seed, offset = 0) {
       return list[(seed + offset) % list.length];
     }
 
-    function createDistressPricing(baseMin, baseMax, index) {
+    function createDiscountedPrice(baseMin, baseMax, index, discounts) {
       const seed = seedBase + index * 19;
       const base = baseMin + (seed % (baseMax - baseMin + 1));
-      const discount = pickBySeed(distressDiscounts, seed, index);
+      const discount = pickBySeed(discounts, seed, index);
       const newPrice = Math.round(base * (1 - discount / 100));
       return { oldPrice: base, newPrice, discount };
     }
 
-    function createRegularPricing(baseMin, baseMax, index) {
+    function createRegularPrice(baseMin, baseMax, index) {
       const seed = seedBase + index * 29;
       return Math.round(baseMin + (seed % (baseMax - baseMin + 1)));
     }
@@ -785,59 +816,11 @@
       return `SAR ${num.toLocaleString()}`;
     }
 
-    const flightResults = [
-      {
-        name: 'DXB Smart Saver',
-        location: 'Dubai International Airport',
-        desc: 'DXB is always the show pony here. Deep markdown, clean route story, instant click bait.',
-        image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Direct', 'Cabin baggage', 'Top route'],
-        rating: '9.2 Hot deal',
-        distress: true
-      },
-      {
-        name: 'Maldives Escape Fare',
-        location: 'Dubai to Malé',
-        desc: 'Second distress placement with a heavy discount so the first card does not look lonely and suspicious.',
-        image: 'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1200&q=80',
-        tags: ['1 stop', 'Promo fare', 'High demand'],
-        rating: '8.9 Excellent',
-        distress: true
-      },
-      {
-        name: 'Jeddah Weekend Connector',
-        location: 'JED to RUH',
-        desc: 'Useful domestic route to make the grid feel less theatrical.',
-        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Domestic', 'Flexible', 'Morning departure'],
-        rating: '8.5 Good',
-        distress: false
-      },
-      {
-        name: 'Phuket Leisure Fare',
-        location: 'DXB to HKT',
-        desc: 'Classic outbound leisure filler with enough appeal to feel real.',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Beach route', '1 stop', 'Outbound leisure'],
-        rating: '8.8 Very Good',
-        distress: false
-      },
-      {
-        name: 'Hong Kong City Connector',
-        location: 'RUH to HKG',
-        desc: 'City route for balance. Otherwise the page starts smelling too much like beach sunscreen.',
-        image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=80',
-        tags: ['APAC', 'Evening flight', 'Popular'],
-        rating: '8.7 Very Good',
-        distress: false
-      }
-    ];
-
     const hotelResults = [
       {
         name: 'ABC Hotel',
         location: 'Dubai, UAE',
-        desc: 'This is your Dubai distress weapon. Deep markdown, sharp positioning and enough urgency to make users behave irrationally in the way all good demos hope for.',
+        desc: 'Strong Dubai distress inventory with deep markdown and very obvious urgency. This one should shout “book me” without actually yelling.',
         image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
         tags: ['Breakfast included', 'Downtown', 'Free cancellation'],
         rating: '9.1 Excellent',
@@ -846,7 +829,7 @@
       {
         name: 'XYZ Hotel',
         location: 'Maldives',
-        desc: 'Maldives plus distress pricing is basically cheating. That is why it belongs here.',
+        desc: 'A Maldives distress deal is borderline unfair, which is exactly why it works so well in a demo.',
         image: 'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1200&q=80',
         tags: ['Water villa', 'Half board', 'Airport transfer'],
         rating: '9.3 Exceptional',
@@ -855,7 +838,7 @@
       {
         name: 'Jeddah Corniche Suites',
         location: 'Jeddah, Saudi Arabia',
-        desc: 'Strong domestic option for regional relevance and a more believable mix.',
+        desc: 'Good domestic option that makes the page feel grounded instead of purely aspirational fantasy.',
         image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80',
         tags: ['Sea view', 'Pay later', 'Family rooms'],
         rating: '8.8 Very Good',
@@ -864,7 +847,7 @@
       {
         name: 'Mykonos Azure Retreat',
         location: 'Mykonos, Greece',
-        desc: 'Premium leisure inventory that makes the page feel expensive in a good way.',
+        desc: 'Premium leisure inventory for visual variety and a more believable destination spread.',
         image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80',
         tags: ['Infinity pool', 'Sunset view', 'Premium stay'],
         rating: '8.9 Excellent',
@@ -873,7 +856,7 @@
       {
         name: 'Phuket Bay Escape',
         location: 'Phuket, Thailand',
-        desc: 'A reliable click magnet for leisure demand and demo completeness.',
+        desc: 'Classic leisure inventory that fills the stack without looking random.',
         image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1200&q=80',
         tags: ['Beachfront', 'Pool', 'Best seller'],
         rating: '8.7 Very Good',
@@ -881,103 +864,94 @@
       }
     ];
 
-    const activityResults = [
+    const flightResults = [
       {
-        name: 'Dubai Marina Sunset Yacht',
-        location: 'Dubai, UAE',
-        desc: 'Distress-priced activity used to mirror the same urgency logic as hotels and flights.',
-        image: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Sunset cruise', 'Instant confirmation', 'Limited slots'],
-        rating: '9.0 Excellent',
-        distress: true
+        name: 'DXB Smart Fare',
+        location: 'JED to DXB',
+        desc: 'First featured flight result. Strong Dubai bias, mild urgency, and enough tension to suggest the fare could move.',
+        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Direct', 'Economy', 'Popular route'],
+        rating: '9.0 Featured',
+        featured: true,
+        businessBundle: false
       },
       {
-        name: 'Maldives Sandbank Experience',
-        location: 'Maldives',
-        desc: 'Second activity distress deal for consistency and conversion theatre.',
+        name: 'Business Class Last 2 Seats',
+        location: 'RUH to DXB • Business Class',
+        desc: 'This is the upsell trap. It only gets 20% off if booked with a hotel. Otherwise the full business class fare stays as-is.',
+        image: 'https://images.unsplash.com/photo-1540339832862-474599807836?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Business Class', 'Last 2 seats', 'Bundle offer'],
+        rating: '9.4 Premium',
+        featured: true,
+        businessBundle: true
+      },
+      {
+        name: 'Jeddah Weekend Connector',
+        location: 'JED to RUH',
+        desc: 'Useful domestic filler that helps the page feel less staged.',
+        image: 'https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Domestic', 'Flexible', 'Morning departure'],
+        rating: '8.5 Good',
+        featured: false,
+        businessBundle: false
+      },
+      {
+        name: 'Phuket Leisure Fare',
+        location: 'DXB to HKT',
+        desc: 'Leisure long-haul option to keep the flight list broad enough to look real.',
         image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Boat transfer', 'Guided', 'Photo stop'],
-        rating: '9.2 Hot deal',
-        distress: true
-      },
-      {
-        name: 'AlUla Desert Discovery',
-        location: 'AlUla, Saudi Arabia',
-        desc: 'Premium domestic experience with strong storytelling value.',
-        image: 'https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Guided tour', '4x4 access', 'Cultural'],
+        tags: ['Beach route', '1 stop', 'Outbound leisure'],
         rating: '8.8 Very Good',
-        distress: false
+        featured: false,
+        businessBundle: false
       },
       {
-        name: 'Phuket Island Hopping',
-        location: 'Phuket, Thailand',
-        desc: 'Classic leisure activity that rounds things out without much drama.',
-        image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Boat tour', 'Lunch included', 'Top rated'],
+        name: 'Hong Kong City Connector',
+        location: 'RUH to HKG',
+        desc: 'City route for balance, because not everyone wants a beach and a cocktail.',
+        image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=80',
+        tags: ['APAC', 'Evening flight', 'Popular'],
         rating: '8.7 Very Good',
-        distress: false
-      },
-      {
-        name: 'Hong Kong Night Lights Tour',
-        location: 'Hong Kong',
-        desc: 'City-format product so it does not feel like everything involves sand and a boat.',
-        image: 'https://images.unsplash.com/photo-1494588024300-e9df7ff98d78?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Evening tour', 'City highlights', 'Guide included'],
-        rating: '8.6 Very Good',
-        distress: false
+        featured: false,
+        businessBundle: false
       }
     ];
 
-    function renderCard(item, index, type) {
+    function renderHotelCard(item, index) {
       const urgency = pickBySeed(urgencyTexts, seedBase, index);
-      const perUnit = type === 'flights' ? 'per traveler' : type === 'activities' ? 'per person' : 'per night';
-
-      let pricingHtml = '';
+      let pricingBlock = '';
 
       if (item.distress) {
-        const pricing = createDistressPricing(
-          type === 'flights' ? 900 : type === 'activities' ? 300 : 1200,
-          type === 'flights' ? 4200 : type === 'activities' ? 1800 : 6000,
-          index
-        );
-
-        pricingHtml = `
+        const pricing = createDiscountedPrice(1200, 6000, index, hotelDiscounts);
+        pricingBlock = `
           <div>
-            <div class="distress-note">Distress Deal • ${pricing.discount}% off<br>${urgency}</div>
+            <div class="price-note distress">Distress Deal • ${pricing.discount}% off<br>${urgency}</div>
             <div class="strike">${formatSAR(pricing.oldPrice)}</div>
             <div class="price">${formatSAR(pricing.newPrice)}</div>
-            <div class="per-unit">${perUnit}</div>
+            <div class="per-unit">per night</div>
             <div class="tax-note">Simulated based on selected dates</div>
           </div>
         `;
       } else {
-        const price = createRegularPricing(
-          type === 'flights' ? 700 : type === 'activities' ? 220 : 650,
-          type === 'flights' ? 2600 : type === 'activities' ? 950 : 2200,
-          index
-        );
-
-        pricingHtml = `
+        const price = createRegularPrice(650, 2200, index);
+        pricingBlock = `
           <div>
-            <div class="distress-note" style="color:var(--brand);">${urgency}</div>
+            <div class="price-note">Popular option<br>${urgency}</div>
             <div class="price">${formatSAR(price)}</div>
-            <div class="per-unit">${perUnit}</div>
+            <div class="per-unit">per night</div>
             <div class="tax-note">Taxes and fees included</div>
           </div>
         `;
       }
 
-      const badges = [];
-      if (item.distress) badges.push('<div class="badge distress">Distress Deal</div>');
-      if (index < 2) badges.push('<div class="badge trending">High urgency</div>');
-      else badges.push('<div class="badge sponsored">Sponsored</div>');
-
       return `
-        <article class="result-card ${item.distress ? 'distress' : ''}">
+        <article class="result-card ${item.distress ? 'hotel-distress' : ''}">
           <div class="result-image">
             <img src="${item.image}" alt="${item.name}">
-            <div class="badge-row">${badges.join('')}</div>
+            <div class="badge-row">
+              ${item.distress ? '<div class="badge distress">Distress Deal</div>' : '<div class="badge sponsored">Sponsored</div>'}
+              <div class="badge featured">Featured</div>
+            </div>
           </div>
 
           <div class="result-body">
@@ -993,11 +967,11 @@
               ${item.tags.map(tag => `<div class="chip">${tag}</div>`).join('')}
             </div>
 
-            <div class="meta-line">${item.distress ? 'Distress logic active for selected dates' : urgency}</div>
+            <div class="meta-line">${item.distress ? 'High urgency hotel logic active' : urgency}</div>
           </div>
 
           <div class="result-price">
-            ${pricingHtml}
+            ${pricingBlock}
             <div class="cta-group">
               <a href="#" class="primary-btn">${item.distress ? 'Book this deal' : 'View option'}</a>
               <a href="#" class="secondary-btn">View details</a>
@@ -1007,24 +981,94 @@
       `;
     }
 
-    function renderResults() {
-      let type = 'stays';
-      let results = hotelResults;
-      let title = '5 hotel results';
+    function renderFlightCard(item, index) {
+      const urgency = pickBySeed(urgencyTexts, seedBase, index + 3);
+      let pricingBlock = '';
 
-      if (searchType === 'flights') {
-        type = 'flights';
-        results = flightResults;
-        title = '5 flight results';
-      } else if (searchType === 'activities') {
-        type = 'activities';
-        results = activityResults;
-        title = '5 activity results';
+      if (item.businessBundle) {
+        const fullFare = createRegularPrice(3800, 6200, index);
+        const bundledFare = Math.round(fullFare * 0.8);
+        pricingBlock = `
+          <div>
+            <div class="price-note flight">Last 2 seats in Business Class<br>20% off only with hotel bundle</div>
+            <div class="strike">${formatSAR(fullFare)}</div>
+            <div class="price">${formatSAR(bundledFare)}</div>
+            <div class="per-unit">with hotel bundle</div>
+            <div class="tax-note">Without hotel, fare remains ${formatSAR(fullFare)}</div>
+          </div>
+        `;
+      } else if (item.featured) {
+        const fare = createRegularPrice(900, 1800, index);
+        pricingBlock = `
+          <div>
+            <div class="price-note flight">Featured fare<br>${urgency}</div>
+            <div class="price">${formatSAR(fare)}</div>
+            <div class="per-unit">per traveler</div>
+            <div class="tax-note">No forced distress markdown</div>
+          </div>
+        `;
+      } else {
+        const fare = createRegularPrice(700, 2400, index);
+        pricingBlock = `
+          <div>
+            <div class="price-note">${urgency}</div>
+            <div class="price">${formatSAR(fare)}</div>
+            <div class="per-unit">per traveler</div>
+            <div class="tax-note">Taxes and fees included</div>
+          </div>
+        `;
       }
 
-      document.getElementById('resultsTitle').textContent = title;
-      document.getElementById('resultsContainer').innerHTML =
-        results.slice(0, 5).map((item, index) => renderCard(item, index, type)).join('');
+      return `
+        <article class="result-card ${item.featured ? 'flight-featured' : ''}">
+          <div class="result-image">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="badge-row">
+              ${item.featured ? '<div class="badge featured">Featured</div>' : '<div class="badge sponsored">Sponsored</div>'}
+              ${item.businessBundle ? '<div class="badge business">Business</div>' : ''}
+            </div>
+          </div>
+
+          <div class="result-body">
+            <div class="result-topline">
+              <div class="rating-pill">${item.rating}</div>
+            </div>
+
+            <h2 class="result-name">${item.name}</h2>
+            <div class="result-location"><strong>${item.location}</strong></div>
+            <div class="result-desc">${item.desc}</div>
+
+            <div class="chips">
+              ${item.tags.map(tag => `<div class="chip">${tag}</div>`).join('')}
+            </div>
+
+            <div class="meta-line">${item.businessBundle ? 'Bundle incentive active for hotel + flight' : urgency}</div>
+          </div>
+
+          <div class="result-price">
+            ${pricingBlock}
+            <div class="cta-group">
+              <a href="#" class="primary-btn">${item.businessBundle ? 'Bundle and save' : 'View fare'}</a>
+              <a href="#" class="secondary-btn">View details</a>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderResults() {
+      const container = document.getElementById('resultsContainer');
+
+      if (searchType === 'flights') {
+        document.getElementById('resultsTitle').textContent = '5 flight results';
+        document.getElementById('resultsSub').textContent = 'First two flight results are highlighted. One is a Business Class last-2-seats bundle offer with 20% off only if booked with a hotel.';
+        container.innerHTML = flightResults.map((item, index) => renderFlightCard(item, index)).join('');
+        return;
+      }
+
+      document.getElementById('resultsTitle').textContent = '5 hotel results';
+      document.getElementById('resultsSub').textContent = 'First two hotel results are Distress Deals with stronger markdown and visible spacing between cards.';
+      container.innerHTML = hotelResults.map((item, index) => renderHotelCard(item, index)).join('');
     }
 
     renderResults();
