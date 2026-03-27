@@ -6,7 +6,7 @@
   <title>lodj.io Demo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     * {
@@ -15,9 +15,9 @@
 
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Comfortaa', sans-serif;
       background:
-        linear-gradient(rgba(7, 20, 35, 0.25), rgba(7, 20, 35, 0.25)),
+        linear-gradient(rgba(7, 20, 35, 0.35), rgba(7, 20, 35, 0.35)),
         url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80') center center / cover no-repeat fixed;
       min-height: 100vh;
       color: #17354b;
@@ -30,15 +30,23 @@
 
     .logo {
       margin: 0;
-      font-family: 'Comfortaa', sans-serif;
       font-size: 2rem;
       color: #ffffff;
+      font-weight: 700;
     }
 
     .sub {
       margin: 8px 0 0;
       color: rgba(255,255,255,0.88);
       font-size: 0.95rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 18px;
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
     }
 
     .wrap {
@@ -63,6 +71,7 @@
       background: rgba(14, 87, 117, 0.92);
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
+      font-family: 'Comfortaa', sans-serif;
     }
 
     .tab:not(.active) {
@@ -111,13 +120,14 @@
       padding: 10px 16px;
       cursor: pointer;
       font-size: 0.95rem;
+      font-family: 'Comfortaa', sans-serif;
     }
 
     .pill.active {
       background: #dff3fb;
       color: #0f86b8;
       border-color: #8bc8e5;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .check {
@@ -126,6 +136,7 @@
       gap: 9px;
       font-size: 1rem;
       color: #334c60;
+      font-family: 'Comfortaa', sans-serif;
     }
 
     .check input {
@@ -143,15 +154,15 @@
     }
 
     .grid-flight {
-      grid-template-columns: 1.2fr 1.2fr 1fr 1fr 1.2fr auto;
+      grid-template-columns: 1.2fr 1.2fr 1fr 1fr 1.2fr 160px;
     }
 
     .grid-stay {
-      grid-template-columns: 1.4fr 0.9fr 0.9fr 1.1fr auto;
+      grid-template-columns: 1.4fr 0.9fr 0.9fr 1.1fr 160px;
     }
 
     .grid-activity {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr 160px;
     }
 
     .field {
@@ -184,7 +195,7 @@
       background: transparent;
       font-size: 1rem;
       color: #1f3344;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Comfortaa', sans-serif;
     }
 
     .field input::placeholder {
@@ -196,12 +207,17 @@
       border-radius: 4px;
       background: #f04b58;
       color: #fff;
-      padding: 0 28px;
+      padding: 0 20px;
       min-height: 58px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
+      font-family: 'Comfortaa', sans-serif;
+    }
+
+    .search-btn:hover {
+      background: #e13d4b;
     }
 
     .services {
@@ -242,9 +258,9 @@
     }
 
     .service-label {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #23384b;
-      font-weight: 500;
+      font-weight: 700;
     }
 
     .section {
@@ -266,13 +282,13 @@
       margin: 0;
       font-size: 2rem;
       color: #1f3344;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .view-more {
       color: #1ea3d2;
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .dest-grid {
@@ -314,14 +330,6 @@
       z-index: 1;
       font-size: 1.1rem;
       font-weight: 700;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-top: 18px;
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: 600;
     }
 
     .autocomplete-box {
@@ -368,19 +376,19 @@
     }
 
     .auto-main {
-      font-size: 0.96rem;
+      font-size: 0.92rem;
       color: #1f3344;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .auto-sub {
-      font-size: 0.86rem;
+      font-size: 0.82rem;
       color: #748b9d;
       margin-top: 2px;
     }
 
     .auto-tag {
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       font-weight: 700;
       color: #fff;
       background: #18a0d1;
@@ -489,4 +497,338 @@
             <input type="date">
           </label>
 
-          <label class
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date">
+          </label>
+
+          <div class="field">
+            <span class="field-icon">👥</span>
+            <select>
+              <option>1 Traveler, Economy</option>
+              <option>2 Travelers, Economy</option>
+              <option>1 Traveler, Business</option>
+              <option>2 Travelers, Business</option>
+            </select>
+          </div>
+
+          <button class="search-btn" onclick="goResults()">Search</button>
+        </div>
+      </div>
+
+      <div class="panel" id="stays">
+        <div class="grid-stay">
+          <div class="field">
+            <span class="field-icon">📍</span>
+            <input type="text" id="stay-search" placeholder="Search for properties or places" autocomplete="off">
+            <div class="autocomplete-box" id="stay-search-box"></div>
+          </div>
+
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date">
+          </label>
+
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date">
+          </label>
+
+          <div class="field">
+            <span class="field-icon">👥</span>
+            <select>
+              <option>1 Room, 2 Adults, 0 Child</option>
+              <option>2 Rooms, 4 Adults, 0 Child</option>
+              <option>1 Room, 2 Adults, 1 Child</option>
+            </select>
+          </div>
+
+          <button class="search-btn" onclick="goResults()">Search</button>
+        </div>
+      </div>
+
+      <div class="panel" id="activities">
+        <div class="grid-activity">
+          <div class="field">
+            <span class="field-icon">📍</span>
+            <input type="text" placeholder="Search for activities">
+          </div>
+
+          <button class="search-btn" onclick="goResults()">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="services">
+      <div class="services-row">
+        <div class="service">
+          <div class="service-icon">🚐</div>
+          <div class="service-label">Transfers</div>
+        </div>
+        <div class="service">
+          <div class="service-icon">🚆</div>
+          <div class="service-label">Haramain Train</div>
+        </div>
+        <div class="service">
+          <div class="service-icon">🚗</div>
+          <div class="service-label">Car rental</div>
+        </div>
+        <div class="service">
+          <div class="service-icon">🧳</div>
+          <div class="service-label">Domestic packages</div>
+        </div>
+        <div class="service">
+          <div class="service-icon">🛳</div>
+          <div class="service-label">Cruise packages</div>
+        </div>
+        <div class="service">
+          <div class="service-icon">🗺</div>
+          <div class="service-label">Packages</div>
+        </div>
+        <div class="service">
+          <div class="service-icon">•••</div>
+          <div class="service-label">More services</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Top international escapes</h2>
+        <a class="view-more" href="results.html">View more</a>
+      </div>
+
+      <div class="dest-grid">
+        <a class="dest-card" href="results.html">
+          <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80" alt="London">
+          <div class="dest-name">London</div>
+        </a>
+
+        <a class="dest-card" href="results.html">
+          <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80" alt="Paris">
+          <div class="dest-name">Paris</div>
+        </a>
+
+        <a class="dest-card" href="results.html">
+          <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=900&q=80" alt="Malaysia">
+          <div class="dest-name">Malaysia</div>
+        </a>
+
+        <a class="dest-card" href="results.html">
+          <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=900&q=80" alt="Istanbul">
+          <div class="dest-name">Istanbul</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Top domestic getaways</h2>
+        <a class="view-more" href="results.html">View more</a>
+      </div>
+
+      <div class="dest-grid">
+        <a class="dest-card" href="results.html">
+          <img src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&w=900&q=80" alt="Makkah">
+          <div class="dest-name">Makkah</div>
+        </a>
+
+        <a class="dest-card" href="results.html">
+          <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=900&q=80" alt="Riyadh">
+          <div class="dest-name">Riyadh</div>
+        </a>
+
+        <a class="dest-card" href="results.html">
+          <img src="https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=900&q=80" alt="Jeddah">
+          <div class="dest-name">Jeddah</div>
+        </a>
+
+        <a class="dest-card" href="results.html">
+          <img src="https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=900&q=80" alt="Al Khobar">
+          <div class="dest-name">Al Khobar</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const AIRPORTS = [
+      { code: 'JED', city: 'Jeddah', airport: 'King Abdulaziz International Airport', country: 'Saudi Arabia' },
+      { code: 'RUH', city: 'Riyadh', airport: 'King Khalid International Airport', country: 'Saudi Arabia' },
+      { code: 'DMM', city: 'Dammam', airport: 'King Fahd International Airport', country: 'Saudi Arabia' },
+      { code: 'DXB', city: 'Dubai', airport: 'Dubai International Airport', country: 'UAE' },
+      { code: 'AUH', city: 'Abu Dhabi', airport: 'Zayed International Airport', country: 'UAE' },
+      { code: 'SHJ', city: 'Sharjah', airport: 'Sharjah International Airport', country: 'UAE' },
+      { code: 'DOH', city: 'Doha', airport: 'Hamad International Airport', country: 'Qatar' },
+      { code: 'BAH', city: 'Bahrain', airport: 'Bahrain International Airport', country: 'Bahrain' },
+      { code: 'KWI', city: 'Kuwait City', airport: 'Kuwait International Airport', country: 'Kuwait' },
+      { code: 'MCT', city: 'Muscat', airport: 'Muscat International Airport', country: 'Oman' },
+      { code: 'LHR', city: 'London', airport: 'Heathrow Airport', country: 'United Kingdom' },
+      { code: 'LGW', city: 'London', airport: 'Gatwick Airport', country: 'United Kingdom' },
+      { code: 'CDG', city: 'Paris', airport: 'Charles de Gaulle Airport', country: 'France' },
+      { code: 'HKG', city: 'Hong Kong', airport: 'Hong Kong International Airport', country: 'Hong Kong' },
+      { code: 'BKK', city: 'Bangkok', airport: 'Suvarnabhumi Airport', country: 'Thailand' },
+      { code: 'HKT', city: 'Phuket', airport: 'Phuket International Airport', country: 'Thailand' },
+      { code: 'KBV', city: 'Krabi', airport: 'Krabi International Airport', country: 'Thailand' },
+      { code: 'JMK', city: 'Mykonos', airport: 'Mykonos Airport', country: 'Greece' },
+      { code: 'CAI', city: 'Cairo', airport: 'Cairo International Airport', country: 'Egypt' },
+      { code: 'IST', city: 'Istanbul', airport: 'Istanbul Airport', country: 'Turkey' }
+    ];
+
+    const DESTINATIONS = [
+      { name: 'Jeddah', country: 'Saudi Arabia', tag: 'Trending' },
+      { name: 'Mykonos', country: 'Greece', tag: 'Sponsored' },
+      { name: 'Phuket', country: 'Thailand', tag: 'Trending' },
+      { name: 'Krabi', country: 'Thailand', tag: 'Trending' },
+      { name: 'Hong Kong', country: 'Hong Kong', tag: 'Sponsored' },
+      { name: 'Red Sea', country: 'Saudi Arabia', tag: 'Sponsored' },
+      { name: 'AlUla', country: 'Saudi Arabia', tag: 'Trending' },
+      { name: 'Riyadh', country: 'Saudi Arabia', tag: 'Popular' },
+      { name: 'Dubai', country: 'UAE', tag: 'Popular' },
+      { name: 'Istanbul', country: 'Turkey', tag: 'Popular' },
+      { name: 'London', country: 'United Kingdom', tag: 'Popular' },
+      { name: 'Paris', country: 'France', tag: 'Popular' }
+    ];
+
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.panel');
+    const pills = document.querySelectorAll('.pill');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+      });
+    });
+
+    function goResults() {
+      window.location.href = 'results.html';
+    }
+
+    function renderAirportSuggestions(inputEl, boxEl, query) {
+      const q = query.trim().toLowerCase();
+      let matches = AIRPORTS.filter(a =>
+        a.code.toLowerCase().includes(q) ||
+        a.city.toLowerCase().includes(q) ||
+        a.airport.toLowerCase().includes(q) ||
+        a.country.toLowerCase().includes(q)
+      );
+
+      if (!q) {
+        matches = AIRPORTS.slice(0, 8);
+      } else {
+        matches = matches.slice(0, 8);
+      }
+
+      boxEl.innerHTML = `
+        <div class="auto-section-title">Airports</div>
+        ${matches.map(a => `
+          <div class="auto-item" data-value="${a.code} - ${a.city}">
+            <div>
+              <div class="auto-main">${a.code} - ${a.city}</div>
+              <div class="auto-sub">${a.airport}, ${a.country}</div>
+            </div>
+            <div class="auto-tag">Airport</div>
+          </div>
+        `).join('')}
+      `;
+
+      boxEl.classList.add('show');
+
+      boxEl.querySelectorAll('.auto-item').forEach(item => {
+        item.addEventListener('click', () => {
+          inputEl.value = item.dataset.value;
+          boxEl.classList.remove('show');
+        });
+      });
+    }
+
+    function renderDestinationSuggestions(inputEl, boxEl, query) {
+      const q = query.trim().toLowerCase();
+
+      const trending = DESTINATIONS.filter(d =>
+        ['Trending', 'Sponsored'].includes(d.tag)
+      );
+
+      let matches = DESTINATIONS.filter(d =>
+        d.name.toLowerCase().includes(q) ||
+        d.country.toLowerCase().includes(q)
+      );
+
+      if (!q) {
+        boxEl.innerHTML = `
+          <div class="auto-section-title">Trending searches</div>
+          ${trending.map(d => `
+            <div class="auto-item" data-value="${d.name}, ${d.country}">
+              <div>
+                <div class="auto-main">${d.name}</div>
+                <div class="auto-sub">${d.country}</div>
+              </div>
+              <div class="auto-tag">${d.tag}</div>
+            </div>
+          `).join('')}
+        `;
+      } else {
+        boxEl.innerHTML = `
+          <div class="auto-section-title">Destinations</div>
+          ${matches.slice(0, 8).map(d => `
+            <div class="auto-item" data-value="${d.name}, ${d.country}">
+              <div>
+                <div class="auto-main">${d.name}</div>
+                <div class="auto-sub">${d.country}</div>
+              </div>
+              <div class="auto-tag">${d.tag}</div>
+            </div>
+          `).join('')}
+        `;
+      }
+
+      boxEl.classList.add('show');
+
+      boxEl.querySelectorAll('.auto-item').forEach(item => {
+        item.addEventListener('click', () => {
+          inputEl.value = item.dataset.value;
+          boxEl.classList.remove('show');
+        });
+      });
+    }
+
+    const flightOrigin = document.getElementById('flight-origin');
+    const flightOriginBox = document.getElementById('flight-origin-box');
+    const flightDestination = document.getElementById('flight-destination');
+    const flightDestinationBox = document.getElementById('flight-destination-box');
+    const staySearch = document.getElementById('stay-search');
+    const staySearchBox = document.getElementById('stay-search-box');
+
+    flightOrigin.addEventListener('focus', () => renderAirportSuggestions(flightOrigin, flightOriginBox, flightOrigin.value));
+    flightOrigin.addEventListener('input', () => renderAirportSuggestions(flightOrigin, flightOriginBox, flightOrigin.value));
+
+    flightDestination.addEventListener('focus', () => renderAirportSuggestions(flightDestination, flightDestinationBox, flightDestination.value));
+    flightDestination.addEventListener('input', () => renderAirportSuggestions(flightDestination, flightDestinationBox, flightDestination.value));
+
+    staySearch.addEventListener('focus', () => renderDestinationSuggestions(staySearch, staySearchBox, staySearch.value));
+    staySearch.addEventListener('input', () => renderDestinationSuggestions(staySearch, staySearchBox, staySearch.value));
+
+    document.addEventListener('click', (e) => {
+      if (!flightOrigin.parentElement.contains(e.target)) {
+        flightOriginBox.classList.remove('show');
+      }
+      if (!flightDestination.parentElement.contains(e.target)) {
+        flightDestinationBox.classList.remove('show');
+      }
+      if (!staySearch.parentElement.contains(e.target)) {
+        staySearchBox.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
