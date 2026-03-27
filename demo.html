@@ -2,92 +2,166 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>lodj.io Demo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --brand: #2D34FF;
+      --brand-dark: #1c22c7;
+      --brand-soft: #e8e9ff;
+      --bg: #050505;
+      --bg-elevated: #111217;
+      --bg-card: rgba(255, 255, 255, 0.08);
+      --text: #f4f4f8;
+      --text-soft: #b9bed0;
+      --text-muted: #8f95a8;
+      --border: rgba(255, 255, 255, 0.12);
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+      --danger: #ef4b58;
+      --success: #20b486;
+    }
+
+    body.light-mode {
+      --bg: #f6f7fb;
+      --bg-elevated: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.96);
+      --text: #191b22;
+      --text-soft: #4f566b;
+      --text-muted: #70778b;
+      --border: rgba(25, 27, 34, 0.10);
+      --input-bg: #f2f4fb;
+      --shadow: 0 18px 45px rgba(22, 28, 45, 0.10);
+    }
+
     * {
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
       font-family: 'Comfortaa', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
       background:
-        linear-gradient(rgba(7, 20, 35, 0.35), rgba(7, 20, 35, 0.35)),
+        linear-gradient(rgba(5, 5, 5, 0.55), rgba(5, 5, 5, 0.65)),
         url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80') center center / cover no-repeat fixed;
-      min-height: 100vh;
-      color: #17354b;
+    }
+
+    body.light-mode {
+      background:
+        linear-gradient(rgba(246, 247, 251, 0.72), rgba(246, 247, 251, 0.82)),
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80') center center / cover no-repeat fixed;
+    }
+
+    a, button, input, select {
+      font-family: 'Comfortaa', sans-serif;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: max(20px, env(safe-area-inset-top)) 16px 40px;
     }
 
     .topbar {
-      padding: 24px 20px 10px;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .logo {
       margin: 0;
-      font-size: 2rem;
-      color: #ffffff;
+      color: var(--brand);
+      font-size: clamp(2.1rem, 6vw, 3rem);
       font-weight: 700;
+      line-height: 1;
     }
 
     .sub {
-      margin: 8px 0 0;
-      color: rgba(255,255,255,0.88);
+      margin: 0;
+      color: var(--text-soft);
       font-size: 0.95rem;
     }
 
-    .back-link {
-      display: inline-block;
-      margin-top: 18px;
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: 700;
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    .wrap {
-      max-width: 1280px;
-      margin: 28px auto 50px;
-      padding: 0 16px;
+    .home-link,
+    .mode-toggle {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .hero-card,
+    .services,
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
     .tabs {
       display: flex;
-      gap: 2px;
-      align-items: end;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
     }
 
     .tab {
-      border: 0;
-      padding: 18px 28px;
-      cursor: pointer;
-      font-size: 1.05rem;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.10);
+      color: var(--text);
+      padding: 14px 20px;
+      border-radius: 16px 16px 0 0;
+      font-size: 1rem;
       font-weight: 700;
-      color: #fff;
-      background: rgba(14, 87, 117, 0.92);
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      font-family: 'Comfortaa', sans-serif;
-    }
-
-    .tab:not(.active) {
-      background: rgba(61, 79, 110, 0.92);
+      cursor: pointer;
     }
 
     .tab.active {
-      background: #f2f2f2;
-      color: #14364b;
+      background: var(--bg-card);
+      color: var(--brand);
+      border-color: var(--border);
     }
 
-    .card {
-      background: #f2f2f2;
-      border-radius: 0 12px 12px 12px;
-      padding: 22px 22px 26px;
-      box-shadow: 0 18px 60px rgba(0,0,0,0.18);
+    .hero-card {
+      padding: 22px;
     }
 
     .panel {
@@ -101,8 +175,8 @@
     .filters {
       display: flex;
       flex-wrap: wrap;
+      gap: 12px 16px;
       align-items: center;
-      gap: 14px 18px;
       margin-bottom: 18px;
     }
 
@@ -113,68 +187,65 @@
     }
 
     .pill {
-      border: 1px solid #c7d0d9;
-      background: #fff;
-      color: #1b3447;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
       border-radius: 999px;
-      padding: 10px 16px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
       cursor: pointer;
-      font-size: 0.95rem;
-      font-family: 'Comfortaa', sans-serif;
     }
 
     .pill.active {
-      background: #dff3fb;
-      color: #0f86b8;
-      border-color: #8bc8e5;
-      font-weight: 700;
+      background: var(--brand-soft);
+      color: var(--brand);
+      border-color: rgba(45, 52, 255, 0.28);
     }
 
     .check {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
-      font-size: 1rem;
-      color: #334c60;
-      font-family: 'Comfortaa', sans-serif;
+      gap: 8px;
+      color: var(--text-soft);
+      font-size: 0.92rem;
+      font-weight: 700;
     }
 
     .check input {
-      width: 20px;
-      height: 20px;
-      accent-color: #1a95cb;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
     }
 
     .grid-flight,
     .grid-stay,
     .grid-activity {
       display: grid;
-      gap: 10px;
-      align-items: stretch;
+      gap: 12px;
     }
 
     .grid-flight {
-      grid-template-columns: 1.2fr 1.2fr 1fr 1fr 1.2fr 160px;
+      grid-template-columns: 1.1fr 1.1fr 0.9fr 0.9fr 1fr 150px;
     }
 
     .grid-stay {
-      grid-template-columns: 1.4fr 0.9fr 0.9fr 1.1fr 160px;
+      grid-template-columns: 1.4fr 0.9fr 0.9fr 1fr 150px;
     }
 
     .grid-activity {
-      grid-template-columns: 1fr 160px;
+      grid-template-columns: 1fr 150px;
     }
 
     .field {
       position: relative;
-      background: #fff;
-      border: 1px solid #cad3da;
-      border-radius: 4px;
-      min-height: 58px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       padding: 0 16px 0 44px;
-      overflow: visible;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
     }
 
     .field-icon {
@@ -182,8 +253,8 @@
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: #93a6b6;
-      font-size: 1.05rem;
+      color: var(--brand);
+      font-size: 1rem;
       z-index: 2;
     }
 
@@ -193,118 +264,110 @@
       border: 0;
       outline: 0;
       background: transparent;
-      font-size: 1rem;
-      color: #1f3344;
-      font-family: 'Comfortaa', sans-serif;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
     }
 
     .field input::placeholder {
-      color: #a8b3bd;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
     .search-btn {
+      min-height: 60px;
       border: 0;
-      border-radius: 4px;
-      background: #f04b58;
+      border-radius: 14px;
+      background: var(--brand);
       color: #fff;
-      padding: 0 20px;
-      min-height: 58px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
-      white-space: nowrap;
-      font-family: 'Comfortaa', sans-serif;
+      transition: 0.2s ease;
     }
 
     .search-btn:hover {
-      background: #e13d4b;
+      background: var(--brand-dark);
     }
 
     .services {
-      background: rgba(255,255,255,0.96);
-      margin-top: 26px;
-      border-radius: 12px;
-      padding: 20px 14px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.10);
+      margin-top: 24px;
+      padding: 18px 12px;
     }
 
     .services-row {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 12px;
-      text-align: center;
     }
 
     .service {
-      padding: 12px 8px;
-      border-right: 1px solid #e2e7ec;
-    }
-
-    .service:last-child {
-      border-right: 0;
+      text-align: center;
+      padding: 12px 6px;
     }
 
     .service-icon {
-      width: 48px;
-      height: 48px;
+      width: 52px;
+      height: 52px;
       margin: 0 auto 10px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #e9f7fd;
-      color: #0f85b8;
-      font-size: 1.35rem;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 1.3rem;
+      font-weight: 700;
     }
 
     .service-label {
-      font-size: 0.9rem;
-      color: #23384b;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      line-height: 1.45;
       font-weight: 700;
     }
 
     .section {
-      background: rgba(255,255,255,0.96);
-      margin-top: 26px;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.10);
+      margin-top: 24px;
+      padding: 22px;
     }
 
     .section-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       margin-bottom: 18px;
+      flex-wrap: wrap;
     }
 
     .section-head h2 {
       margin: 0;
-      font-size: 2rem;
-      color: #1f3344;
-      font-weight: 700;
+      font-size: clamp(1.2rem, 4vw, 1.9rem);
+      color: var(--text);
     }
 
     .view-more {
-      color: #1ea3d2;
+      color: var(--brand);
       text-decoration: none;
+      font-size: 0.9rem;
       font-weight: 700;
     }
 
     .dest-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 22px;
+      gap: 18px;
     }
 
     .dest-card {
       position: relative;
-      height: 360px;
+      height: 300px;
       border-radius: 18px;
       overflow: hidden;
       text-decoration: none;
       color: #fff;
-      background: #ccc;
+      display: block;
     }
 
     .dest-card img {
@@ -318,7 +381,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.58), rgba(0,0,0,0.10));
+      background: linear-gradient(to top, rgba(0,0,0,0.68), rgba(0,0,0,0.14));
     }
 
     .dest-name {
@@ -328,7 +391,7 @@
       bottom: 18px;
       text-align: center;
       z-index: 1;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
     }
 
@@ -337,14 +400,14 @@
       top: calc(100% + 8px);
       left: 0;
       right: 0;
-      background: #fff;
-      border: 1px solid #d5dde4;
-      border-radius: 12px;
-      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.16);
-      z-index: 30;
-      padding: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      z-index: 40;
+      padding: 8px;
       display: none;
-      max-height: 360px;
+      max-height: 340px;
       overflow-y: auto;
     }
 
@@ -353,47 +416,49 @@
     }
 
     .auto-section-title {
-      font-size: 0.8rem;
+      padding: 8px 10px;
+      color: var(--text-muted);
+      font-size: 0.72rem;
       font-weight: 700;
-      color: #7d93a4;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      padding: 8px 10px 6px;
     }
 
     .auto-item {
-      border-radius: 10px;
-      padding: 10px 12px;
-      cursor: pointer;
       display: flex;
       justify-content: space-between;
       gap: 10px;
       align-items: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
     }
 
     .auto-item:hover {
-      background: #f3f8fb;
+      background: var(--input-bg);
     }
 
     .auto-main {
-      font-size: 0.92rem;
-      color: #1f3344;
+      color: var(--text);
+      font-size: 0.88rem;
       font-weight: 700;
+      line-height: 1.4;
     }
 
     .auto-sub {
-      font-size: 0.82rem;
-      color: #748b9d;
+      color: var(--text-muted);
+      font-size: 0.76rem;
       margin-top: 2px;
+      line-height: 1.45;
     }
 
     .auto-tag {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #fff;
-      background: #18a0d1;
+      background: var(--brand-soft);
+      color: var(--brand);
       border-radius: 999px;
-      padding: 6px 9px;
+      padding: 6px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
       white-space: nowrap;
     }
 
@@ -407,28 +472,45 @@
         grid-template-columns: 1fr;
       }
 
-      .search-btn {
-        width: 100%;
-      }
-
       .services-row,
       .dest-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
+      .search-btn {
+        width: 100%;
+      }
     }
 
     @media (max-width: 700px) {
+      .page {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+
       .tabs {
-        flex-wrap: wrap;
         gap: 8px;
       }
 
       .tab {
-        border-radius: 10px;
+        flex: 1 1 auto;
+        border-radius: 14px;
+        text-align: center;
+        padding: 14px 12px;
+        font-size: 0.88rem;
       }
 
-      .card {
-        border-radius: 12px;
+      .hero-card {
+        padding: 16px;
       }
 
       .grid-flight,
@@ -439,27 +521,41 @@
         grid-template-columns: 1fr;
       }
 
-      .section-head h2 {
-        font-size: 1.5rem;
+      .dest-card {
+        height: 260px;
+      }
+
+      .filters {
+        align-items: flex-start;
+      }
+
+      .check {
+        font-size: 0.84rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <h1 class="logo">lodj.io</h1>
-    <p class="sub">Demo experience</p>
-    <a class="back-link" href="index.html">← Back to home</a>
-  </div>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand-wrap">
+        <h1 class="logo">lodj.io</h1>
+        <p class="sub">Demo experience</p>
+      </div>
 
-  <div class="wrap">
+      <div class="top-actions">
+        <a class="home-link" href="index.html">← Back to home</a>
+        <button class="mode-toggle" id="modeToggle" type="button">Toggle mode</button>
+      </div>
+    </div>
+
     <div class="tabs">
       <button class="tab active" data-tab="flights">✈ Flights</button>
       <button class="tab" data-tab="stays">🛏 Stays</button>
       <button class="tab" data-tab="activities">🎈 Activities</button>
     </div>
 
-    <div class="card">
+    <div class="hero-card">
       <div class="panel active" id="flights">
         <div class="filters">
           <div class="pills">
@@ -494,17 +590,17 @@
 
           <label class="field">
             <span class="field-icon">📅</span>
-            <input type="date">
+            <input type="date" id="flight-start">
           </label>
 
           <label class="field">
             <span class="field-icon">📅</span>
-            <input type="date">
+            <input type="date" id="flight-end">
           </label>
 
           <div class="field">
             <span class="field-icon">👥</span>
-            <select>
+            <select id="flight-pax">
               <option>1 Traveler, Economy</option>
               <option>2 Travelers, Economy</option>
               <option>1 Traveler, Business</option>
@@ -512,7 +608,7 @@
             </select>
           </div>
 
-          <button class="search-btn" onclick="goResults()">Search</button>
+          <button class="search-btn" type="button" onclick="goResults('flights')">Search</button>
         </div>
       </div>
 
@@ -526,24 +622,24 @@
 
           <label class="field">
             <span class="field-icon">📅</span>
-            <input type="date">
+            <input type="date" id="stay-start">
           </label>
 
           <label class="field">
             <span class="field-icon">📅</span>
-            <input type="date">
+            <input type="date" id="stay-end">
           </label>
 
           <div class="field">
             <span class="field-icon">👥</span>
-            <select>
+            <select id="stay-pax">
               <option>1 Room, 2 Adults, 0 Child</option>
               <option>2 Rooms, 4 Adults, 0 Child</option>
               <option>1 Room, 2 Adults, 1 Child</option>
             </select>
           </div>
 
-          <button class="search-btn" onclick="goResults()">Search</button>
+          <button class="search-btn" type="button" onclick="goResults('stays')">Search</button>
         </div>
       </div>
 
@@ -551,10 +647,10 @@
         <div class="grid-activity">
           <div class="field">
             <span class="field-icon">📍</span>
-            <input type="text" placeholder="Search for activities">
+            <input type="text" id="activity-search" placeholder="Search for activities">
           </div>
 
-          <button class="search-btn" onclick="goResults()">Search</button>
+          <button class="search-btn" type="button" onclick="goResults('activities')">Search</button>
         </div>
       </div>
     </div>
@@ -595,57 +691,51 @@
     <div class="section">
       <div class="section-head">
         <h2>Top international escapes</h2>
-        <a class="view-more" href="results.html">View more</a>
+        <a class="view-more" href="results.html?type=stays">View more</a>
       </div>
 
       <div class="dest-grid">
-        <a class="dest-card" href="results.html">
+        <a class="dest-card" href="results.html?type=stays&to=London">
           <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80" alt="London">
           <div class="dest-name">London</div>
         </a>
-
-        <a class="dest-card" href="results.html">
+        <a class="dest-card" href="results.html?type=stays&to=Paris">
           <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80" alt="Paris">
           <div class="dest-name">Paris</div>
         </a>
-
-        <a class="dest-card" href="results.html">
-          <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=900&q=80" alt="Malaysia">
-          <div class="dest-name">Malaysia</div>
+        <a class="dest-card" href="results.html?type=stays&to=Mykonos">
+          <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=900&q=80" alt="Mykonos">
+          <div class="dest-name">Mykonos</div>
         </a>
-
-        <a class="dest-card" href="results.html">
-          <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=900&q=80" alt="Istanbul">
-          <div class="dest-name">Istanbul</div>
+        <a class="dest-card" href="results.html?type=stays&to=Hong Kong">
+          <img src="https://images.unsplash.com/photo-1506973035872-a4f23ef5f2d3?auto=format&fit=crop&w=900&q=80" alt="Hong Kong">
+          <div class="dest-name">Hong Kong</div>
         </a>
       </div>
     </div>
 
     <div class="section">
       <div class="section-head">
-        <h2>Top domestic getaways for a quick reset</h2>
-        <a class="view-more" href="results.html">View more</a>
+        <h2>Top domestic getaways</h2>
+        <a class="view-more" href="results.html?type=stays">View more</a>
       </div>
 
       <div class="dest-grid">
-        <a class="dest-card" href="results.html">
-          <img src="https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&w=900&q=80" alt="Makkah">
-          <div class="dest-name">Makkah</div>
-        </a>
-
-        <a class="dest-card" href="results.html">
-          <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=900&q=80" alt="Riyadh">
-          <div class="dest-name">Riyadh</div>
-        </a>
-
-        <a class="dest-card" href="results.html">
+        <a class="dest-card" href="results.html?type=stays&to=Jeddah">
           <img src="https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=900&q=80" alt="Jeddah">
           <div class="dest-name">Jeddah</div>
         </a>
-
-        <a class="dest-card" href="results.html">
-          <img src="https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&w=900&q=80" alt="Hanak">
-          <div class="dest-name"> Hanak (Red Sea Islands)</div>
+        <a class="dest-card" href="results.html?type=stays&to=Riyadh">
+          <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=900&q=80" alt="Riyadh">
+          <div class="dest-name">Riyadh</div>
+        </a>
+        <a class="dest-card" href="results.html?type=stays&to=Red Sea">
+          <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=80" alt="Red Sea">
+          <div class="dest-name">Red Sea</div>
+        </a>
+        <a class="dest-card" href="results.html?type=stays&to=AlUla">
+          <img src="https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&w=900&q=80" alt="AlUla">
+          <div class="dest-name">AlUla</div>
         </a>
       </div>
     </div>
@@ -658,21 +748,19 @@
       { code: 'DMM', city: 'Dammam', airport: 'King Fahd International Airport', country: 'Saudi Arabia' },
       { code: 'DXB', city: 'Dubai', airport: 'Dubai International Airport', country: 'UAE' },
       { code: 'AUH', city: 'Abu Dhabi', airport: 'Zayed International Airport', country: 'UAE' },
-      { code: 'SHJ', city: 'Sharjah', airport: 'Sharjah International Airport', country: 'UAE' },
       { code: 'DOH', city: 'Doha', airport: 'Hamad International Airport', country: 'Qatar' },
       { code: 'BAH', city: 'Bahrain', airport: 'Bahrain International Airport', country: 'Bahrain' },
       { code: 'KWI', city: 'Kuwait City', airport: 'Kuwait International Airport', country: 'Kuwait' },
       { code: 'MCT', city: 'Muscat', airport: 'Muscat International Airport', country: 'Oman' },
       { code: 'LHR', city: 'London', airport: 'Heathrow Airport', country: 'United Kingdom' },
-      { code: 'LGW', city: 'London', airport: 'Gatwick Airport', country: 'United Kingdom' },
       { code: 'CDG', city: 'Paris', airport: 'Charles de Gaulle Airport', country: 'France' },
       { code: 'HKG', city: 'Hong Kong', airport: 'Hong Kong International Airport', country: 'Hong Kong' },
       { code: 'BKK', city: 'Bangkok', airport: 'Suvarnabhumi Airport', country: 'Thailand' },
       { code: 'HKT', city: 'Phuket', airport: 'Phuket International Airport', country: 'Thailand' },
       { code: 'KBV', city: 'Krabi', airport: 'Krabi International Airport', country: 'Thailand' },
       { code: 'JMK', city: 'Mykonos', airport: 'Mykonos Airport', country: 'Greece' },
-      { code: 'CAI', city: 'Cairo', airport: 'Cairo International Airport', country: 'Egypt' },
-      { code: 'IST', city: 'Istanbul', airport: 'Istanbul Airport', country: 'Turkey' }
+      { code: 'IST', city: 'Istanbul', airport: 'Istanbul Airport', country: 'Turkey' },
+      { code: 'MLE', city: 'Malé', airport: 'Velana International Airport', country: 'Maldives' }
     ];
 
     const DESTINATIONS = [
@@ -693,6 +781,24 @@
     const tabs = document.querySelectorAll('.tab');
     const panels = document.querySelectorAll('.panel');
     const pills = document.querySelectorAll('.pill');
+    const modeToggle = document.getElementById('modeToggle');
+
+    function applyTheme(theme) {
+      if (theme === 'light') {
+        document.body.classList.add('light-mode');
+      } else {
+        document.body.classList.remove('light-mode');
+      }
+      localStorage.setItem('lodj-theme', theme);
+    }
+
+    const savedTheme = localStorage.getItem('lodj-theme') || 'dark';
+    applyTheme(savedTheme);
+
+    modeToggle.addEventListener('click', () => {
+      const nextTheme = document.body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
+    });
 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
@@ -705,14 +811,11 @@
 
     pills.forEach(pill => {
       pill.addEventListener('click', () => {
-        pills.forEach(p => p.classList.remove('active'));
+        const wrapper = pill.parentElement;
+        wrapper.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
       });
     });
-
-    function goResults() {
-      window.location.href = 'results.html';
-    }
 
     function renderAirportSuggestions(inputEl, boxEl, query) {
       const q = query.trim().toLowerCase();
@@ -741,7 +844,6 @@
           </div>
         `).join('')}
       `;
-
       boxEl.classList.add('show');
 
       boxEl.querySelectorAll('.auto-item').forEach(item => {
@@ -754,12 +856,8 @@
 
     function renderDestinationSuggestions(inputEl, boxEl, query) {
       const q = query.trim().toLowerCase();
-
-      const trending = DESTINATIONS.filter(d =>
-        ['Trending', 'Sponsored'].includes(d.tag)
-      );
-
-      let matches = DESTINATIONS.filter(d =>
+      const trending = DESTINATIONS.filter(d => ['Trending', 'Sponsored'].includes(d.tag));
+      const matches = DESTINATIONS.filter(d =>
         d.name.toLowerCase().includes(q) ||
         d.country.toLowerCase().includes(q)
       );
@@ -819,16 +917,34 @@
     staySearch.addEventListener('input', () => renderDestinationSuggestions(staySearch, staySearchBox, staySearch.value));
 
     document.addEventListener('click', (e) => {
-      if (!flightOrigin.parentElement.contains(e.target)) {
-        flightOriginBox.classList.remove('show');
-      }
-      if (!flightDestination.parentElement.contains(e.target)) {
-        flightDestinationBox.classList.remove('show');
-      }
-      if (!staySearch.parentElement.contains(e.target)) {
-        staySearchBox.classList.remove('show');
-      }
+      if (!flightOrigin.parentElement.contains(e.target)) flightOriginBox.classList.remove('show');
+      if (!flightDestination.parentElement.contains(e.target)) flightDestinationBox.classList.remove('show');
+      if (!staySearch.parentElement.contains(e.target)) staySearchBox.classList.remove('show');
     });
+
+    function goResults(type) {
+      const params = new URLSearchParams();
+      params.set('type', type);
+
+      if (type === 'flights') {
+        params.set('from', flightOrigin.value || 'JED');
+        params.set('to', flightDestination.value || 'DXB');
+        params.set('start', document.getElementById('flight-start').value || '');
+        params.set('end', document.getElementById('flight-end').value || '');
+      }
+
+      if (type === 'stays') {
+        params.set('to', staySearch.value || 'Dubai');
+        params.set('start', document.getElementById('stay-start').value || '');
+        params.set('end', document.getElementById('stay-end').value || '');
+      }
+
+      if (type === 'activities') {
+        params.set('to', document.getElementById('activity-search').value || 'Dubai');
+      }
+
+      window.location.href = `results.html?${params.toString()}`;
+    }
   </script>
 </body>
 </html>
