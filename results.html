@@ -2,32 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>lodj.io Results</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --brand: #2D34FF;
+      --brand-dark: #1c22c7;
+      --brand-soft: #e8e9ff;
+      --bg: #050505;
+      --bg-elevated: #111217;
+      --bg-card: #12141c;
+      --text: #f4f4f8;
+      --text-soft: #b9bed0;
+      --text-muted: #8f95a8;
+      --border: rgba(255, 255, 255, 0.10);
+      --input-bg: rgba(255, 255, 255, 0.05);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+      --danger: #ef4b58;
+      --success: #20b486;
+    }
+
+    body.light-mode {
+      --bg: #f6f7fb;
+      --bg-elevated: #ffffff;
+      --bg-card: #ffffff;
+      --text: #191b22;
+      --text-soft: #4f566b;
+      --text-muted: #70778b;
+      --border: rgba(25, 27, 34, 0.10);
+      --input-bg: #f2f4fb;
+      --shadow: 0 18px 45px rgba(22, 28, 45, 0.10);
+    }
+
     * {
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #f3f6f9;
-      color: #1f3344;
+      padding: 0;
+      font-family: 'Comfortaa', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    a, button, input, select {
+      font-family: 'Comfortaa', sans-serif;
     }
 
     .header {
-      background: #102c3f;
-      color: #fff;
-      padding: 18px 20px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
       position: sticky;
       top: 0;
       z-index: 100;
+      background: var(--bg-elevated);
+      border-bottom: 1px solid var(--border);
+      padding: max(14px, env(safe-area-inset-top)) 16px 14px;
+      box-shadow: var(--shadow);
     }
 
     .header-inner {
@@ -36,122 +72,123 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
     .brand {
-      font-family: 'Comfortaa', sans-serif;
-      font-size: 1.45rem;
-      color: #fff;
+      color: var(--brand);
       text-decoration: none;
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
       font-weight: 700;
+      line-height: 1;
     }
 
-    .nav-links {
+    .nav-actions {
       display: flex;
-      gap: 18px;
-      align-items: center;
+      gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
-    .nav-links a {
-      color: #cde6f2;
+    .nav-btn {
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
       text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
+      padding: 11px 15px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    .summary-wrap {
+    .page {
       max-width: 1280px;
-      margin: 22px auto 0;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 22px 16px 40px;
+    }
+
+    .summary-card,
+    .sidebar,
+    .content-top,
+    .promo-strip,
+    .result-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
     }
 
     .summary-card {
-      background: #fff;
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
       display: grid;
-      grid-template-columns: 1.4fr 0.9fr 0.9fr 1fr auto;
-      gap: 10px;
-      align-items: center;
+      grid-template-columns: 1.2fr 1.1fr 1fr 1fr auto;
+      gap: 12px;
+      padding: 16px;
+      margin-bottom: 22px;
     }
 
     .summary-box {
-      min-height: 54px;
-      border: 1px solid #d7e0e7;
-      border-radius: 10px;
-      background: #fafcfd;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
       padding: 12px 14px;
+      min-height: 58px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
     .summary-label {
-      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #7b93a5;
-      margin-bottom: 4px;
       font-weight: 700;
+      margin-bottom: 4px;
     }
 
     .summary-value {
-      font-size: 0.98rem;
-      color: #244055;
-      font-weight: 600;
+      color: var(--text);
+      font-size: 0.86rem;
+      font-weight: 700;
+      line-height: 1.45;
     }
 
     .summary-btn {
-      min-height: 54px;
       border: 0;
-      border-radius: 10px;
-      padding: 0 20px;
-      background: #ef4b58;
+      border-radius: 14px;
+      background: var(--brand);
       color: #fff;
-      font-size: 1rem;
+      padding: 0 18px;
+      min-height: 58px;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
-      white-space: nowrap;
     }
 
-    .page {
-      max-width: 1280px;
-      margin: 22px auto 50px;
-      padding: 0 20px;
+    .layout {
       display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 22px;
+      grid-template-columns: 280px 1fr;
+      gap: 20px;
       align-items: start;
     }
 
-    .sidebar,
-    .content-top,
-    .hotel-card,
-    .promo-strip {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
-    }
-
     .sidebar {
-      padding: 22px;
+      padding: 20px;
       position: sticky;
-      top: 102px;
+      top: 104px;
     }
 
     .sidebar h3 {
-      margin: 0 0 20px;
-      font-size: 1.25rem;
+      margin: 0 0 18px;
+      font-size: 1rem;
     }
 
     .filter-group {
-      margin-bottom: 24px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #edf1f4;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
     }
 
     .filter-group:last-child {
@@ -161,132 +198,143 @@
     }
 
     .filter-title {
-      font-size: 1rem;
+      font-size: 0.88rem;
       font-weight: 700;
-      margin-bottom: 12px;
-      color: #223a4e;
+      margin-bottom: 10px;
+      color: var(--text);
     }
 
     .filter-option {
       display: flex;
+      gap: 8px;
       align-items: center;
-      gap: 9px;
+      color: var(--text-soft);
+      font-size: 0.82rem;
       margin: 10px 0;
-      font-size: 0.95rem;
-      color: #4a6679;
+      font-weight: 700;
     }
 
     .filter-option input {
-      accent-color: #1ea3d2;
       width: 16px;
       height: 16px;
-    }
-
-    .range-line {
-      height: 6px;
-      border-radius: 999px;
-      background: linear-gradient(to right, #1ea3d2, #b7d9e8);
-      margin: 14px 0 10px;
-    }
-
-    .range-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      color: #7290a4;
+      accent-color: var(--brand);
     }
 
     .main {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
     }
 
-    .content-top {
+    .content-top,
+    .promo-strip {
       padding: 18px 20px;
     }
 
     .results-head {
       display: flex;
       justify-content: space-between;
+      gap: 12px;
       align-items: center;
-      gap: 14px;
       flex-wrap: wrap;
     }
 
     .results-title {
-      font-size: 1.35rem;
+      font-size: 1.12rem;
       font-weight: 700;
-      color: #1f3344;
+      color: var(--text);
     }
 
     .results-sub {
-      font-size: 0.95rem;
-      color: #6e8798;
       margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
     .sort-select {
-      border: 1px solid #d6e0e7;
-      border-radius: 10px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--input-bg);
+      color: var(--text);
       padding: 11px 14px;
-      font-size: 0.95rem;
-      color: #274359;
-      background: #fafcfd;
+      font-size: 0.82rem;
+      font-weight: 700;
       outline: none;
     }
 
     .promo-strip {
-      padding: 18px 20px;
       display: flex;
       justify-content: space-between;
+      gap: 12px;
       align-items: center;
-      gap: 14px;
       flex-wrap: wrap;
-      background: linear-gradient(135deg, #12354b, #1b6788);
-      color: #fff;
+      background: linear-gradient(135deg, rgba(45,52,255,0.16), rgba(45,52,255,0.06));
     }
 
     .promo-title {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      margin-bottom: 4px;
+      color: var(--text);
     }
 
     .promo-sub {
-      font-size: 0.92rem;
-      color: rgba(255, 255, 255, 0.86);
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      margin-top: 4px;
+      line-height: 1.5;
     }
 
     .promo-chip-wrap {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .promo-chip {
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      color: #fff;
-      padding: 8px 12px;
+      background: var(--brand-soft);
+      color: var(--brand);
       border-radius: 999px;
-      font-size: 0.88rem;
-      font-weight: 600;
+      padding: 8px 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
     }
 
-    .hotel-card {
+    .result-card {
       display: grid;
-      grid-template-columns: 320px 1fr 220px;
+      grid-template-columns: 280px 1fr 220px;
       overflow: hidden;
-    }
-
-    .hotel-image {
       position: relative;
-      min-height: 250px;
-      background: #ddd;
+      border: 2px solid transparent;
     }
 
-    .hotel-image img {
+    .result-card.distress {
+      border-color: var(--danger);
+      animation: distressPulse 1.6s infinite;
+    }
+
+    @keyframes distressPulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 75, 88, 0.28);
+      }
+      50% {
+        transform: scale(1.005);
+        box-shadow: 0 0 0 12px rgba(239, 75, 88, 0);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 75, 88, 0);
+      }
+    }
+
+    .result-image {
+      min-height: 240px;
+      position: relative;
+      background: #ccc;
+    }
+
+    .result-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -295,148 +343,147 @@
 
     .badge-row {
       position: absolute;
-      top: 14px;
-      left: 14px;
+      top: 12px;
+      left: 12px;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
 
     .badge {
-      padding: 7px 10px;
       border-radius: 999px;
-      font-size: 0.75rem;
+      padding: 7px 10px;
+      font-size: 0.68rem;
       font-weight: 700;
       color: #fff;
-      backdrop-filter: blur(6px);
     }
 
-    .badge.sponsored {
-      background: rgba(30, 163, 210, 0.92);
+    .badge.distress {
+      background: var(--danger);
     }
 
     .badge.trending {
-      background: rgba(239, 75, 88, 0.92);
+      background: var(--brand);
     }
 
-    .badge.top {
-      background: rgba(16, 44, 63, 0.92);
+    .badge.sponsored {
+      background: #111827;
     }
 
-    .hotel-body {
-      padding: 20px 22px;
+    .result-body {
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .hotel-topline {
+    .result-topline {
       display: flex;
+      gap: 8px;
       align-items: center;
-      gap: 12px;
       flex-wrap: wrap;
-    }
-
-    .stars {
-      color: #f2b01e;
-      letter-spacing: 1px;
-      font-size: 0.95rem;
     }
 
     .rating-pill {
-      background: #e8f7fd;
-      color: #0d84b7;
-      font-weight: 700;
+      background: var(--brand-soft);
+      color: var(--brand);
+      border-radius: 999px;
       padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 0.82rem;
+      font-size: 0.7rem;
+      font-weight: 700;
     }
 
-    .hotel-name {
+    .result-name {
       margin: 0;
-      font-size: 1.35rem;
-      color: #1e3447;
+      font-size: 1.1rem;
+      color: var(--text);
+      line-height: 1.4;
     }
 
-    .location {
-      color: #638093;
-      font-size: 0.95rem;
-    }
-
-    .location strong {
-      color: #2d4b5f;
-    }
-
-    .hotel-desc {
-      color: #537082;
-      font-size: 0.95rem;
+    .result-location {
+      color: var(--text-soft);
+      font-size: 0.82rem;
       line-height: 1.55;
+      font-weight: 700;
     }
 
-    .amenities {
+    .result-location strong {
+      color: var(--text);
+    }
+
+    .result-desc {
+      color: var(--text-soft);
+      font-size: 0.8rem;
+      line-height: 1.7;
+    }
+
+    .chips {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-top: 2px;
     }
 
-    .amenity {
-      padding: 8px 10px;
+    .chip {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
       border-radius: 999px;
-      background: #f2f7fa;
-      color: #446273;
-      font-size: 0.84rem;
-      font-weight: 600;
+      padding: 8px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
     }
 
     .meta-line {
-      font-size: 0.9rem;
-      color: #5f7d90;
-      font-weight: 500;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      line-height: 1.5;
     }
 
-    .hotel-price {
-      padding: 20px;
-      border-left: 1px solid #edf1f4;
+    .result-price {
+      border-left: 1px solid var(--border);
+      background: var(--input-bg);
+      padding: 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 14px;
-      background: #fcfdff;
     }
 
-    .save-note {
-      font-size: 0.82rem;
-      color: #0f86b8;
-      font-weight: 700;
+    .distress-note {
+      font-size: 0.72rem;
+      color: var(--danger);
       text-align: right;
+      font-weight: 700;
+      line-height: 1.55;
     }
 
     .strike {
-      color: #9fb0bc;
-      font-size: 0.92rem;
       text-decoration: line-through;
+      color: var(--text-muted);
+      font-size: 0.82rem;
       text-align: right;
+      font-weight: 700;
+      margin-top: 6px;
     }
 
     .price {
-      font-size: 2rem;
-      font-weight: 800;
-      color: #1e3447;
+      color: var(--text);
+      font-size: 1.55rem;
+      font-weight: 700;
       text-align: right;
-      line-height: 1;
+      line-height: 1.1;
+      margin-top: 6px;
     }
 
-    .per-night {
-      font-size: 0.88rem;
-      color: #738ea0;
-      text-align: right;
-    }
-
+    .per-unit,
     .tax-note {
-      font-size: 0.8rem;
-      color: #8ca0ae;
       text-align: right;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 700;
+      margin-top: 6px;
     }
 
     .cta-group {
@@ -448,38 +495,39 @@
 
     .primary-btn,
     .secondary-btn {
-      border-radius: 10px;
-      padding: 13px 14px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
       text-decoration: none;
+      text-align: center;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
     }
 
     .primary-btn {
-      background: #ef4b58;
+      background: var(--brand);
       color: #fff;
-      border: 0;
     }
 
     .secondary-btn {
-      background: #fff;
-      color: #1b6788;
-      border: 1px solid #cfe0e8;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
     }
 
     .floating-note {
       position: fixed;
-      right: 18px;
-      bottom: 18px;
-      background: #102c3f;
-      color: #fff;
+      right: 16px;
+      bottom: 16px;
+      max-width: 300px;
+      background: var(--bg-elevated);
+      color: var(--text-soft);
+      border: 1px solid var(--border);
+      border-radius: 16px;
       padding: 14px 16px;
-      border-radius: 12px;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.18);
-      font-size: 0.9rem;
-      max-width: 290px;
+      box-shadow: var(--shadow);
+      font-size: 0.74rem;
+      font-weight: 700;
+      line-height: 1.6;
     }
 
     @media (max-width: 1100px) {
@@ -487,7 +535,7 @@
         grid-template-columns: 1fr 1fr;
       }
 
-      .page {
+      .layout {
         grid-template-columns: 1fr;
       }
 
@@ -495,17 +543,22 @@
         position: static;
       }
 
-      .hotel-card {
+      .result-card {
         grid-template-columns: 1fr;
       }
 
-      .hotel-price {
+      .result-price {
         border-left: 0;
-        border-top: 1px solid #edf1f4;
+        border-top: 1px solid var(--border);
       }
     }
 
     @media (max-width: 720px) {
+      .page {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
       .summary-card {
         grid-template-columns: 1fr;
       }
@@ -515,16 +568,27 @@
         align-items: flex-start;
       }
 
-      .hotel-image {
-        min-height: 220px;
+      .nav-actions {
+        width: 100%;
       }
 
-      .price,
-      .per-night,
-      .tax-note,
+      .floating-note {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        max-width: none;
+      }
+
+      .distress-note,
       .strike,
-      .save-note {
+      .price,
+      .per-unit,
+      .tax-note {
         text-align: left;
+      }
+
+      .result-image {
+        min-height: 220px;
       }
     }
   </style>
@@ -533,405 +597,437 @@
   <header class="header">
     <div class="header-inner">
       <a href="index.html" class="brand">lodj.io</a>
-      <div class="nav-links">
-        <a href="demo.html">New search</a>
-        <a href="demo.html">Flights</a>
-        <a href="demo.html">Stays</a>
-        <a href="demo.html">Activities</a>
+
+      <div class="nav-actions">
+        <a class="nav-btn" href="demo.html">New search</a>
+        <a class="nav-btn" href="results.html?type=flights">Flights</a>
+        <a class="nav-btn" href="results.html?type=stays">Stays</a>
+        <a class="nav-btn" href="results.html?type=activities">Activities</a>
+        <button class="nav-btn" id="modeToggle" type="button">Toggle mode</button>
       </div>
     </div>
   </header>
 
-  <div class="summary-wrap">
+  <div class="page">
     <div class="summary-card">
       <div class="summary-box">
-        <div class="summary-label">Destination</div>
-        <div class="summary-value">Trending stays and escapes</div>
+        <div class="summary-label">Search type</div>
+        <div class="summary-value" id="summaryType">Stays</div>
       </div>
 
       <div class="summary-box">
-        <div class="summary-label">Check-in</div>
-        <div class="summary-value">Any selected date</div>
+        <div class="summary-label">Route / destination</div>
+        <div class="summary-value" id="summaryRoute">Trending destinations</div>
       </div>
 
       <div class="summary-box">
-        <div class="summary-label">Check-out</div>
-        <div class="summary-value">Any selected date</div>
+        <div class="summary-label">Start date</div>
+        <div class="summary-value" id="summaryStart">Any selected date</div>
       </div>
 
       <div class="summary-box">
-        <div class="summary-label">Guests</div>
-        <div class="summary-value">2 Adults, 1 Room</div>
+        <div class="summary-label">End date</div>
+        <div class="summary-value" id="summaryEnd">Any selected date</div>
       </div>
 
-      <button class="summary-btn" onclick="window.location.href='demo.html'">Modify search</button>
+      <button class="summary-btn" type="button" onclick="window.location.href='demo.html'">Modify search</button>
+    </div>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <h3>Live demo filters</h3>
+
+        <div class="filter-group">
+          <div class="filter-title">Promotions</div>
+          <label class="filter-option"><input type="checkbox" checked> Distress Deals</label>
+          <label class="filter-option"><input type="checkbox" checked> Sponsored</label>
+          <label class="filter-option"><input type="checkbox" checked> Trending</label>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-title">Top destinations</div>
+          <label class="filter-option"><input type="checkbox" checked> Dubai</label>
+          <label class="filter-option"><input type="checkbox" checked> Maldives</label>
+          <label class="filter-option"><input type="checkbox" checked> Jeddah</label>
+          <label class="filter-option"><input type="checkbox"> Mykonos</label>
+          <label class="filter-option"><input type="checkbox"> Phuket</label>
+          <label class="filter-option"><input type="checkbox"> Krabi</label>
+          <label class="filter-option"><input type="checkbox"> Hong Kong</label>
+          <label class="filter-option"><input type="checkbox"> Red Sea</label>
+          <label class="filter-option"><input type="checkbox"> AlUla</label>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-title">Why this converts</div>
+          <label class="filter-option"><input type="checkbox" checked> High discount depth</label>
+          <label class="filter-option"><input type="checkbox" checked> Urgency messaging</label>
+          <label class="filter-option"><input type="checkbox" checked> Animated highlight</label>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="content-top">
+          <div class="results-head">
+            <div>
+              <div class="results-title" id="resultsTitle">5 hotel results</div>
+              <div class="results-sub">The first two results are always Distress Deals and the pricing simulates based on the search context.</div>
+            </div>
+
+            <select class="sort-select">
+              <option>Sort by: Recommended</option>
+              <option>Sort by: Distress Deal First</option>
+              <option>Sort by: Lowest Price</option>
+              <option>Sort by: Highest Discount</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="promo-strip">
+          <div>
+            <div class="promo-title">Distress Deal engine</div>
+            <div class="promo-sub">Simulated discounts, urgency messaging and highlighted inventory across flights, stays and activities.</div>
+          </div>
+
+          <div class="promo-chip-wrap">
+            <div class="promo-chip">50% to 75% off</div>
+            <div class="promo-chip">5 results per vertical</div>
+            <div class="promo-chip">Comfortaa branding</div>
+            <div class="promo-chip">iPhone friendly</div>
+          </div>
+        </div>
+
+        <div id="resultsContainer"></div>
+      </main>
     </div>
   </div>
 
-  <div class="page">
-    <aside class="sidebar">
-      <h3>Filter by</h3>
+  <div class="floating-note">
+    Demo mode only. Results, urgency and discounts are simulated. Good enough to impress people. Not good enough to fool finance forever.
+  </div>
 
-      <div class="filter-group">
-        <div class="filter-title">Popular filters</div>
-        <label class="filter-option"><input type="checkbox" checked> Breakfast included</label>
-        <label class="filter-option"><input type="checkbox"> Free cancellation</label>
-        <label class="filter-option"><input type="checkbox" checked> Pay later</label>
-        <label class="filter-option"><input type="checkbox"> Beachfront</label>
-        <label class="filter-option"><input type="checkbox"> Family friendly</label>
-      </div>
+  <script>
+    const modeToggle = document.getElementById('modeToggle');
 
-      <div class="filter-group">
-        <div class="filter-title">Price range</div>
-        <div class="range-line"></div>
-        <div class="range-labels">
-          <span>SAR 300</span>
-          <span>SAR 3,500+</span>
-        </div>
-      </div>
+    function applyTheme(theme) {
+      if (theme === 'light') {
+        document.body.classList.add('light-mode');
+      } else {
+        document.body.classList.remove('light-mode');
+      }
+      localStorage.setItem('lodj-theme', theme);
+    }
 
-      <div class="filter-group">
-        <div class="filter-title">Star rating</div>
-        <label class="filter-option"><input type="checkbox" checked> 5 star</label>
-        <label class="filter-option"><input type="checkbox" checked> 4 star</label>
-        <label class="filter-option"><input type="checkbox"> 3 star</label>
-      </div>
+    const savedTheme = localStorage.getItem('lodj-theme') || 'dark';
+    applyTheme(savedTheme);
 
-      <div class="filter-group">
-        <div class="filter-title">Top destinations</div>
-        <label class="filter-option"><input type="checkbox" checked> Jeddah</label>
-        <label class="filter-option"><input type="checkbox" checked> Mykonos</label>
-        <label class="filter-option"><input type="checkbox" checked> Phuket</label>
-        <label class="filter-option"><input type="checkbox"> Krabi</label>
-        <label class="filter-option"><input type="checkbox"> Hong Kong</label>
-        <label class="filter-option"><input type="checkbox"> Red Sea</label>
-        <label class="filter-option"><input type="checkbox"> AlUla</label>
-      </div>
-    </aside>
+    modeToggle.addEventListener('click', () => {
+      const nextTheme = document.body.classList.contains('light-mode') ? 'dark' : 'light';
+      applyTheme(nextTheme);
+    });
 
-    <main class="main">
-      <div class="content-top">
-        <div class="results-head">
+    const params = new URLSearchParams(window.location.search);
+    const searchType = (params.get('type') || 'stays').toLowerCase();
+    const startDate = params.get('start') || 'Any selected date';
+    const endDate = params.get('end') || 'Any selected date';
+    const from = params.get('from') || 'Anywhere';
+    const to = params.get('to') || 'Trending destinations';
+
+    document.getElementById('summaryType').textContent =
+      searchType === 'flights' ? 'Flights' :
+      searchType === 'activities' ? 'Activities' : 'Stays';
+
+    document.getElementById('summaryRoute').textContent =
+      searchType === 'flights' ? `${from} → ${to}` : to;
+
+    document.getElementById('summaryStart').textContent = startDate;
+    document.getElementById('summaryEnd').textContent = endDate;
+
+    const urgencyTexts = [
+      'Only 2 left at this price',
+      'Booked 11 times in the last hour',
+      'Price may jump soon',
+      'High demand for selected dates',
+      'Deal refreshed today',
+      'Popular booking right now'
+    ];
+
+    const distressDiscounts = [50, 55, 60, 65, 70, 75];
+
+    function seededHash(str) {
+      let h = 0;
+      for (let i = 0; i < str.length; i++) {
+        h = (h << 5) - h + str.charCodeAt(i);
+        h |= 0;
+      }
+      return Math.abs(h);
+    }
+
+    const seedBase = seededHash(`${searchType}|${startDate}|${endDate}|${from}|${to}`);
+
+    function pickBySeed(list, seed, offset = 0) {
+      return list[(seed + offset) % list.length];
+    }
+
+    function createDistressPricing(baseMin, baseMax, index) {
+      const seed = seedBase + index * 19;
+      const base = baseMin + (seed % (baseMax - baseMin + 1));
+      const discount = pickBySeed(distressDiscounts, seed, index);
+      const newPrice = Math.round(base * (1 - discount / 100));
+      return { oldPrice: base, newPrice, discount };
+    }
+
+    function createRegularPricing(baseMin, baseMax, index) {
+      const seed = seedBase + index * 29;
+      return Math.round(baseMin + (seed % (baseMax - baseMin + 1)));
+    }
+
+    function formatSAR(num) {
+      return `SAR ${num.toLocaleString()}`;
+    }
+
+    const flightResults = [
+      {
+        name: 'DXB Smart Saver',
+        location: 'Dubai International Airport',
+        desc: 'DXB is always the show pony here. Deep markdown, clean route story, instant click bait.',
+        image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Direct', 'Cabin baggage', 'Top route'],
+        rating: '9.2 Hot deal',
+        distress: true
+      },
+      {
+        name: 'Maldives Escape Fare',
+        location: 'Dubai to Malé',
+        desc: 'Second distress placement with a heavy discount so the first card does not look lonely and suspicious.',
+        image: 'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1200&q=80',
+        tags: ['1 stop', 'Promo fare', 'High demand'],
+        rating: '8.9 Excellent',
+        distress: true
+      },
+      {
+        name: 'Jeddah Weekend Connector',
+        location: 'JED to RUH',
+        desc: 'Useful domestic route to make the grid feel less theatrical.',
+        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Domestic', 'Flexible', 'Morning departure'],
+        rating: '8.5 Good',
+        distress: false
+      },
+      {
+        name: 'Phuket Leisure Fare',
+        location: 'DXB to HKT',
+        desc: 'Classic outbound leisure filler with enough appeal to feel real.',
+        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Beach route', '1 stop', 'Outbound leisure'],
+        rating: '8.8 Very Good',
+        distress: false
+      },
+      {
+        name: 'Hong Kong City Connector',
+        location: 'RUH to HKG',
+        desc: 'City route for balance. Otherwise the page starts smelling too much like beach sunscreen.',
+        image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=80',
+        tags: ['APAC', 'Evening flight', 'Popular'],
+        rating: '8.7 Very Good',
+        distress: false
+      }
+    ];
+
+    const hotelResults = [
+      {
+        name: 'ABC Hotel',
+        location: 'Dubai, UAE',
+        desc: 'This is your Dubai distress weapon. Deep markdown, sharp positioning and enough urgency to make users behave irrationally in the way all good demos hope for.',
+        image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Breakfast included', 'Downtown', 'Free cancellation'],
+        rating: '9.1 Excellent',
+        distress: true
+      },
+      {
+        name: 'XYZ Hotel',
+        location: 'Maldives',
+        desc: 'Maldives plus distress pricing is basically cheating. That is why it belongs here.',
+        image: 'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Water villa', 'Half board', 'Airport transfer'],
+        rating: '9.3 Exceptional',
+        distress: true
+      },
+      {
+        name: 'Jeddah Corniche Suites',
+        location: 'Jeddah, Saudi Arabia',
+        desc: 'Strong domestic option for regional relevance and a more believable mix.',
+        image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Sea view', 'Pay later', 'Family rooms'],
+        rating: '8.8 Very Good',
+        distress: false
+      },
+      {
+        name: 'Mykonos Azure Retreat',
+        location: 'Mykonos, Greece',
+        desc: 'Premium leisure inventory that makes the page feel expensive in a good way.',
+        image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Infinity pool', 'Sunset view', 'Premium stay'],
+        rating: '8.9 Excellent',
+        distress: false
+      },
+      {
+        name: 'Phuket Bay Escape',
+        location: 'Phuket, Thailand',
+        desc: 'A reliable click magnet for leisure demand and demo completeness.',
+        image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Beachfront', 'Pool', 'Best seller'],
+        rating: '8.7 Very Good',
+        distress: false
+      }
+    ];
+
+    const activityResults = [
+      {
+        name: 'Dubai Marina Sunset Yacht',
+        location: 'Dubai, UAE',
+        desc: 'Distress-priced activity used to mirror the same urgency logic as hotels and flights.',
+        image: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Sunset cruise', 'Instant confirmation', 'Limited slots'],
+        rating: '9.0 Excellent',
+        distress: true
+      },
+      {
+        name: 'Maldives Sandbank Experience',
+        location: 'Maldives',
+        desc: 'Second activity distress deal for consistency and conversion theatre.',
+        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Boat transfer', 'Guided', 'Photo stop'],
+        rating: '9.2 Hot deal',
+        distress: true
+      },
+      {
+        name: 'AlUla Desert Discovery',
+        location: 'AlUla, Saudi Arabia',
+        desc: 'Premium domestic experience with strong storytelling value.',
+        image: 'https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Guided tour', '4x4 access', 'Cultural'],
+        rating: '8.8 Very Good',
+        distress: false
+      },
+      {
+        name: 'Phuket Island Hopping',
+        location: 'Phuket, Thailand',
+        desc: 'Classic leisure activity that rounds things out without much drama.',
+        image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Boat tour', 'Lunch included', 'Top rated'],
+        rating: '8.7 Very Good',
+        distress: false
+      },
+      {
+        name: 'Hong Kong Night Lights Tour',
+        location: 'Hong Kong',
+        desc: 'City-format product so it does not feel like everything involves sand and a boat.',
+        image: 'https://images.unsplash.com/photo-1494588024300-e9df7ff98d78?auto=format&fit=crop&w=1200&q=80',
+        tags: ['Evening tour', 'City highlights', 'Guide included'],
+        rating: '8.6 Very Good',
+        distress: false
+      }
+    ];
+
+    function renderCard(item, index, type) {
+      const urgency = pickBySeed(urgencyTexts, seedBase, index);
+      const perUnit = type === 'flights' ? 'per traveler' : type === 'activities' ? 'per person' : 'per night';
+
+      let pricingHtml = '';
+
+      if (item.distress) {
+        const pricing = createDistressPricing(
+          type === 'flights' ? 900 : type === 'activities' ? 300 : 1200,
+          type === 'flights' ? 4200 : type === 'activities' ? 1800 : 6000,
+          index
+        );
+
+        pricingHtml = `
           <div>
-            <div class="results-title">68 properties found</div>
-            <div class="results-sub">Sponsored placements and trending destinations shown for demo purposes</div>
+            <div class="distress-note">Distress Deal • ${pricing.discount}% off<br>${urgency}</div>
+            <div class="strike">${formatSAR(pricing.oldPrice)}</div>
+            <div class="price">${formatSAR(pricing.newPrice)}</div>
+            <div class="per-unit">${perUnit}</div>
+            <div class="tax-note">Simulated based on selected dates</div>
           </div>
+        `;
+      } else {
+        const price = createRegularPricing(
+          type === 'flights' ? 700 : type === 'activities' ? 220 : 650,
+          type === 'flights' ? 2600 : type === 'activities' ? 950 : 2200,
+          index
+        );
 
-          <select class="sort-select">
-            <option>Sort by: Recommended</option>
-            <option>Price: Low to High</option>
-            <option>Price: High to Low</option>
-            <option>Guest Rating</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="promo-strip">
-        <div>
-          <div class="promo-title">Trending now</div>
-          <div class="promo-sub">High intent searches in the last 24 hours</div>
-        </div>
-
-        <div class="promo-chip-wrap">
-          <div class="promo-chip">Jeddah</div>
-          <div class="promo-chip">Mykonos</div>
-          <div class="promo-chip">Phuket</div>
-          <div class="promo-chip">Krabi</div>
-          <div class="promo-chip">Hong Kong</div>
-          <div class="promo-chip">Red Sea</div>
-          <div class="promo-chip">AlUla</div>
-        </div>
-      </div>
-
-      <article class="hotel-card">
-        <div class="hotel-image">
-          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" alt="Red Sea resort">
-          <div class="badge-row">
-            <div class="badge sponsored">Sponsored</div>
-            <div class="badge trending">Trending</div>
-          </div>
-        </div>
-
-        <div class="hotel-body">
-          <div class="hotel-topline">
-            <div class="stars">★★★★★</div>
-            <div class="rating-pill">9.1 Excellent</div>
-          </div>
-
-          <h2 class="hotel-name">Nurai Red Sea Resort & Spa</h2>
-          <div class="location"><strong>Red Sea, Saudi Arabia</strong> • Beachfront villas • Private transfer available</div>
-
-          <div class="hotel-desc">
-            High-conversion leisure product positioned for premium GCC demand. Large villas, sea-facing inventory, strong family appeal, and a polished luxury narrative that screams “book me before the finance team asks questions.”
-          </div>
-
-          <div class="amenities">
-            <div class="amenity">Breakfast included</div>
-            <div class="amenity">Private beach</div>
-            <div class="amenity">Airport transfer</div>
-            <div class="amenity">Free cancellation</div>
-          </div>
-
-          <div class="meta-line">Booked 14 times in the last 48 hours</div>
-        </div>
-
-        <div class="hotel-price">
+        pricingHtml = `
           <div>
-            <div class="save-note">Save 18% today</div>
-            <div class="strike">SAR 2,850</div>
-            <div class="price">SAR 2,335</div>
-            <div class="per-night">per night</div>
-            <div class="tax-note">Includes taxes and fees</div>
-          </div>
-
-          <div class="cta-group">
-            <a href="#" class="primary-btn">See availability</a>
-            <a href="#" class="secondary-btn">View details</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="hotel-card">
-        <div class="hotel-image">
-          <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80" alt="Mykonos hotel">
-          <div class="badge-row">
-            <div class="badge sponsored">Sponsored</div>
-            <div class="badge top">Top pick</div>
-          </div>
-        </div>
-
-        <div class="hotel-body">
-          <div class="hotel-topline">
-            <div class="stars">★★★★★</div>
-            <div class="rating-pill">8.9 Very Good</div>
-          </div>
-
-          <h2 class="hotel-name">Aegean Blue Mykonos Suites</h2>
-          <div class="location"><strong>Mykonos, Greece</strong> • Near Psarou Beach • Rooftop sunset lounge</div>
-
-          <div class="hotel-desc">
-            Strong outbound leisure fit with broad aspirational appeal. This one exists to make your demo feel expensive and Mediterranean, which is exactly what a lot of users click first anyway.
-          </div>
-
-          <div class="amenities">
-            <div class="amenity">Sea view</div>
-            <div class="amenity">Breakfast included</div>
-            <div class="amenity">Infinity pool</div>
-            <div class="amenity">Pay later</div>
-          </div>
-
-          <div class="meta-line">Limited inventory left for this rate</div>
-        </div>
-
-        <div class="hotel-price">
-          <div>
-            <div class="save-note">Member exclusive deal</div>
-            <div class="strike">SAR 1,920</div>
-            <div class="price">SAR 1,645</div>
-            <div class="per-night">per night</div>
-            <div class="tax-note">Taxes included</div>
-          </div>
-
-          <div class="cta-group">
-            <a href="#" class="primary-btn">See availability</a>
-            <a href="#" class="secondary-btn">View details</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="hotel-card">
-        <div class="hotel-image">
-          <img src="https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1200&q=80" alt="Phuket hotel">
-          <div class="badge-row">
-            <div class="badge trending">Trending</div>
-          </div>
-        </div>
-
-        <div class="hotel-body">
-          <div class="hotel-topline">
-            <div class="stars">★★★★☆</div>
-            <div class="rating-pill">8.7 Very Good</div>
-          </div>
-
-          <h2 class="hotel-name">Andaman Pearl Phuket Bay</h2>
-          <div class="location"><strong>Phuket, Thailand</strong> • Family resort • Free shuttle to Patong</div>
-
-          <div class="hotel-desc">
-            Reliable volume driver for leisure demos. Phuket always pulls clicks. Pretending otherwise would be like pretending airlines enjoy distribution cost discussions.
-          </div>
-
-          <div class="amenities">
-            <div class="amenity">Family rooms</div>
-            <div class="amenity">Airport shuttle</div>
-            <div class="amenity">Pool access</div>
-            <div class="amenity">Free breakfast</div>
-          </div>
-
-          <div class="meta-line">Trending destination for Eid and summer breaks</div>
-        </div>
-
-        <div class="hotel-price">
-          <div>
-            <div class="save-note">Best seller this week</div>
-            <div class="strike">SAR 980</div>
-            <div class="price">SAR 790</div>
-            <div class="per-night">per night</div>
-            <div class="tax-note">Includes taxes and charges</div>
-          </div>
-
-          <div class="cta-group">
-            <a href="#" class="primary-btn">See availability</a>
-            <a href="#" class="secondary-btn">View details</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="hotel-card">
-        <div class="hotel-image">
-          <img src="https://images.unsplash.com/photo-1526481280695-3c4691b1b34d?auto=format&fit=crop&w=1200&q=80" alt="AlUla hotel">
-          <div class="badge-row">
-            <div class="badge sponsored">Sponsored</div>
-          </div>
-        </div>
-
-        <div class="hotel-body">
-          <div class="hotel-topline">
-            <div class="stars">★★★★★</div>
-            <div class="rating-pill">9.3 Exceptional</div>
-          </div>
-
-          <h2 class="hotel-name">Canyon Edge AlUla Retreat</h2>
-          <div class="location"><strong>AlUla, Saudi Arabia</strong> • Desert experience • Curated cultural activities</div>
-
-          <div class="hotel-desc">
-            Premium domestic destination with strong storytelling value. Excellent for a polished KSA supply demo because it feels modern, experiential, and expensive in a good way.
-          </div>
-
-          <div class="amenities">
-            <div class="amenity">Desert views</div>
-            <div class="amenity">Luxury tents</div>
-            <div class="amenity">Dining included</div>
-            <div class="amenity">Guided tours</div>
-          </div>
-
-          <div class="meta-line">High engagement from premium domestic traffic</div>
-        </div>
-
-        <div class="hotel-price">
-          <div>
-            <div class="save-note">Featured partner rate</div>
-            <div class="strike">SAR 2,250</div>
-            <div class="price">SAR 1,990</div>
-            <div class="per-night">per night</div>
-            <div class="tax-note">Excludes local tourism fee</div>
-          </div>
-
-          <div class="cta-group">
-            <a href="#" class="primary-btn">See availability</a>
-            <a href="#" class="secondary-btn">View details</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="hotel-card">
-        <div class="hotel-image">
-          <img src="https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?auto=format&fit=crop&w=1200&q=80" alt="Hong Kong hotel">
-          <div class="badge-row">
-            <div class="badge trending">Trending</div>
-            <div class="badge top">Top pick</div>
-          </div>
-        </div>
-
-        <div class="hotel-body">
-          <div class="hotel-topline">
-            <div class="stars">★★★★★</div>
-            <div class="rating-pill">8.8 Very Good</div>
-          </div>
-
-          <h2 class="hotel-name">Victoria Harbour Grand Hong Kong</h2>
-          <div class="location"><strong>Hong Kong</strong> • Harbour view • Steps from MTR and shopping</div>
-
-          <div class="hotel-desc">
-            Sharp city product for APAC demand positioning. Great for making the results page look diversified instead of just beach resorts and pretty lies.
-          </div>
-
-          <div class="amenities">
-            <div class="amenity">Harbour view</div>
-            <div class="amenity">Business lounge</div>
-            <div class="amenity">Flexible cancellation</div>
-            <div class="amenity">Premium location</div>
-          </div>
-
-          <div class="meta-line">Frequently searched from GCC outbound traffic</div>
-        </div>
-
-        <div class="hotel-price">
-          <div>
-            <div class="save-note">Flash offer</div>
-            <div class="strike">SAR 1,380</div>
-            <div class="price">SAR 1,120</div>
-            <div class="per-night">per night</div>
+            <div class="distress-note" style="color:var(--brand);">${urgency}</div>
+            <div class="price">${formatSAR(price)}</div>
+            <div class="per-unit">${perUnit}</div>
             <div class="tax-note">Taxes and fees included</div>
           </div>
+        `;
+      }
 
-          <div class="cta-group">
-            <a href="#" class="primary-btn">See availability</a>
-            <a href="#" class="secondary-btn">View details</a>
-          </div>
-        </div>
-      </article>
+      const badges = [];
+      if (item.distress) badges.push('<div class="badge distress">Distress Deal</div>');
+      if (index < 2) badges.push('<div class="badge trending">High urgency</div>');
+      else badges.push('<div class="badge sponsored">Sponsored</div>');
 
-      <article class="hotel-card">
-        <div class="hotel-image">
-          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Krabi hotel">
-          <div class="badge-row">
-            <div class="badge sponsored">Sponsored</div>
-          </div>
-        </div>
-
-        <div class="hotel-body">
-          <div class="hotel-topline">
-            <div class="stars">★★★★☆</div>
-            <div class="rating-pill">8.5 Very Good</div>
+      return `
+        <article class="result-card ${item.distress ? 'distress' : ''}">
+          <div class="result-image">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="badge-row">${badges.join('')}</div>
           </div>
 
-          <h2 class="hotel-name">Krabi Horizon Beach Resort</h2>
-          <div class="location"><strong>Krabi, Thailand</strong> • Oceanfront stay • Island hopping packages</div>
+          <div class="result-body">
+            <div class="result-topline">
+              <div class="rating-pill">${item.rating}</div>
+            </div>
 
-          <div class="hotel-desc">
-            Easy add-on destination for a stronger Thailand cluster. Also helps your search results look curated rather than randomly assembled by a sleep-deprived intern.
+            <h2 class="result-name">${item.name}</h2>
+            <div class="result-location"><strong>${item.location}</strong></div>
+            <div class="result-desc">${item.desc}</div>
+
+            <div class="chips">
+              ${item.tags.map(tag => `<div class="chip">${tag}</div>`).join('')}
+            </div>
+
+            <div class="meta-line">${item.distress ? 'Distress logic active for selected dates' : urgency}</div>
           </div>
 
-          <div class="amenities">
-            <div class="amenity">Beachfront</div>
-            <div class="amenity">Island tours</div>
-            <div class="amenity">Pool bar</div>
-            <div class="amenity">Family stay</div>
+          <div class="result-price">
+            ${pricingHtml}
+            <div class="cta-group">
+              <a href="#" class="primary-btn">${item.distress ? 'Book this deal' : 'View option'}</a>
+              <a href="#" class="secondary-btn">View details</a>
+            </div>
           </div>
+        </article>
+      `;
+    }
 
-          <div class="meta-line">Strong conversion on short-haul leisure searches</div>
-        </div>
+    function renderResults() {
+      let type = 'stays';
+      let results = hotelResults;
+      let title = '5 hotel results';
 
-        <div class="hotel-price">
-          <div>
-            <div class="save-note">Sponsored placement</div>
-            <div class="strike">SAR 840</div>
-            <div class="price">SAR 675</div>
-            <div class="per-night">per night</div>
-            <div class="tax-note">Includes taxes and service fees</div>
-          </div>
+      if (searchType === 'flights') {
+        type = 'flights';
+        results = flightResults;
+        title = '5 flight results';
+      } else if (searchType === 'activities') {
+        type = 'activities';
+        results = activityResults;
+        title = '5 activity results';
+      }
 
-          <div class="cta-group">
-            <a href="#" class="primary-btn">See availability</a>
-            <a href="#" class="secondary-btn">View details</a>
-          </div>
-        </div>
-      </article>
-    </main>
-  </div>
+      document.getElementById('resultsTitle').textContent = title;
+      document.getElementById('resultsContainer').innerHTML =
+        results.slice(0, 5).map((item, index) => renderCard(item, index, type)).join('');
+    }
 
-  <div class="floating-note">
-    Demo mode only. Results are static and shown regardless of selected dates or filters.
-  </div>
+    renderResults();
+  </script>
 </body>
 </html>
