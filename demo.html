@@ -22,8 +22,6 @@
       --border: rgba(255, 255, 255, 0.12);
       --input-bg: rgba(255, 255, 255, 0.06);
       --shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
-      --danger: #ef4b58;
-      --success: #20b486;
     }
 
     body.light-mode {
@@ -72,6 +70,7 @@
       max-width: 1280px;
       margin: 0 auto;
       padding: max(20px, env(safe-area-inset-top)) 16px 40px;
+      position: relative;
     }
 
     .topbar {
@@ -141,6 +140,8 @@
       gap: 8px;
       margin-bottom: 12px;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 5;
     }
 
     .tab {
@@ -162,10 +163,14 @@
 
     .hero-card {
       padding: 22px;
+      position: relative;
+      z-index: 20;
+      overflow: visible;
     }
 
     .panel {
       display: none;
+      overflow: visible;
     }
 
     .panel.active {
@@ -178,6 +183,8 @@
       gap: 12px 16px;
       align-items: center;
       margin-bottom: 18px;
+      position: relative;
+      z-index: 20;
     }
 
     .pills {
@@ -223,6 +230,7 @@
     .grid-activity {
       display: grid;
       gap: 12px;
+      overflow: visible;
     }
 
     .grid-flight {
@@ -246,6 +254,12 @@
       background: var(--input-bg);
       border: 1px solid var(--border);
       border-radius: 14px;
+      overflow: visible;
+      z-index: 25;
+    }
+
+    .field:focus-within {
+      z-index: 60;
     }
 
     .field-icon {
@@ -267,6 +281,7 @@
       color: var(--text);
       font-size: 0.95rem;
       font-weight: 700;
+      min-width: 0;
     }
 
     .field input::placeholder {
@@ -293,6 +308,8 @@
     .services {
       margin-top: 24px;
       padding: 18px 12px;
+      position: relative;
+      z-index: 1;
     }
 
     .services-row {
@@ -330,6 +347,8 @@
     .section {
       margin-top: 24px;
       padding: 22px;
+      position: relative;
+      z-index: 1;
     }
 
     .section-head {
@@ -399,15 +418,17 @@
       position: absolute;
       top: calc(100% + 8px);
       left: 0;
-      right: 0;
+      min-width: 420px;
+      width: max(100%, 420px);
+      max-width: min(92vw, 560px);
       background: var(--bg-elevated);
       border: 1px solid var(--border);
       border-radius: 16px;
-      box-shadow: var(--shadow);
-      z-index: 40;
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.42);
+      z-index: 9999;
       padding: 8px;
       display: none;
-      max-height: 340px;
+      max-height: 360px;
       overflow-y: auto;
     }
 
@@ -427,9 +448,9 @@
     .auto-item {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
-      padding: 10px 12px;
+      padding: 12px 14px;
       border-radius: 12px;
       cursor: pointer;
     }
@@ -440,16 +461,17 @@
 
     .auto-main {
       color: var(--text);
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 700;
       line-height: 1.4;
     }
 
     .auto-sub {
       color: var(--text-muted);
-      font-size: 0.76rem;
-      margin-top: 2px;
-      line-height: 1.45;
+      font-size: 0.78rem;
+      margin-top: 3px;
+      line-height: 1.55;
+      max-width: 360px;
     }
 
     .auto-tag {
@@ -460,6 +482,7 @@
       font-size: 0.68rem;
       font-weight: 700;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     @media (max-width: 1100px) {
@@ -532,6 +555,18 @@
       .check {
         font-size: 0.84rem;
       }
+
+      .autocomplete-box {
+        left: 0;
+        right: 0;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .auto-sub {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -559,8 +594,8 @@
       <div class="panel active" id="flights">
         <div class="filters">
           <div class="pills">
-            <button class="pill">One Way</button>
-            <button class="pill active">Round Trip</button>
+            <button class="pill active">One Way</button>
+            <button class="pill">Round Trip</button>
             <button class="pill">Multi City</button>
           </div>
 
@@ -571,7 +606,7 @@
 
           <label class="check">
             <input type="checkbox">
-            <span>Included Baggage</span>
+            <span>Baggage Included</span>
           </label>
         </div>
 
@@ -657,34 +692,13 @@
 
     <div class="services">
       <div class="services-row">
-        <div class="service">
-          <div class="service-icon">🚐</div>
-          <div class="service-label">Transfers</div>
-        </div>
-        <div class="service">
-          <div class="service-icon">🚆</div>
-          <div class="service-label">Haramain Train</div>
-        </div>
-        <div class="service">
-          <div class="service-icon">🚗</div>
-          <div class="service-label">Car rental</div>
-        </div>
-        <div class="service">
-          <div class="service-icon">🧳</div>
-          <div class="service-label">Domestic packages</div>
-        </div>
-        <div class="service">
-          <div class="service-icon">🛳</div>
-          <div class="service-label">Cruise packages</div>
-        </div>
-        <div class="service">
-          <div class="service-icon">🗺</div>
-          <div class="service-label">Packages</div>
-        </div>
-        <div class="service">
-          <div class="service-icon">•••</div>
-          <div class="service-label">More services</div>
-        </div>
+        <div class="service"><div class="service-icon">🚐</div><div class="service-label">Transfers</div></div>
+        <div class="service"><div class="service-icon">🚆</div><div class="service-label">Haramain Train</div></div>
+        <div class="service"><div class="service-icon">🚗</div><div class="service-label">Car rental</div></div>
+        <div class="service"><div class="service-icon">🧳</div><div class="service-label">Domestic packages</div></div>
+        <div class="service"><div class="service-icon">🛳</div><div class="service-label">Cruise packages</div></div>
+        <div class="service"><div class="service-icon">🗺</div><div class="service-label">Packages</div></div>
+        <div class="service"><div class="service-icon">•••</div><div class="service-label">More services</div></div>
       </div>
     </div>
 
@@ -695,22 +709,10 @@
       </div>
 
       <div class="dest-grid">
-        <a class="dest-card" href="results.html?type=stays&to=London">
-          <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80" alt="London">
-          <div class="dest-name">London</div>
-        </a>
-        <a class="dest-card" href="results.html?type=stays&to=Paris">
-          <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80" alt="Paris">
-          <div class="dest-name">Paris</div>
-        </a>
-        <a class="dest-card" href="results.html?type=stays&to=Mykonos">
-          <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=900&q=80" alt="Mykonos">
-          <div class="dest-name">Mykonos</div>
-        </a>
-        <a class="dest-card" href="results.html?type=stays&to=Hong Kong">
-          <img src="https://images.unsplash.com/photo-1506973035872-a4f23ef5f2d3?auto=format&fit=crop&w=900&q=80" alt="Hong Kong">
-          <div class="dest-name">Hong Kong</div>
-        </a>
+        <a class="dest-card" href="results.html?type=stays&to=London"><img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80" alt="London"><div class="dest-name">London</div></a>
+        <a class="dest-card" href="results.html?type=stays&to=Paris"><img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80" alt="Paris"><div class="dest-name">Paris</div></a>
+        <a class="dest-card" href="results.html?type=stays&to=Mykonos"><img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=900&q=80" alt="Mykonos"><div class="dest-name">Mykonos</div></a>
+        <a class="dest-card" href="results.html?type=stays&to=Hong Kong"><img src="https://images.unsplash.com/photo-1506973035872-a4f23ef5f2d3?auto=format&fit=crop&w=900&q=80" alt="Hong Kong"><div class="dest-name">Hong Kong</div></a>
       </div>
     </div>
 
@@ -721,22 +723,10 @@
       </div>
 
       <div class="dest-grid">
-        <a class="dest-card" href="results.html?type=stays&to=Jeddah">
-          <img src="https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=900&q=80" alt="Jeddah">
-          <div class="dest-name">Jeddah</div>
-        </a>
-        <a class="dest-card" href="results.html?type=stays&to=Riyadh">
-          <img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=900&q=80" alt="Riyadh">
-          <div class="dest-name">Riyadh</div>
-        </a>
-        <a class="dest-card" href="results.html?type=stays&to=Red Sea">
-          <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=80" alt="Red Sea">
-          <div class="dest-name">Red Sea</div>
-        </a>
-        <a class="dest-card" href="results.html?type=stays&to=AlUla">
-          <img src="https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&w=900&q=80" alt="AlUla">
-          <div class="dest-name">AlUla</div>
-        </a>
+        <a class="dest-card" href="results.html?type=stays&to=Jeddah"><img src="https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?auto=format&fit=crop&w=900&q=80" alt="Jeddah"><div class="dest-name">Jeddah</div></a>
+        <a class="dest-card" href="results.html?type=stays&to=Riyadh"><img src="https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=900&q=80" alt="Riyadh"><div class="dest-name">Riyadh</div></a>
+        <a class="dest-card" href="results.html?type=stays&to=Red Sea"><img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=900&q=80" alt="Red Sea"><div class="dest-name">Red Sea</div></a>
+        <a class="dest-card" href="results.html?type=stays&to=AlUla"><img src="https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&w=900&q=80" alt="AlUla"><div class="dest-name">AlUla</div></a>
       </div>
     </div>
   </div>
@@ -784,20 +774,15 @@
     const modeToggle = document.getElementById('modeToggle');
 
     function applyTheme(theme) {
-      if (theme === 'light') {
-        document.body.classList.add('light-mode');
-      } else {
-        document.body.classList.remove('light-mode');
-      }
+      if (theme === 'light') document.body.classList.add('light-mode');
+      else document.body.classList.remove('light-mode');
       localStorage.setItem('lodj-theme', theme);
     }
 
-    const savedTheme = localStorage.getItem('lodj-theme') || 'dark';
-    applyTheme(savedTheme);
+    applyTheme(localStorage.getItem('lodj-theme') || 'dark');
 
     modeToggle.addEventListener('click', () => {
-      const nextTheme = document.body.classList.contains('light-mode') ? 'dark' : 'light';
-      applyTheme(nextTheme);
+      applyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light');
     });
 
     tabs.forEach(tab => {
@@ -811,8 +796,7 @@
 
     pills.forEach(pill => {
       pill.addEventListener('click', () => {
-        const wrapper = pill.parentElement;
-        wrapper.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        pill.parentElement.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
       });
     });
@@ -826,11 +810,8 @@
         a.country.toLowerCase().includes(q)
       );
 
-      if (!q) {
-        matches = AIRPORTS.slice(0, 8);
-      } else {
-        matches = matches.slice(0, 8);
-      }
+      if (!q) matches = AIRPORTS.slice(0, 8);
+      else matches = matches.slice(0, 8);
 
       boxEl.innerHTML = `
         <div class="auto-section-title">Airports</div>
@@ -858,8 +839,7 @@
       const q = query.trim().toLowerCase();
       const trending = DESTINATIONS.filter(d => ['Trending', 'Sponsored'].includes(d.tag));
       const matches = DESTINATIONS.filter(d =>
-        d.name.toLowerCase().includes(q) ||
-        d.country.toLowerCase().includes(q)
+        d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q)
       );
 
       if (!q) {
@@ -909,10 +889,8 @@
 
     flightOrigin.addEventListener('focus', () => renderAirportSuggestions(flightOrigin, flightOriginBox, flightOrigin.value));
     flightOrigin.addEventListener('input', () => renderAirportSuggestions(flightOrigin, flightOriginBox, flightOrigin.value));
-
     flightDestination.addEventListener('focus', () => renderAirportSuggestions(flightDestination, flightDestinationBox, flightDestination.value));
     flightDestination.addEventListener('input', () => renderAirportSuggestions(flightDestination, flightDestinationBox, flightDestination.value));
-
     staySearch.addEventListener('focus', () => renderDestinationSuggestions(staySearch, staySearchBox, staySearch.value));
     staySearch.addEventListener('input', () => renderDestinationSuggestions(staySearch, staySearchBox, staySearch.value));
 
@@ -931,12 +909,14 @@
         params.set('to', flightDestination.value || 'DXB');
         params.set('start', document.getElementById('flight-start').value || '');
         params.set('end', document.getElementById('flight-end').value || '');
+        params.set('pax', document.getElementById('flight-pax').value || '1 Traveler, Economy');
       }
 
       if (type === 'stays') {
         params.set('to', staySearch.value || 'Dubai');
         params.set('start', document.getElementById('stay-start').value || '');
         params.set('end', document.getElementById('stay-end').value || '');
+        params.set('pax', document.getElementById('stay-pax').value || '1 Room, 2 Adults, 0 Child');
       }
 
       if (type === 'activities') {
