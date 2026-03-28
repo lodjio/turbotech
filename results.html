@@ -62,7 +62,7 @@
       z-index: 100;
       background: var(--bg-elevated);
       border-bottom: 1px solid var(--border);
-      padding: max(14px, env(safe-area-inset-top)) 16px 14px;
+      padding: max(12px, env(safe-area-inset-top)) 16px 12px;
       box-shadow: var(--shadow);
     }
 
@@ -72,21 +72,21 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
     .brand {
       color: var(--brand);
       text-decoration: none;
-      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-size: clamp(1.4rem, 4vw, 2rem);
       font-weight: 700;
       line-height: 1;
     }
 
     .nav-actions {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -96,11 +96,12 @@
       background: var(--input-bg);
       color: var(--text);
       text-decoration: none;
-      padding: 11px 15px;
+      padding: 8px 11px;
       border-radius: 999px;
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       font-weight: 700;
       cursor: pointer;
+      line-height: 1.2;
     }
 
     .page {
@@ -178,12 +179,20 @@
     .sidebar {
       padding: 20px;
       position: sticky;
-      top: 104px;
+      top: 92px;
     }
 
     .sidebar h3 {
       margin: 0 0 18px;
       font-size: 1rem;
+    }
+
+    .sidebar.hidden {
+      display: none;
+    }
+
+    .layout.filters-hidden {
+      grid-template-columns: 1fr;
     }
 
     .filter-group {
@@ -253,6 +262,24 @@
       line-height: 1.5;
     }
 
+    .results-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .toggle-filters-btn {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--input-bg);
+      color: var(--text);
+      padding: 11px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     .sort-select {
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -262,6 +289,19 @@
       font-size: 0.82rem;
       font-weight: 700;
       outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    .sort-select option {
+      color: #111;
+      background: #fff;
+    }
+
+    body.light-mode .sort-select option {
+      color: #111;
+      background: #fff;
     }
 
     .promo-strip {
@@ -337,7 +377,7 @@
 
     .flight-card {
       display: grid;
-      grid-template-columns: 120px 1.2fr 1fr 220px;
+      grid-template-columns: 110px 1.2fr 1fr 220px;
       gap: 0;
       overflow: hidden;
       border: 2px solid transparent;
@@ -367,7 +407,7 @@
     .flight-mid,
     .flight-meta,
     .flight-price {
-      padding: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -379,23 +419,28 @@
       background: var(--input-bg);
     }
 
-    .airline-logo {
-      width: 56px;
-      height: 56px;
+    .airline-logo-wrap {
+      width: 58px;
+      height: 58px;
       border-radius: 14px;
-      background: var(--brand-soft);
-      color: var(--brand);
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      text-align: center;
+      padding: 8px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+
+    .airline-logo-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
     }
 
     .airline-name {
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       color: var(--text-soft);
       text-align: center;
       line-height: 1.5;
@@ -403,19 +448,13 @@
     }
 
     .flight-mid {
-      gap: 10px;
+      gap: 8px;
     }
 
     .flight-route {
       font-size: 1rem;
       font-weight: 700;
       color: var(--text);
-    }
-
-    .flight-desc {
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      line-height: 1.7;
     }
 
     .flight-meta {
@@ -725,6 +764,12 @@
 
       .nav-actions {
         width: 100%;
+        gap: 6px;
+      }
+
+      .nav-btn {
+        padding: 7px 10px;
+        font-size: 0.68rem;
       }
 
       .floating-note {
@@ -788,8 +833,8 @@
       <button class="summary-btn" type="button" onclick="window.location.href='demo.html'">Modify search</button>
     </div>
 
-    <div class="layout">
-      <aside class="sidebar">
+    <div class="layout" id="layout">
+      <aside class="sidebar" id="sidebar">
         <h3>Live demo filters</h3>
 
         <div class="filter-group">
@@ -822,28 +867,31 @@
           <div class="results-head">
             <div>
               <div class="results-title" id="resultsTitle">5 hotel results</div>
-              <div class="results-sub" id="resultsSub">Hotels keep richer cards. Flights switch to compact fare rows with airline logo and traveler class.</div>
+              <div class="results-sub" id="resultsSub">Hotels keep richer cards. Flights stay compact and purely transactional.</div>
             </div>
 
-            <select class="sort-select">
-              <option>Sort by: Recommended</option>
-              <option>Sort by: Featured First</option>
-              <option>Sort by: Lowest Price</option>
-              <option>Sort by: Highest Discount</option>
-            </select>
+            <div class="results-actions">
+              <button class="toggle-filters-btn" id="toggleFiltersBtn" type="button">Hide Filters</button>
+              <select class="sort-select">
+                <option>Sort by: Recommended</option>
+                <option>Sort by: Featured First</option>
+                <option>Sort by: Lowest Price</option>
+                <option>Sort by: Highest Discount</option>
+              </select>
+            </div>
           </div>
         </div>
 
         <div class="promo-strip">
           <div>
             <div class="promo-title">Revised results behavior</div>
-            <div class="promo-sub">Hotels keep visual storytelling. Flights stay compact and transactional, which is what they should have been from the start.</div>
+            <div class="promo-sub">Flights are smaller and cleaner now. Hotels stay visual. Nobody needed philosophical flight descriptions anyway.</div>
           </div>
 
           <div class="promo-chip-wrap">
             <div class="promo-chip">Compact flights</div>
+            <div class="promo-chip">Real airline logos</div>
             <div class="promo-chip">Business bundle 20%</div>
-            <div class="promo-chip">Hotel distress 50% to 75%</div>
           </div>
         </div>
 
@@ -858,6 +906,9 @@
 
   <script>
     const modeToggle = document.getElementById('modeToggle');
+    const toggleFiltersBtn = document.getElementById('toggleFiltersBtn');
+    const sidebar = document.getElementById('sidebar');
+    const layout = document.getElementById('layout');
 
     function applyTheme(theme) {
       if (theme === 'light') document.body.classList.add('light-mode');
@@ -869,6 +920,12 @@
 
     modeToggle.addEventListener('click', () => {
       applyTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light');
+    });
+
+    toggleFiltersBtn.addEventListener('click', () => {
+      const hidden = sidebar.classList.toggle('hidden');
+      layout.classList.toggle('filters-hidden', hidden);
+      toggleFiltersBtn.textContent = hidden ? 'Show Filters' : 'Hide Filters';
     });
 
     const params = new URLSearchParams(window.location.search);
@@ -945,7 +1002,7 @@
       {
         name: 'ABC Hotel',
         location: 'Dubai, UAE',
-        desc: 'Strong Dubai distress inventory with deep markdown and very obvious urgency. This one should shout book me without actually yelling.',
+        desc: 'Strong Dubai distress inventory with deep markdown and very obvious urgency.',
         image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
         tags: ['Breakfast included', 'Downtown', 'Free cancellation'],
         rating: '9.1 Excellent',
@@ -963,7 +1020,7 @@
       {
         name: 'Jeddah Corniche Suites',
         location: 'Jeddah, Saudi Arabia',
-        desc: 'Good domestic option that makes the page feel grounded instead of purely aspirational fantasy.',
+        desc: 'Good domestic option that makes the page feel grounded.',
         image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80',
         tags: ['Sea view', 'Pay later', 'Family rooms'],
         rating: '8.8 Very Good',
@@ -991,55 +1048,50 @@
 
     const flightResults = [
       {
-        airlineCode: 'EK',
         airline: 'Emirates',
+        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/Emirates_logo.svg',
         route: 'JED → DXB',
         travelerClass: 'Economy',
-        desc: 'Featured Dubai fare with mild urgency and cleaner fare merchandising.',
         tags: ['Direct', '1 traveler', 'Baggage optional'],
         rating: '9.0 Featured',
         featured: true,
         businessBundle: false
       },
       {
-        airlineCode: 'SV',
         airline: 'Saudia',
+        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Saudia_Logo.svg',
         route: 'RUH → DXB',
         travelerClass: 'Business Class',
-        desc: 'Last 2 seats in Business Class. Gets 20% off only when bundled with a hotel.',
         tags: ['Last 2 seats', 'Business', 'Hotel bundle'],
         rating: '9.4 Premium',
         featured: true,
         businessBundle: true
       },
       {
-        airlineCode: 'FZ',
         airline: 'flydubai',
+        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/1/18/FlyDubai_Logo.svg',
         route: 'JED → RUH',
         travelerClass: 'Economy',
-        desc: 'Useful domestic connector for a more believable fare mix.',
         tags: ['Domestic', 'Morning flight', 'Flexible'],
         rating: '8.5 Good',
         featured: false,
         businessBundle: false
       },
       {
-        airlineCode: 'QR',
         airline: 'Qatar Airways',
+        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Qatar_Airways_Logo.svg',
         route: 'DXB → HKT',
         travelerClass: 'Economy',
-        desc: 'Leisure long-haul option that broadens the list without clutter.',
         tags: ['1 stop', 'Leisure route', 'Popular'],
         rating: '8.8 Very Good',
         featured: false,
         businessBundle: false
       },
       {
-        airlineCode: 'CX',
         airline: 'Cathay Pacific',
+        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cathay_Pacific_logo.svg',
         route: 'RUH → HKG',
         travelerClass: 'Economy',
-        desc: 'A city route so the fare list does not look like a beach brochure.',
         tags: ['APAC', 'Evening departure', 'City break'],
         rating: '8.7 Very Good',
         featured: false,
@@ -1157,14 +1209,15 @@
       return `
         <article class="flight-card ${item.featured ? 'featured' : ''}">
           <div class="flight-logo-col">
-            <div class="airline-logo">${item.airlineCode}</div>
+            <div class="airline-logo-wrap">
+              <img src="${item.airlineLogo}" alt="${item.airline}">
+            </div>
             <div class="airline-name">${item.airline}</div>
           </div>
 
           <div class="flight-mid">
             <div class="rating-pill">${item.rating}</div>
             <div class="flight-route">${item.route}</div>
-            <div class="flight-desc">${item.desc}</div>
             <div class="chips">
               ${item.tags.map(tag => `<div class="chip">${tag}</div>`).join('')}
             </div>
@@ -1193,7 +1246,7 @@
 
       if (searchType === 'flights') {
         document.getElementById('resultsTitle').textContent = '5 flight results';
-        document.getElementById('resultsSub').textContent = 'Flights are now compact. First two are highlighted, and one shows a Business Class bundle incentive.';
+        document.getElementById('resultsSub').textContent = 'Flights are now compact. First two are highlighted, one includes a Business Class hotel bundle offer.';
         container.innerHTML = flightResults.map((item, index) => renderFlightCard(item, index)).join('');
         return;
       }
