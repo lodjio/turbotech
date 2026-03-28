@@ -183,7 +183,7 @@
     }
 
     .sidebar h3 {
-      margin: 0 0 18px;
+      margin: 0;
       font-size: 1rem;
     }
 
@@ -193,6 +193,25 @@
 
     .layout.filters-hidden {
       grid-template-columns: 1fr;
+    }
+
+    .sidebar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .toggle-filters-btn {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--input-bg);
+      color: var(--text);
+      padding: 9px 12px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     .filter-group {
@@ -269,17 +288,6 @@
       flex-wrap: wrap;
     }
 
-    .toggle-filters-btn {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--input-bg);
-      color: var(--text);
-      padding: 11px 14px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
     .sort-select {
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -295,11 +303,6 @@
     }
 
     .sort-select option {
-      color: #111;
-      background: #fff;
-    }
-
-    body.light-mode .sort-select option {
       color: #111;
       background: #fff;
     }
@@ -833,9 +836,12 @@
       <button class="summary-btn" type="button" onclick="window.location.href='demo.html'">Modify search</button>
     </div>
 
-    <div class="layout" id="layout">
-      <aside class="sidebar" id="sidebar">
-        <h3>Live demo filters</h3>
+    <div class="layout filters-hidden" id="layout">
+      <aside class="sidebar hidden" id="sidebar">
+        <div class="sidebar-top">
+          <h3>Live demo filters</h3>
+          <button class="toggle-filters-btn" id="toggleFiltersBtn" type="button">Show</button>
+        </div>
 
         <div class="filter-group">
           <div class="filter-title">Promotions</div>
@@ -871,7 +877,6 @@
             </div>
 
             <div class="results-actions">
-              <button class="toggle-filters-btn" id="toggleFiltersBtn" type="button">Hide Filters</button>
               <select class="sort-select">
                 <option>Sort by: Recommended</option>
                 <option>Sort by: Featured First</option>
@@ -884,13 +889,13 @@
 
         <div class="promo-strip">
           <div>
-            <div class="promo-title">Revised results behavior</div>
-            <div class="promo-sub">Flights are smaller and cleaner now. Hotels stay visual. Nobody needed philosophical flight descriptions anyway.</div>
+            <div class="promo-title">Distress Deals Access - Gold Member</div>
+            <div class="promo-sub">As you are a gold member you have access to Last minute distress deals and additional value adds</div>
           </div>
 
           <div class="promo-chip-wrap">
             <div class="promo-chip">Compact flights</div>
-            <div class="promo-chip">Real airline logos</div>
+            <div class="promo-chip">Guaranteed logos</div>
             <div class="promo-chip">Business bundle 20%</div>
           </div>
         </div>
@@ -925,7 +930,7 @@
     toggleFiltersBtn.addEventListener('click', () => {
       const hidden = sidebar.classList.toggle('hidden');
       layout.classList.toggle('filters-hidden', hidden);
-      toggleFiltersBtn.textContent = hidden ? 'Show Filters' : 'Hide Filters';
+      toggleFiltersBtn.textContent = hidden ? 'Show' : 'Hide';
     });
 
     const params = new URLSearchParams(window.location.search);
@@ -998,6 +1003,43 @@
       return `SAR ${num.toLocaleString()}`;
     }
 
+    function svgDataUri(svg) {
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    }
+
+    const logos = {
+      emirates: svgDataUri(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+          <rect width="120" height="120" rx="18" fill="#D71920"/>
+          <text x="60" y="70" text-anchor="middle" font-size="30" font-family="Arial" font-weight="700" fill="white">EK</text>
+        </svg>
+      `),
+      saudia: svgDataUri(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+          <rect width="120" height="120" rx="18" fill="#0B3A82"/>
+          <text x="60" y="70" text-anchor="middle" font-size="26" font-family="Arial" font-weight="700" fill="#D4AF37">SV</text>
+        </svg>
+      `),
+      flydubai: svgDataUri(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+          <rect width="120" height="120" rx="18" fill="#0B78C8"/>
+          <text x="60" y="70" text-anchor="middle" font-size="24" font-family="Arial" font-weight="700" fill="#FF8C00">FZ</text>
+        </svg>
+      `),
+      qatar: svgDataUri(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+          <rect width="120" height="120" rx="18" fill="#5C0931"/>
+          <text x="60" y="70" text-anchor="middle" font-size="24" font-family="Arial" font-weight="700" fill="white">QR</text>
+        </svg>
+      `),
+      cathay: svgDataUri(`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+          <rect width="120" height="120" rx="18" fill="#006564"/>
+          <text x="60" y="70" text-anchor="middle" font-size="24" font-family="Arial" font-weight="700" fill="white">CX</text>
+        </svg>
+      `)
+    };
+
     const hotelResults = [
       {
         name: 'ABC Hotel',
@@ -1047,57 +1089,57 @@
     ];
 
     const flightResults = [
-  {
-    airline: 'Emirates',
-    airlineLogo: 'https://logo.clearbit.com/emirates.com',
-    route: 'JED → DXB',
-    travelerClass: 'Economy',
-    tags: ['Direct', '1 traveler', 'Baggage optional'],
-    rating: '9.0 Featured',
-    featured: true,
-    businessBundle: false
-  },
-  {
-    airline: 'Saudia',
-    airlineLogo: 'https://logo.clearbit.com/saudia.com',
-    route: 'RUH → DXB',
-    travelerClass: 'Business Class',
-    tags: ['Last 2 seats', 'Business', 'Hotel bundle'],
-    rating: '9.4 Premium',
-    featured: true,
-    businessBundle: true
-  },
-  {
-    airline: 'flydubai',
-    airlineLogo: 'https://logo.clearbit.com/flydubai.com',
-    route: 'JED → RUH',
-    travelerClass: 'Economy',
-    tags: ['Domestic', 'Morning flight', 'Flexible'],
-    rating: '8.5 Good',
-    featured: false,
-    businessBundle: false
-  },
-  {
-    airline: 'Qatar Airways',
-    airlineLogo: 'https://logo.clearbit.com/qatarairways.com',
-    route: 'DXB → HKT',
-    travelerClass: 'Economy',
-    tags: ['1 stop', 'Leisure route', 'Popular'],
-    rating: '8.8 Very Good',
-    featured: false,
-    businessBundle: false
-  },
-  {
-    airline: 'Cathay Pacific',
-    airlineLogo: 'https://logo.clearbit.com/cathaypacific.com',
-    route: 'RUH → HKG',
-    travelerClass: 'Economy',
-    tags: ['APAC', 'Evening departure', 'City break'],
-    rating: '8.7 Very Good',
-    featured: false,
-    businessBundle: false
-  }
-];
+      {
+        airline: 'Emirates',
+        airlineLogo: logos.emirates,
+        route: 'JED → DXB',
+        travelerClass: 'Economy',
+        tags: ['Direct', '1 traveler', 'Baggage optional'],
+        rating: '9.0 Featured',
+        featured: true,
+        businessBundle: false
+      },
+      {
+        airline: 'Saudia',
+        airlineLogo: logos.saudia,
+        route: 'RUH → DXB',
+        travelerClass: 'Business Class',
+        tags: ['Last 2 seats', 'Business', 'Hotel bundle'],
+        rating: '9.4 Premium',
+        featured: true,
+        businessBundle: true
+      },
+      {
+        airline: 'flydubai',
+        airlineLogo: logos.flydubai,
+        route: 'JED → RUH',
+        travelerClass: 'Economy',
+        tags: ['Domestic', 'Morning flight', 'Flexible'],
+        rating: '8.5 Good',
+        featured: false,
+        businessBundle: false
+      },
+      {
+        airline: 'Qatar Airways',
+        airlineLogo: logos.qatar,
+        route: 'DXB → HKT',
+        travelerClass: 'Economy',
+        tags: ['1 stop', 'Leisure route', 'Popular'],
+        rating: '8.8 Very Good',
+        featured: false,
+        businessBundle: false
+      },
+      {
+        airline: 'Cathay Pacific',
+        airlineLogo: logos.cathay,
+        route: 'RUH → HKG',
+        travelerClass: 'Economy',
+        tags: ['APAC', 'Evening departure', 'City break'],
+        rating: '8.7 Very Good',
+        featured: false,
+        businessBundle: false
+      }
+    ];
 
     function renderHotelCard(item, index) {
       const urgency = pickBySeed(urgencyTexts, seedBase, index);
