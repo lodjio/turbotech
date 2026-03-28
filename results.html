@@ -1047,57 +1047,57 @@
     ];
 
     const flightResults = [
-      {
-        airline: 'Emirates',
-        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/d/d0/Emirates_logo.svg',
-        route: 'JED → DXB',
-        travelerClass: 'Economy',
-        tags: ['Direct', '1 traveler', 'Baggage optional'],
-        rating: '9.0 Featured',
-        featured: true,
-        businessBundle: false
-      },
-      {
-        airline: 'Saudia',
-        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Saudia_Logo.svg',
-        route: 'RUH → DXB',
-        travelerClass: 'Business Class',
-        tags: ['Last 2 seats', 'Business', 'Hotel bundle'],
-        rating: '9.4 Premium',
-        featured: true,
-        businessBundle: true
-      },
-      {
-        airline: 'flydubai',
-        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/1/18/FlyDubai_Logo.svg',
-        route: 'JED → RUH',
-        travelerClass: 'Economy',
-        tags: ['Domestic', 'Morning flight', 'Flexible'],
-        rating: '8.5 Good',
-        featured: false,
-        businessBundle: false
-      },
-      {
-        airline: 'Qatar Airways',
-        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Qatar_Airways_Logo.svg',
-        route: 'DXB → HKT',
-        travelerClass: 'Economy',
-        tags: ['1 stop', 'Leisure route', 'Popular'],
-        rating: '8.8 Very Good',
-        featured: false,
-        businessBundle: false
-      },
-      {
-        airline: 'Cathay Pacific',
-        airlineLogo: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cathay_Pacific_logo.svg',
-        route: 'RUH → HKG',
-        travelerClass: 'Economy',
-        tags: ['APAC', 'Evening departure', 'City break'],
-        rating: '8.7 Very Good',
-        featured: false,
-        businessBundle: false
-      }
-    ];
+  {
+    airline: 'Emirates',
+    airlineLogo: 'https://logo.clearbit.com/emirates.com',
+    route: 'JED → DXB',
+    travelerClass: 'Economy',
+    tags: ['Direct', '1 traveler', 'Baggage optional'],
+    rating: '9.0 Featured',
+    featured: true,
+    businessBundle: false
+  },
+  {
+    airline: 'Saudia',
+    airlineLogo: 'https://logo.clearbit.com/saudia.com',
+    route: 'RUH → DXB',
+    travelerClass: 'Business Class',
+    tags: ['Last 2 seats', 'Business', 'Hotel bundle'],
+    rating: '9.4 Premium',
+    featured: true,
+    businessBundle: true
+  },
+  {
+    airline: 'flydubai',
+    airlineLogo: 'https://logo.clearbit.com/flydubai.com',
+    route: 'JED → RUH',
+    travelerClass: 'Economy',
+    tags: ['Domestic', 'Morning flight', 'Flexible'],
+    rating: '8.5 Good',
+    featured: false,
+    businessBundle: false
+  },
+  {
+    airline: 'Qatar Airways',
+    airlineLogo: 'https://logo.clearbit.com/qatarairways.com',
+    route: 'DXB → HKT',
+    travelerClass: 'Economy',
+    tags: ['1 stop', 'Leisure route', 'Popular'],
+    rating: '8.8 Very Good',
+    featured: false,
+    businessBundle: false
+  },
+  {
+    airline: 'Cathay Pacific',
+    airlineLogo: 'https://logo.clearbit.com/cathaypacific.com',
+    route: 'RUH → HKG',
+    travelerClass: 'Economy',
+    tags: ['APAC', 'Evening departure', 'City break'],
+    rating: '8.7 Very Good',
+    featured: false,
+    businessBundle: false
+  }
+];
 
     function renderHotelCard(item, index) {
       const urgency = pickBySeed(urgencyTexts, seedBase, index);
