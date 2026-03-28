@@ -113,7 +113,8 @@
     .sidebar,
     .content-top,
     .promo-strip,
-    .result-card {
+    .result-card,
+    .flight-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 20px;
@@ -319,11 +320,6 @@
       animation: distressPulse 1.6s infinite;
     }
 
-    .result-card.flight-featured {
-      border-color: var(--warn);
-      animation: flightPulse 1.8s infinite;
-    }
-
     @keyframes distressPulse {
       0% {
         transform: scale(1);
@@ -337,6 +333,19 @@
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(239, 75, 88, 0);
       }
+    }
+
+    .flight-card {
+      display: grid;
+      grid-template-columns: 120px 1.2fr 1fr 220px;
+      gap: 0;
+      overflow: hidden;
+      border: 2px solid transparent;
+    }
+
+    .flight-card.featured {
+      border-color: var(--warn);
+      animation: flightPulse 1.8s infinite;
     }
 
     @keyframes flightPulse {
@@ -354,26 +363,103 @@
       }
     }
 
-    .result-image {
-      min-height: 240px;
-      position: relative;
-      background: #ccc;
+    .flight-logo-col,
+    .flight-mid,
+    .flight-meta,
+    .flight-price {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
-    .result-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    .flight-logo-col {
+      align-items: center;
+      border-right: 1px solid var(--border);
+      background: var(--input-bg);
+    }
+
+    .airline-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .airline-name {
+      font-size: 0.76rem;
+      color: var(--text-soft);
+      text-align: center;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .flight-mid {
+      gap: 10px;
+    }
+
+    .flight-route {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .flight-desc {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      line-height: 1.7;
+    }
+
+    .flight-meta {
+      border-left: 1px solid var(--border);
+      gap: 10px;
+      background: var(--input-bg);
+    }
+
+    .flight-class {
+      font-size: 0.86rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .flight-class-pill {
+      display: inline-block;
+      width: fit-content;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .flight-info-line {
+      font-size: 0.76rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .flight-price {
+      border-left: 1px solid var(--border);
+      background: var(--input-bg);
+      align-items: flex-end;
+      gap: 8px;
     }
 
     .badge-row {
-      position: absolute;
-      top: 12px;
-      left: 12px;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      margin-bottom: 4px;
     }
 
     .badge {
@@ -382,6 +468,7 @@
       font-size: 0.68rem;
       font-weight: 700;
       color: #fff;
+      width: fit-content;
     }
 
     .badge.distress {
@@ -399,6 +486,19 @@
 
     .badge.sponsored {
       background: #111827;
+    }
+
+    .result-image {
+      min-height: 240px;
+      position: relative;
+      background: #ccc;
+    }
+
+    .result-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .result-body {
@@ -422,6 +522,7 @@
       padding: 6px 10px;
       font-size: 0.7rem;
       font-weight: 700;
+      width: fit-content;
     }
 
     .result-name {
@@ -530,6 +631,7 @@
       flex-direction: column;
       gap: 10px;
       margin-top: 8px;
+      width: 100%;
     }
 
     .primary-btn,
@@ -540,6 +642,7 @@
       padding: 12px 14px;
       font-size: 0.82rem;
       font-weight: 700;
+      width: 100%;
     }
 
     .primary-btn {
@@ -557,7 +660,7 @@
       position: fixed;
       right: 16px;
       bottom: 16px;
-      max-width: 320px;
+      max-width: 360px;
       background: var(--bg-elevated);
       color: var(--text-soft);
       border: 1px solid var(--border);
@@ -589,6 +692,19 @@
       .result-price {
         border-left: 0;
         border-top: 1px solid var(--border);
+      }
+
+      .flight-card {
+        grid-template-columns: 1fr;
+      }
+
+      .flight-logo-col,
+      .flight-meta,
+      .flight-price {
+        border-left: 0;
+        border-right: 0;
+        border-top: 1px solid var(--border);
+        align-items: flex-start;
       }
     }
 
@@ -696,8 +812,8 @@
         <div class="filter-group">
           <div class="filter-title">Demo logic</div>
           <label class="filter-option"><input type="checkbox" checked> Hotel spacing fixed</label>
-          <label class="filter-option"><input type="checkbox" checked> Flight bundle pricing</label>
-          <label class="filter-option"><input type="checkbox" checked> Business class urgency</label>
+          <label class="filter-option"><input type="checkbox" checked> Compact flight cards</label>
+          <label class="filter-option"><input type="checkbox" checked> Bundle incentive active</label>
         </div>
       </aside>
 
@@ -706,7 +822,7 @@
           <div class="results-head">
             <div>
               <div class="results-title" id="resultsTitle">5 hotel results</div>
-              <div class="results-sub" id="resultsSub">Hotels use stronger distress logic. Flights use softer urgency with one business class bundle offer.</div>
+              <div class="results-sub" id="resultsSub">Hotels keep richer cards. Flights switch to compact fare rows with airline logo and traveler class.</div>
             </div>
 
             <select class="sort-select">
@@ -720,14 +836,14 @@
 
         <div class="promo-strip">
           <div>
-            <div class="promo-title">Revised pricing logic</div>
-            <div class="promo-sub">Hotel results have stronger distress discounting. Flight results highlight the first two without overcooking the whole page.</div>
+            <div class="promo-title">Revised results behavior</div>
+            <div class="promo-sub">Hotels keep visual storytelling. Flights stay compact and transactional, which is what they should have been from the start.</div>
           </div>
 
           <div class="promo-chip-wrap">
+            <div class="promo-chip">Compact flights</div>
+            <div class="promo-chip">Business bundle 20%</div>
             <div class="promo-chip">Hotel distress 50% to 75%</div>
-            <div class="promo-chip">Flight bundle 20%</div>
-            <div class="promo-chip">Business class urgency</div>
           </div>
         </div>
 
@@ -736,8 +852,8 @@
     </div>
   </div>
 
-  <div class="floating-note">
-    Demo mode only. Hotels and flights now behave differently on purpose. That is called product thinking, not inconsistency.
+  <div class="floating-note" id="floatingNote">
+    Take a screenshot to share it with your friends and take it outside the group chat.
   </div>
 
   <script>
@@ -772,6 +888,15 @@
 
     document.getElementById('summaryStart').textContent = startDate;
     document.getElementById('summaryEnd').textContent = endDate;
+
+    const floatingNote = document.getElementById('floatingNote');
+    const paxLower = pax.toLowerCase();
+
+    if (paxLower.includes('2') && (paxLower.includes('adult') || paxLower.includes('traveler'))) {
+      floatingNote.textContent = 'Take a screenshot and send it to your significant other to book your holiday now and create some memories';
+    } else {
+      floatingNote.textContent = 'Take a screenshot to share it with your friends and take it outside the group chat.';
+    }
 
     const urgencyTexts = [
       'Only 2 left at this price',
@@ -820,7 +945,7 @@
       {
         name: 'ABC Hotel',
         location: 'Dubai, UAE',
-        desc: 'Strong Dubai distress inventory with deep markdown and very obvious urgency. This one should shout “book me” without actually yelling.',
+        desc: 'Strong Dubai distress inventory with deep markdown and very obvious urgency. This one should shout book me without actually yelling.',
         image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
         tags: ['Breakfast included', 'Downtown', 'Free cancellation'],
         rating: '9.1 Excellent',
@@ -866,51 +991,56 @@
 
     const flightResults = [
       {
-        name: 'DXB Smart Fare',
-        location: 'JED to DXB',
-        desc: 'First featured flight result. Strong Dubai bias, mild urgency, and enough tension to suggest the fare could move.',
-        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Direct', 'Economy', 'Popular route'],
+        airlineCode: 'EK',
+        airline: 'Emirates',
+        route: 'JED → DXB',
+        travelerClass: 'Economy',
+        desc: 'Featured Dubai fare with mild urgency and cleaner fare merchandising.',
+        tags: ['Direct', '1 traveler', 'Baggage optional'],
         rating: '9.0 Featured',
         featured: true,
         businessBundle: false
       },
       {
-        name: 'Business Class Last 2 Seats',
-        location: 'RUH to DXB • Business Class',
-        desc: 'This is the upsell trap. It only gets 20% off if booked with a hotel. Otherwise the full business class fare stays as-is.',
-        image: 'https://images.unsplash.com/photo-1540339832862-474599807836?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Business Class', 'Last 2 seats', 'Bundle offer'],
+        airlineCode: 'SV',
+        airline: 'Saudia',
+        route: 'RUH → DXB',
+        travelerClass: 'Business Class',
+        desc: 'Last 2 seats in Business Class. Gets 20% off only when bundled with a hotel.',
+        tags: ['Last 2 seats', 'Business', 'Hotel bundle'],
         rating: '9.4 Premium',
         featured: true,
         businessBundle: true
       },
       {
-        name: 'Jeddah Weekend Connector',
-        location: 'JED to RUH',
-        desc: 'Useful domestic filler that helps the page feel less staged.',
-        image: 'https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Domestic', 'Flexible', 'Morning departure'],
+        airlineCode: 'FZ',
+        airline: 'flydubai',
+        route: 'JED → RUH',
+        travelerClass: 'Economy',
+        desc: 'Useful domestic connector for a more believable fare mix.',
+        tags: ['Domestic', 'Morning flight', 'Flexible'],
         rating: '8.5 Good',
         featured: false,
         businessBundle: false
       },
       {
-        name: 'Phuket Leisure Fare',
-        location: 'DXB to HKT',
-        desc: 'Leisure long-haul option to keep the flight list broad enough to look real.',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-        tags: ['Beach route', '1 stop', 'Outbound leisure'],
+        airlineCode: 'QR',
+        airline: 'Qatar Airways',
+        route: 'DXB → HKT',
+        travelerClass: 'Economy',
+        desc: 'Leisure long-haul option that broadens the list without clutter.',
+        tags: ['1 stop', 'Leisure route', 'Popular'],
         rating: '8.8 Very Good',
         featured: false,
         businessBundle: false
       },
       {
-        name: 'Hong Kong City Connector',
-        location: 'RUH to HKG',
-        desc: 'City route for balance, because not everyone wants a beach and a cocktail.',
-        image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=80',
-        tags: ['APAC', 'Evening flight', 'Popular'],
+        airlineCode: 'CX',
+        airline: 'Cathay Pacific',
+        route: 'RUH → HKG',
+        travelerClass: 'Economy',
+        desc: 'A city route so the fare list does not look like a beach brochure.',
+        tags: ['APAC', 'Evening departure', 'City break'],
         rating: '8.7 Very Good',
         featured: false,
         businessBundle: false
@@ -948,13 +1078,14 @@
         <article class="result-card ${item.distress ? 'hotel-distress' : ''}">
           <div class="result-image">
             <img src="${item.image}" alt="${item.name}">
+          </div>
+
+          <div class="result-body">
             <div class="badge-row">
               ${item.distress ? '<div class="badge distress">Distress Deal</div>' : '<div class="badge sponsored">Sponsored</div>'}
               <div class="badge featured">Featured</div>
             </div>
-          </div>
 
-          <div class="result-body">
             <div class="result-topline">
               <div class="rating-pill">${item.rating}</div>
             </div>
@@ -989,63 +1120,64 @@
         const fullFare = createRegularPrice(3800, 6200, index);
         const bundledFare = Math.round(fullFare * 0.8);
         pricingBlock = `
-          <div>
-            <div class="price-note flight">Last 2 seats in Business Class<br>20% off only with hotel bundle</div>
-            <div class="strike">${formatSAR(fullFare)}</div>
-            <div class="price">${formatSAR(bundledFare)}</div>
-            <div class="per-unit">with hotel bundle</div>
-            <div class="tax-note">Without hotel, fare remains ${formatSAR(fullFare)}</div>
+          <div class="badge-row">
+            <div class="badge featured">Featured</div>
+            <div class="badge business">Business</div>
           </div>
+          <div class="price-note flight">Last 2 seats in Business Class<br>20% off only with hotel bundle</div>
+          <div class="strike">${formatSAR(fullFare)}</div>
+          <div class="price">${formatSAR(bundledFare)}</div>
+          <div class="per-unit">with hotel bundle</div>
+          <div class="tax-note">Without hotel, fare remains ${formatSAR(fullFare)}</div>
         `;
       } else if (item.featured) {
         const fare = createRegularPrice(900, 1800, index);
         pricingBlock = `
-          <div>
-            <div class="price-note flight">Featured fare<br>${urgency}</div>
-            <div class="price">${formatSAR(fare)}</div>
-            <div class="per-unit">per traveler</div>
-            <div class="tax-note">No forced distress markdown</div>
+          <div class="badge-row">
+            <div class="badge featured">Featured</div>
           </div>
+          <div class="price-note flight">${urgency}</div>
+          <div class="price">${formatSAR(fare)}</div>
+          <div class="per-unit">per traveler</div>
+          <div class="tax-note">Standard fare pricing</div>
         `;
       } else {
         const fare = createRegularPrice(700, 2400, index);
         pricingBlock = `
-          <div>
-            <div class="price-note">${urgency}</div>
-            <div class="price">${formatSAR(fare)}</div>
-            <div class="per-unit">per traveler</div>
-            <div class="tax-note">Taxes and fees included</div>
+          <div class="badge-row">
+            <div class="badge sponsored">Sponsored</div>
           </div>
+          <div class="price-note">${urgency}</div>
+          <div class="price">${formatSAR(fare)}</div>
+          <div class="per-unit">per traveler</div>
+          <div class="tax-note">Taxes and fees included</div>
         `;
       }
 
       return `
-        <article class="result-card ${item.featured ? 'flight-featured' : ''}">
-          <div class="result-image">
-            <img src="${item.image}" alt="${item.name}">
-            <div class="badge-row">
-              ${item.featured ? '<div class="badge featured">Featured</div>' : '<div class="badge sponsored">Sponsored</div>'}
-              ${item.businessBundle ? '<div class="badge business">Business</div>' : ''}
-            </div>
+        <article class="flight-card ${item.featured ? 'featured' : ''}">
+          <div class="flight-logo-col">
+            <div class="airline-logo">${item.airlineCode}</div>
+            <div class="airline-name">${item.airline}</div>
           </div>
 
-          <div class="result-body">
-            <div class="result-topline">
-              <div class="rating-pill">${item.rating}</div>
-            </div>
-
-            <h2 class="result-name">${item.name}</h2>
-            <div class="result-location"><strong>${item.location}</strong></div>
-            <div class="result-desc">${item.desc}</div>
-
+          <div class="flight-mid">
+            <div class="rating-pill">${item.rating}</div>
+            <div class="flight-route">${item.route}</div>
+            <div class="flight-desc">${item.desc}</div>
             <div class="chips">
               ${item.tags.map(tag => `<div class="chip">${tag}</div>`).join('')}
             </div>
-
-            <div class="meta-line">${item.businessBundle ? 'Bundle incentive active for hotel + flight' : urgency}</div>
           </div>
 
-          <div class="result-price">
+          <div class="flight-meta">
+            <div class="flight-class">Traveler class</div>
+            <div class="flight-class-pill">${item.travelerClass}</div>
+            <div class="flight-info-line">${pax || '1 Traveler, Economy'}</div>
+            <div class="flight-info-line">${item.businessBundle ? 'Bundle incentive available' : 'Standalone fare option'}</div>
+          </div>
+
+          <div class="flight-price">
             ${pricingBlock}
             <div class="cta-group">
               <a href="#" class="primary-btn">${item.businessBundle ? 'Bundle and save' : 'View fare'}</a>
@@ -1061,7 +1193,7 @@
 
       if (searchType === 'flights') {
         document.getElementById('resultsTitle').textContent = '5 flight results';
-        document.getElementById('resultsSub').textContent = 'First two flight results are highlighted. One is a Business Class last-2-seats bundle offer with 20% off only if booked with a hotel.';
+        document.getElementById('resultsSub').textContent = 'Flights are now compact. First two are highlighted, and one shows a Business Class bundle incentive.';
         container.innerHTML = flightResults.map((item, index) => renderFlightCard(item, index)).join('');
         return;
       }
