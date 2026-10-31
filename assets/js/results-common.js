@@ -95,7 +95,7 @@
       setText('resultsSub', `We're building ${what} supply for ${search.to}. Check back shortly.`);
       document.getElementById('resultsContainer').innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">${vertical.icon}</div>
+          <div class="empty-icon">${window.LODJ_ICON(vertical.svg, 'empty-svg') || vertical.icon}</div>
           <div>No ${what} to show yet.</div>
           <a class="primary-btn" href="../hotels/results.html?to=${encodeURIComponent(search.to)}">See stays instead</a>
         </div>`;

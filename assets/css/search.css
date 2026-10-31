@@ -570,10 +570,24 @@ body.light-mode .tab {
   }
 }
 
-/* Vertical tabs are links to /flights/, /hotels/, /activities/ */
+/* Vertical tabs are links to /flights/, /hotels/, /holidays/, /activities/ */
 a.tab {
   text-decoration: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.tab-icon {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.tab.active .tab-icon {
+  opacity: 1;
 }
 
 .grid-holiday {
