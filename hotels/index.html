@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>lodj.io · Stays</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/search.css">
+</head>
+<body data-root="../" data-vertical="hotels">
+  <div class="page">
+    <div id="search-topbar"></div>
+
+    <div class="hero-card">
+      <div class="panel active" id="stays">
+        <div class="grid-stay">
+          <div class="field">
+            <span class="field-icon">📍</span>
+            <input type="text" id="stay-search" placeholder="Search for properties or places" autocomplete="off">
+            <div class="autocomplete-box" id="stay-search-box"></div>
+          </div>
+
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date" id="stay-start">
+          </label>
+
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date" id="stay-end">
+          </label>
+
+          <div class="field">
+            <span class="field-icon">👥</span>
+            <select id="stay-pax">
+              <option>1 Room, 2 Adults, 0 Child</option>
+              <option>2 Rooms, 4 Adults, 0 Child</option>
+              <option>1 Room, 2 Adults, 1 Child</option>
+            </select>
+          </div>
+
+          <button class="search-btn" type="button" id="searchBtn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="explore"></div>
+  </div>
+
+  <script src="../assets/js/verticals.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../data/destinations.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/autocomplete.js"></script>
+  <script src="search.js"></script>
+</body>
+</html>
