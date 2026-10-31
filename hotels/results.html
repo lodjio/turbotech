@@ -42,7 +42,7 @@
       <aside class="sidebar hidden" id="sidebar">
         <div class="sidebar-top">
           <h3>Live demo filters</h3>
-          <button class="toggle-filters-btn" id="toggleFiltersBtn" type="button">Show</button>
+          <button class="toggle-filters-btn" data-toggle-filters type="button">Hide</button>
         </div>
 
         <div class="filter-group">
@@ -79,6 +79,7 @@
             </div>
 
             <div class="results-actions">
+              <button class="filters-btn" data-toggle-filters type="button">Filters</button>
               <select class="sort-select">
                 <option>Sort by: Recommended</option>
                 <option>Sort by: Featured First</option>
@@ -112,7 +113,8 @@
 
   <script src="../assets/js/verticals.js"></script>
   <script src="../assets/js/theme.js"></script>
-  <script src="data.js"></script>
+  <script src="../data/accor/index.js"></script>
+  <script src="accor.js"></script>
   <script src="../assets/js/layout.js"></script>
   <script src="../assets/js/locale.js"></script>
   <script src="../assets/js/results-common.js"></script>
