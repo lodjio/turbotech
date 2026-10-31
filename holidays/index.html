@@ -29,15 +29,19 @@
             <div class="autocomplete-box" id="holiday-to-box"></div>
           </div>
 
-          <label class="field">
+          <div class="field date-field" role="button" tabindex="0">
             <span class="field-icon">📅</span>
-            <input type="date" id="holiday-start">
-          </label>
+            <input type="hidden" id="holiday-start">
+            <span class="date-display" data-placeholder="Departure">Departure</span>
+            <span class="date-btn" aria-hidden="true"></span>
+          </div>
 
-          <label class="field">
+          <div class="field date-field" role="button" tabindex="0">
             <span class="field-icon">📅</span>
-            <input type="date" id="holiday-end">
-          </label>
+            <input type="hidden" id="holiday-end">
+            <span class="date-display" data-placeholder="Return">Return</span>
+            <span class="date-btn" aria-hidden="true"></span>
+          </div>
 
           <div class="field">
             <span class="field-icon">👥</span>
@@ -65,6 +69,7 @@
   <script src="../assets/js/layout.js"></script>
   <script src="../assets/js/pos.js"></script>
   <script src="../assets/js/autocomplete.js"></script>
+  <script src="../assets/js/datepicker.js"></script>
   <script src="search.js"></script>
 </body>
 </html>

@@ -14,7 +14,8 @@ const toField = window.LODJ_AUTOCOMPLETE(toInput, document.getElementById('holid
 });
 const dates = window.LODJ_DATE_RANGE(document.getElementById('holiday-start'), document.getElementById('holiday-end'), {
   startLabel: 'a departure date',
-  endLabel: 'a return date'
+  endLabel: 'a return date',
+  nightsLabel: true
 });
 
 document.getElementById('searchBtn').addEventListener('click', () => {

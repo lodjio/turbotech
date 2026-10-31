@@ -23,15 +23,19 @@
             <div class="autocomplete-box" id="stay-search-box"></div>
           </div>
 
-          <label class="field">
+          <div class="field date-field" role="button" tabindex="0">
             <span class="field-icon">📅</span>
-            <input type="date" id="stay-start">
-          </label>
+            <input type="hidden" id="stay-start">
+            <span class="date-display" data-placeholder="Check-in">Check-in</span>
+            <span class="date-btn" aria-hidden="true"></span>
+          </div>
 
-          <label class="field">
+          <div class="field date-field" role="button" tabindex="0">
             <span class="field-icon">📅</span>
-            <input type="date" id="stay-end">
-          </label>
+            <input type="hidden" id="stay-end">
+            <span class="date-display" data-placeholder="Check-out">Check-out</span>
+            <span class="date-btn" aria-hidden="true"></span>
+          </div>
 
           <div class="field">
             <span class="field-icon">👥</span>
@@ -56,6 +60,7 @@
   <script src="../assets/js/layout.js"></script>
   <script src="../assets/js/pos.js"></script>
   <script src="../assets/js/autocomplete.js"></script>
+  <script src="../assets/js/datepicker.js"></script>
   <script src="../data/accor/index.js"></script>
   <script src="accor.js"></script>
   <script src="search.js"></script>

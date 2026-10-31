@@ -146,6 +146,9 @@
         }
         const exact = all.find(o => o.value.toLowerCase() === value.toLowerCase());
         if (exact) { choose(exact); return true; }
+        // "Paris" → the one option whose main name is exactly that (the city, not hotels containing it)
+        const sameName = all.filter(o => (o.main || '').toLowerCase() === value.toLowerCase());
+        if (sameName.length === 1) { choose(sameName[0]); return true; }
         const matches = filterOptions(all, value);
         if (matches.length === 1) { choose(matches[0]); return true; }
         showError(matches.length
@@ -154,54 +157,6 @@
         render();
         inputEl.focus();
         return false;
-      }
-    };
-  };
-
-  // Date pair (departure/return, check-in/check-out).
-  // Both dates are required unless `endRequired()` says otherwise (e.g. one-way flights).
-  // No past dates; the end date can't be before the start date.
-  window.LODJ_DATE_RANGE = function (startEl, endEl, opts = {}) {
-    const endRequired = opts.endRequired || (() => true);
-    const labels = { start: opts.startLabel || 'a start date', end: opts.endLabel || 'an end date' };
-    const today = new Date().toISOString().slice(0, 10);
-    startEl.min = today;
-    endEl.min = today;
-    startEl.addEventListener('change', () => { endEl.min = startEl.value || today; });
-
-    function setError(el, msg) {
-      const field = el.closest('.field');
-      let errorEl = field.querySelector('.field-error');
-      if (!errorEl) {
-        errorEl = document.createElement('div');
-        errorEl.className = 'field-error';
-        field.appendChild(errorEl);
-      }
-      field.classList.toggle('invalid', Boolean(msg));
-      errorEl.textContent = msg || '';
-    }
-
-    [startEl, endEl].forEach(el => el.addEventListener('change', () => setError(el, '')));
-
-    // Open the calendar when the customer clicks anywhere on the date field, not just the icon.
-    [startEl, endEl].forEach(el => el.closest('.field').addEventListener('click', (e) => {
-      if (el.disabled || e.target === el && e.offsetX > el.clientWidth - 40) return;
-      try { el.showPicker(); } catch (err) { el.focus(); }
-    }));
-
-    return {
-      clearEnd() { setError(endEl, ''); },
-      validate() {
-        let ok = true;
-        const needEnd = endRequired();
-        if (!startEl.value) { setError(startEl, `Please choose ${labels.start}`); ok = false; }
-        else if (startEl.value < today) { setError(startEl, 'Date is in the past'); ok = false; }
-        if (needEnd) {
-          if (!endEl.value) { setError(endEl, `Please choose ${labels.end}`); ok = false; }
-          else if (endEl.value < today) { setError(endEl, 'Date is in the past'); ok = false; }
-          else if (startEl.value && endEl.value < startEl.value) { setError(endEl, 'Must be after the start date'); ok = false; }
-        }
-        return ok;
       }
     };
   };
