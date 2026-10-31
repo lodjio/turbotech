@@ -11,7 +11,8 @@ const whereField = window.LODJ_AUTOCOMPLETE(where, document.getElementById('stay
 });
 const dates = window.LODJ_DATE_RANGE(document.getElementById('stay-start'), document.getElementById('stay-end'), {
   startLabel: 'a check-in date',
-  endLabel: 'a check-out date'
+  endLabel: 'a check-out date',
+  nightsLabel: true
 });
 
 document.getElementById('searchBtn').addEventListener('click', () => {

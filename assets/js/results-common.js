@@ -32,15 +32,6 @@
     document.getElementById('layout').classList.toggle('filters-hidden', hidden);
   });
 
-  // Share note
-  const note = document.getElementById('floatingNote');
-  if (note) {
-    const p = search.pax.toLowerCase();
-    note.textContent = (p.includes('2') && (p.includes('adult') || p.includes('traveler')))
-      ? 'Take a screenshot and send it to your significant other to book your holiday now and create some memories'
-      : 'Take a screenshot to share it with your friends and take it outside the group chat.';
-  }
-
   // ---- Demo pricing (deterministic per search, so refreshes look stable) ----
   function seededHash(str) {
     let h = 0;
