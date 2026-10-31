@@ -124,7 +124,7 @@
           <div>
             <div class="price-note">Accor Live Limitless<br>Earn ALL points on this stay</div>
             <div class="price on-request">Price upon request</div>
-            <div class="per-unit">${nights ? `${nights} night${nights === 1 ? '' : 's'}` : 'Select dates for a quote'}</div>
+            <div class="per-unit">${nights ? `${nights} night${nights === 1 ? '' : 's'} · ` : ''}Quote in ${window.LODJ_POS ? window.LODJ_POS.currency : 'SAR'}</div>
             <div class="tax-note">Rates confirmed by our team</div>
           </div>
           <div class="cta-group">
@@ -199,5 +199,6 @@
 
   sortSelect.addEventListener('change', () => { shown = PAGE; render(); });
   sidebar.addEventListener('change', () => { shown = PAGE; render(); });
+  document.addEventListener('lodj:pos', render);
   render();
 })();
