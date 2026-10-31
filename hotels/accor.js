@@ -8,6 +8,8 @@
 
   const countryName = (cc) => { try { return regionNames.of(cc); } catch (e) { return cc; } };
   const norm = (s) => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  // Compare city names ignoring spaces/punctuation ("Al Ula" = "Alula").
+  const sameCity = (a, b) => norm(a).replace(/[^a-z0-9]/g, '') === norm(b).replace(/[^a-z0-9]/g, '');
 
   // Popular cities shown before the customer types (only those that have Accor hotels).
   const FEATURED_CITIES = ['Dubai|AE', 'Abu Dhabi|AE', 'Riyadh|SA', 'Jeddah|SA', 'Doha|QA', 'London|GB', 'Paris|FR', 'Istanbul|TR', 'Bangkok|TH', 'Singapore|SG'];
@@ -16,7 +18,7 @@
     const map = new Map();
     INDEX.forEach(([, , city, cc]) => {
       if (!city) return;
-      const key = `${norm(city)}|${cc}`;
+      const key = `${norm(city).replace(/[^a-z0-9]/g, '')}|${cc}`;
       const entry = map.get(key) || { city, cc, count: 0 };
       entry.count++;
       map.set(key, entry);
@@ -36,6 +38,7 @@
   window.LODJ_ACCOR = {
     countryName,
     norm,
+    sameCity,
 
     photoUrl(code, id, size = '1024x768') {
       const c = code.toLowerCase();
@@ -80,10 +83,13 @@
       const first = norm(to.split(',')[0]);
       const byHotel = INDEX.find(x => norm(x[1]) === norm(to));
       if (byHotel) return { kind: 'hotel', code: byHotel[0], cc: byHotel[3], city: byHotel[2], label: byHotel[1] };
-      const byCity = cities.find(c => norm(c.city) === first);
+      const byCity = cities.find(c => sameCity(c.city, first));
       if (byCity) return { kind: 'city', cc: byCity.cc, city: byCity.city, label: `${byCity.city}, ${countryName(byCity.cc)}` };
       const byCountry = countries.find(c => norm(c.name) === first || norm(c.name) === norm(to));
       if (byCountry) return { kind: 'country', cc: byCountry.cc, label: byCountry.name };
+      // Last resort: hotels whose name contains the search (e.g. "Red Sea").
+      const named = INDEX.filter(x => norm(x[1]).includes(norm(to)));
+      if (named.length) return { kind: 'name', cc: named[0][3], codes: named.filter(x => x[3] === named[0][3]).map(x => x[0]), label: to };
       return { kind: 'none', label: to };
     },
 

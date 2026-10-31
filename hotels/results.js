@@ -61,14 +61,17 @@
 
   let hotels = all;
   if (query.kind === 'city' || query.kind === 'hotel') {
-    hotels = all.filter(h => A.norm(h.city) === A.norm(query.city));
+    hotels = all.filter(h => A.sameCity(h.city, query.city));
+  }
+  if (query.kind === 'name') {
+    hotels = all.filter(h => query.codes.includes(h.code));
   }
   if (query.kind === 'hotel') {
     const picked = all.find(h => h.code === query.code);
     hotels = [picked, ...hotels.filter(h => h.code !== query.code)].filter(Boolean);
   }
 
-  const place = query.kind === 'country' ? A.countryName(query.cc) : query.city;
+  const place = query.kind === 'country' ? A.countryName(query.cc) : query.kind === 'name' ? query.label : query.city;
 
   // ---------- filters (stars + brand) ----------
   const sidebar = document.getElementById('sidebar');
