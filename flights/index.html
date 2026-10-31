@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>lodj.io · Flights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/search.css">
+</head>
+<body data-root="../" data-vertical="flights">
+  <div class="page">
+    <div id="search-topbar"></div>
+
+    <div class="hero-card">
+      <div class="panel active" id="flights">
+        <div class="filters">
+          <div class="pills">
+            <button class="pill active">One Way</button>
+            <button class="pill">Round Trip</button>
+            <button class="pill">Multi City</button>
+          </div>
+
+          <label class="check">
+            <input type="checkbox">
+            <span>Direct Flights</span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox">
+            <span>Baggage Included</span>
+          </label>
+        </div>
+
+        <div class="grid-flight">
+          <div class="field">
+            <span class="field-icon">🛫</span>
+            <input type="text" id="flight-origin" placeholder="Origin" autocomplete="off">
+            <div class="autocomplete-box" id="flight-origin-box"></div>
+          </div>
+
+          <div class="field">
+            <span class="field-icon">🛬</span>
+            <input type="text" id="flight-destination" placeholder="Destination" autocomplete="off">
+            <div class="autocomplete-box" id="flight-destination-box"></div>
+          </div>
+
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date" id="flight-start">
+          </label>
+
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date" id="flight-end">
+          </label>
+
+          <div class="field">
+            <span class="field-icon">👥</span>
+            <select id="flight-pax">
+              <option>1 Traveler, Economy</option>
+              <option>2 Travelers, Economy</option>
+              <option>1 Traveler, Business</option>
+              <option>2 Travelers, Business</option>
+            </select>
+          </div>
+
+          <button class="search-btn" type="button" id="searchBtn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="explore"></div>
+  </div>
+
+  <script src="../assets/js/verticals.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../data/airports.js"></script>
+  <script src="../data/destinations.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/autocomplete.js"></script>
+  <script src="search.js"></script>
+</body>
+</html>
