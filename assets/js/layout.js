@@ -15,7 +15,7 @@
           <h1 class="logo">lodj.io</h1>
           <p class="sub">Demo experience</p>
         </div>
-        <div class="top-actions">
+        <div class="top-actions" data-locale-slot>
           <a class="home-link" href="${ROOT}index.html">← Back to home</a>
           <button class="mode-toggle" data-theme-toggle type="button">Toggle mode</button>
         </div>
@@ -30,7 +30,7 @@
     return `
       <div class="header-inner">
         <a href="${ROOT}index.html" class="brand">lodj.io</a>
-        <div class="nav-actions">
+        <div class="nav-actions" data-locale-slot>
           <a class="nav-btn" href="${url(current.path)}">New search</a>
           ${V.map(v => `<a class="nav-btn ${v.id === ACTIVE ? 'active' : ''}" href="${url(v.path, 'results.html')}">${v.label}</a>`).join('')}
           <button class="nav-btn" data-theme-toggle type="button">Toggle mode</button>
