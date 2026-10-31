@@ -74,7 +74,8 @@
     regularPrice(min, max, index) {
       return Math.round(min + ((seedBase + index * 29) % (max - min + 1)));
     },
-    formatSAR: (n) => `SAR ${n.toLocaleString()}`,
+    // Demo prices are in SAR; shown in the customer's POS currency.
+    formatSAR: (n) => window.LODJ_POS ? window.LODJ_POS.format(n) : `SAR ${n.toLocaleString()}`,
     // Anything taken from the URL must be escaped before going into HTML.
     escape: (v) => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])),
     // "JED - Jeddah" → { code: 'JED', city: 'Jeddah' }

@@ -93,5 +93,10 @@ setHeading(
   searchedRoute
     ? `${searchedRoute}${search.start !== 'Any selected date' ? ` · ${search.start}` : ''}${search.end !== 'Any selected date' ? ` → ${search.end}` : ''}${search.pax ? ` · ${search.pax}` : ''}`
     : 'Flights are now compact. First two are highlighted, one includes a Business Class hotel bundle offer.');
-document.getElementById('resultsContainer').innerHTML =
-  window.LODJ_FLIGHTS.map(renderFlightCard).join('');
+function renderFlights() {
+  document.getElementById('resultsContainer').innerHTML =
+    window.LODJ_FLIGHTS.map(renderFlightCard).join('');
+}
+renderFlights();
+// Re-price when the customer changes country / currency in the POS box.
+document.addEventListener('lodj:pos', renderFlights);

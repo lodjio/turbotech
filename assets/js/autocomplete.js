@@ -183,6 +183,12 @@
 
     [startEl, endEl].forEach(el => el.addEventListener('change', () => setError(el, '')));
 
+    // Open the calendar when the customer clicks anywhere on the date field, not just the icon.
+    [startEl, endEl].forEach(el => el.closest('.field').addEventListener('click', (e) => {
+      if (el.disabled || e.target === el && e.offsetX > el.clientWidth - 40) return;
+      try { el.showPicker(); } catch (err) { el.focus(); }
+    }));
+
     return {
       clearEnd() { setError(endEl, ''); },
       validate() {
