@@ -644,3 +644,12 @@ a.tab {
     white-space: normal;
   }
 }
+
+/* Return date greyed out for one-way flights */
+.field.disabled {
+  opacity: 0.4;
+}
+
+.field.disabled input {
+  cursor: not-allowed;
+}

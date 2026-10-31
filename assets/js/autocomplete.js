@@ -158,8 +158,12 @@
     };
   };
 
-  // Check-in / check-out style date pair: no past dates, end not before start.
-  window.LODJ_DATE_RANGE = function (startEl, endEl) {
+  // Date pair (departure/return, check-in/check-out).
+  // Both dates are required unless `endRequired()` says otherwise (e.g. one-way flights).
+  // No past dates; the end date can't be before the start date.
+  window.LODJ_DATE_RANGE = function (startEl, endEl, opts = {}) {
+    const endRequired = opts.endRequired || (() => true);
+    const labels = { start: opts.startLabel || 'a start date', end: opts.endLabel || 'an end date' };
     const today = new Date().toISOString().slice(0, 10);
     startEl.min = today;
     endEl.min = today;
@@ -180,13 +184,16 @@
     [startEl, endEl].forEach(el => el.addEventListener('change', () => setError(el, '')));
 
     return {
+      clearEnd() { setError(endEl, ''); },
       validate() {
         let ok = true;
-        if (startEl.value && startEl.value < today) { setError(startEl, 'Date is in the past'); ok = false; }
-        if (endEl.value && endEl.value < today) { setError(endEl, 'Date is in the past'); ok = false; }
-        if (ok && startEl.value && endEl.value && endEl.value < startEl.value) {
-          setError(endEl, 'Must be after the start date');
-          ok = false;
+        const needEnd = endRequired();
+        if (!startEl.value) { setError(startEl, `Please choose ${labels.start}`); ok = false; }
+        else if (startEl.value < today) { setError(startEl, 'Date is in the past'); ok = false; }
+        if (needEnd) {
+          if (!endEl.value) { setError(endEl, `Please choose ${labels.end}`); ok = false; }
+          else if (endEl.value < today) { setError(endEl, 'Date is in the past'); ok = false; }
+          else if (startEl.value && endEl.value < startEl.value) { setError(endEl, 'Must be after the start date'); ok = false; }
         }
         return ok;
       }

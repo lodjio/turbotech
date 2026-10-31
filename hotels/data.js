@@ -1,7 +1,11 @@
 // Demo hotel inventory. Replace with a real supplier / API feed later.
+// When the customer searches a destination, results use `searchName` / `searchDesc`
+// with {city} replaced, and the location becomes the searched destination.
 window.LODJ_HOTELS = [
   {
     name: 'ABC Hotel',
+    searchName: 'ABC Hotel',
+    searchDesc: 'Strong {city} distress inventory with deep markdown and very obvious urgency.',
     location: 'Dubai, UAE',
     desc: 'Strong Dubai distress inventory with deep markdown and very obvious urgency.',
     image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
@@ -11,6 +15,8 @@ window.LODJ_HOTELS = [
   },
   {
     name: 'XYZ Hotel',
+    searchName: 'XYZ Hotel',
+    searchDesc: 'A {city} distress deal this good is borderline unfair, which is exactly why it works so well in a demo.',
     location: 'Maldives',
     desc: 'A Maldives distress deal is borderline unfair, which is exactly why it works so well in a demo.',
     image: 'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1200&q=80',
@@ -20,6 +26,8 @@ window.LODJ_HOTELS = [
   },
   {
     name: 'Jeddah Corniche Suites',
+    searchName: '{city} Grand Suites',
+    searchDesc: 'A dependable {city} option with sea views and family rooms.',
     location: 'Jeddah, Saudi Arabia',
     desc: 'Good domestic option that makes the page feel grounded.',
     image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80',
@@ -29,6 +37,8 @@ window.LODJ_HOTELS = [
   },
   {
     name: 'Mykonos Azure Retreat',
+    searchName: '{city} Azure Retreat',
+    searchDesc: 'Premium leisure stay in {city} with an infinity pool and sunset views.',
     location: 'Mykonos, Greece',
     desc: 'Premium leisure inventory for visual variety and a more believable destination spread.',
     image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80',
@@ -38,6 +48,8 @@ window.LODJ_HOTELS = [
   },
   {
     name: 'Phuket Bay Escape',
+    searchName: '{city} Bay Escape',
+    searchDesc: 'Classic {city} leisure favourite, steps from the water.',
     location: 'Phuket, Thailand',
     desc: 'Classic leisure inventory that fills the stack without looking random.',
     image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=1200&q=80',

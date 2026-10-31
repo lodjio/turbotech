@@ -17,9 +17,9 @@
       <div class="panel active" id="flights">
         <div class="filters">
           <div class="pills">
-            <button class="pill active">One Way</button>
-            <button class="pill">Round Trip</button>
-            <button class="pill">Multi City</button>
+            <button class="pill active" type="button" data-trip="oneway">One Way</button>
+            <button class="pill" type="button" data-trip="return">Round Trip</button>
+            <button class="pill" type="button" data-trip="multicity">Multi City</button>
           </div>
 
           <label class="check">
@@ -48,12 +48,12 @@
 
           <label class="field">
             <span class="field-icon">📅</span>
-            <input type="date" id="flight-start">
+            <input type="date" id="flight-start" aria-label="Departure date" title="Departure date">
           </label>
 
-          <label class="field">
+          <label class="field" id="flight-end-field">
             <span class="field-icon">📅</span>
-            <input type="date" id="flight-end">
+            <input type="date" id="flight-end" aria-label="Return date" title="Return date">
           </label>
 
           <div class="field">
