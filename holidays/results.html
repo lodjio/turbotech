@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>lodj.io · Holiday results</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/results.css">
+</head>
+<body data-root="../" data-vertical="holidays">
+  <header class="header" id="results-header"></header>
+
+  <div class="page">
+    <div class="summary-card">
+      <div class="summary-box">
+        <div class="summary-label">Search type</div>
+        <div class="summary-value" id="summaryType"></div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-label">Route / destination</div>
+        <div class="summary-value" id="summaryRoute">Trending destinations</div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-label">Start date</div>
+        <div class="summary-value" id="summaryStart">Any selected date</div>
+      </div>
+
+      <div class="summary-box">
+        <div class="summary-label">End date</div>
+        <div class="summary-value" id="summaryEnd">Any selected date</div>
+      </div>
+
+      <a class="summary-btn" id="modifySearch" href="./">Modify search</a>
+    </div>
+
+    <div class="layout filters-hidden" id="layout">
+      <aside class="sidebar hidden" id="sidebar">
+        <div class="sidebar-top">
+          <h3>Live demo filters</h3>
+          <button class="toggle-filters-btn" id="toggleFiltersBtn" type="button">Show</button>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-title">Promotions</div>
+          <label class="filter-option"><input type="checkbox" checked> Distress Deals</label>
+          <label class="filter-option"><input type="checkbox" checked> Featured</label>
+          <label class="filter-option"><input type="checkbox" checked> Sponsored</label>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-title">Top destinations</div>
+          <label class="filter-option"><input type="checkbox" checked> Dubai</label>
+          <label class="filter-option"><input type="checkbox" checked> Maldives</label>
+          <label class="filter-option"><input type="checkbox" checked> Jeddah</label>
+          <label class="filter-option"><input type="checkbox"> Mykonos</label>
+          <label class="filter-option"><input type="checkbox"> Phuket</label>
+          <label class="filter-option"><input type="checkbox"> Krabi</label>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-title">Demo logic</div>
+          <label class="filter-option"><input type="checkbox" checked> Hotel spacing fixed</label>
+          <label class="filter-option"><input type="checkbox" checked> Compact flight cards</label>
+          <label class="filter-option"><input type="checkbox" checked> Bundle incentive active</label>
+        </div>
+      </aside>
+
+      <main class="main">
+        <div class="content-top">
+          <div class="results-head">
+            <div>
+              <div class="results-title" id="resultsTitle"></div>
+              <div class="results-sub" id="resultsSub"></div>
+            </div>
+
+            <div class="results-actions">
+              <select class="sort-select">
+                <option>Sort by: Recommended</option>
+                <option>Sort by: Featured First</option>
+                <option>Sort by: Lowest Price</option>
+                <option>Sort by: Highest Discount</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="promo-strip">
+          <div>
+            <div class="promo-title">Distress Deals Access - Gold Member</div>
+            <div class="promo-sub">As you are a gold member you have access to Last minute distress deals and additional value adds</div>
+          </div>
+
+          <div class="promo-chip-wrap">
+            <div class="promo-chip">Compact flights</div>
+            <div class="promo-chip">Business bundle 20%</div>
+          </div>
+        </div>
+
+        <div id="resultsContainer"></div>
+      </main>
+    </div>
+  </div>
+
+  <div class="floating-note" id="floatingNote">
+    Take a screenshot to share it with your friends and take it outside the group chat.
+  </div>
+
+  <script src="../assets/js/verticals.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/results-common.js"></script>
+  <script src="results.js"></script>
+</body>
+</html>

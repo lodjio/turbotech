@@ -1,27 +1,30 @@
 // Flights search form → flights/results.html
 const originInput = document.getElementById('flight-origin');
-const destination = document.getElementById('flight-destination');
+const destinationInput = document.getElementById('flight-destination');
 
-function airportSections(q) {
-  const all = window.LODJ_AIRPORTS;
-  const matches = q
-    ? all.filter(a => [a.code, a.city, a.airport, a.country].some(v => v.toLowerCase().includes(q)))
-    : all;
-  return [{
-    title: 'Airports',
-    items: matches.slice(0, 8).map(a => ({
-      value: `${a.code} - ${a.city}`, main: `${a.code} - ${a.city}`, sub: `${a.airport}, ${a.country}`, tag: 'Airport'
-    }))
-  }];
-}
+const airportField = (input, box, label) => window.LODJ_AUTOCOMPLETE(input, document.getElementById(box), {
+  label,
+  options: window.LODJ_AIRPORT_OPTIONS
+});
 
-window.LODJ_AUTOCOMPLETE(originInput, document.getElementById('flight-origin-box'), airportSections);
-window.LODJ_AUTOCOMPLETE(destination, document.getElementById('flight-destination-box'), airportSections);
+const originField = airportField(originInput, 'flight-origin-box', 'origin airport');
+const destinationField = airportField(destinationInput, 'flight-destination-box', 'destination airport');
+const dates = window.LODJ_DATE_RANGE(document.getElementById('flight-start'), document.getElementById('flight-end'));
 
 document.getElementById('searchBtn').addEventListener('click', () => {
+  const ok = [originField.validate(), destinationField.validate(), dates.validate()].every(Boolean);
+  if (!ok) return;
+
+  if (originInput.value === destinationInput.value) {
+    const field = destinationInput.closest('.field');
+    field.classList.add('invalid');
+    field.querySelector('.field-error').textContent = 'Destination must differ from origin';
+    return;
+  }
+
   const params = new URLSearchParams({
-    from: originInput.value || 'JED',
-    to: destination.value || 'DXB',
+    from: originInput.value,
+    to: destinationInput.value,
     start: document.getElementById('flight-start').value,
     end: document.getElementById('flight-end').value,
     pax: document.getElementById('flight-pax').value

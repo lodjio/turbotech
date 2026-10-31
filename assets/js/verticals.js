@@ -4,6 +4,7 @@
 window.LODJ_VERTICALS = [
   { id: 'flights',    path: 'flights',    label: 'Flights',    icon: '✈' },
   { id: 'hotels',     path: 'hotels',     label: 'Stays',      icon: '🛏' },
+  { id: 'holidays',   path: 'holidays',   label: 'Holidays',   icon: '🌴' },
   { id: 'activities', path: 'activities', label: 'Activities', icon: '🎈' }
 ];
 
@@ -14,6 +15,5 @@ window.LODJ_UPCOMING_SERVICES = [
   { icon: '🚗', label: 'Car rental' },
   { icon: '🧳', label: 'Domestic packages' },
   { icon: '🛳', label: 'Cruise' },
-  { icon: '🗺', label: 'Holiday Packages' },
   { icon: '•••', label: 'More services' }
 ];

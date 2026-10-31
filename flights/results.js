@@ -47,7 +47,10 @@ function renderFlightCard(item, index) {
     <article class="flight-card ${item.featured ? 'featured' : ''}">
       <div class="flight-logo-col">
         <div class="airline-logo-wrap">
-          <img src="${item.airlineLogo}" alt="${item.airline}">
+          <img src="${window.LODJ_AIRLINE_LOGOS(item.code)[0]}"
+               data-fallbacks="${window.LODJ_AIRLINE_LOGOS(item.code).slice(1).join('|')}"
+               data-code="${item.code}" alt="${item.airline} logo" loading="lazy"
+               onerror="window.LODJ_LOGO_FALLBACK(this)">
         </div>
         <div class="airline-name">${item.airline}</div>
       </div>

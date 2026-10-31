@@ -17,6 +17,7 @@ flights/                ✈ Flights vertical
   data.js               Demo flight inventory (replace with a real feed)
 
 hotels/                 🛏 Stays vertical (same layout as flights/)
+holidays/               🌴 Holidays (flight + hotel packages; no inventory yet — shows "coming soon")
 activities/             🎈 Activities vertical (no inventory yet — shows "coming soon")
 
 assets/
@@ -26,7 +27,7 @@ assets/
   js/verticals.js       List of verticals → drives tabs and navigation everywhere
   js/layout.js          Shared top bar, tabs, results header, explore sections
   js/theme.js           Dark / light mode
-  js/autocomplete.js    Search field dropdowns
+  js/autocomplete.js    Search dropdowns with * / ? wildcards + validation, date checks
   js/results-common.js  URL params, summary bar, filters toggle, demo pricing helpers
   js/countdown.js       Landing page countdown
 
@@ -34,6 +35,13 @@ data/
   airports.js           Airports for flight search
   destinations.js       Destinations for search + featured destination cards
 ```
+
+## Search fields
+
+Every text search field uses `LODJ_AUTOCOMPLETE` (assets/js/autocomplete.js): a dropdown of
+known options that supports wildcards (`Du*`, `*bai`, `D?B`). A search only goes through when
+every field holds one of the options (a unique wildcard match is accepted automatically) and
+the dates are valid.
 
 ## Adding a new vertical (e.g. transfers)
 

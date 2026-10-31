@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>lodj.io · Holidays</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/search.css">
+</head>
+<body data-root="../" data-vertical="holidays">
+  <div class="page">
+    <div id="search-topbar"></div>
+
+    <div class="hero-card">
+      <div class="panel active" id="holidays">
+        <div class="grid-holiday">
+          <div class="field">
+            <span class="field-icon">🛫</span>
+            <input type="text" id="holiday-from" placeholder="Flying from" autocomplete="off">
+            <div class="autocomplete-box" id="holiday-from-box"></div>
+          </div>
+
+          <div class="field">
+            <span class="field-icon">🌴</span>
+            <input type="text" id="holiday-to" placeholder="Holiday destination" autocomplete="off">
+            <div class="autocomplete-box" id="holiday-to-box"></div>
+          </div>
+
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date" id="holiday-start">
+          </label>
+
+          <label class="field">
+            <span class="field-icon">📅</span>
+            <input type="date" id="holiday-end">
+          </label>
+
+          <div class="field">
+            <span class="field-icon">👥</span>
+            <select id="holiday-pax">
+              <option>2 Adults, 1 Room</option>
+              <option>1 Adult, 1 Room</option>
+              <option>2 Adults, 1 Child, 1 Room</option>
+              <option>2 Adults, 2 Children, 1 Room</option>
+              <option>4 Adults, 2 Rooms</option>
+            </select>
+          </div>
+
+          <button class="search-btn" type="button" id="searchBtn">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="explore"></div>
+  </div>
+
+  <script src="../assets/js/verticals.js"></script>
+  <script src="../assets/js/theme.js"></script>
+  <script src="../data/airports.js"></script>
+  <script src="../data/destinations.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/autocomplete.js"></script>
+  <script src="search.js"></script>
+</body>
+</html>
