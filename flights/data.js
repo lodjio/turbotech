@@ -59,7 +59,7 @@ window.LODJ_FLIGHTS = [
 // To use a specific logo (e.g. after a rebrand), drop the file in assets/airlines/
 // and list it here. It is tried first.
 window.LODJ_AIRLINE_LOGO_OVERRIDES = {
-  // SV: 'SV.svg'   // Saudia 2023 logo: add the file, then uncomment
+  SV: 'SV.png'   // Saudia 2023 logo (palm + wings), supplied by lodj.io
 };
 
 window.LODJ_AIRLINE_LOGOS = (code) => [
