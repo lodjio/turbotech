@@ -834,3 +834,9 @@ body[data-vertical="holidays"] .promo-strip {
   font-size: 1rem;
   letter-spacing: 0.04em;
 }
+
+.empty-svg {
+  width: 44px;
+  height: 44px;
+  color: var(--brand);
+}

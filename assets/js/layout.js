@@ -21,7 +21,7 @@
         </div>
       </div>
       <nav class="tabs">
-        ${V.map(v => `<a class="tab ${v.id === ACTIVE ? 'active' : ''}" href="${url(v.path)}">${v.icon} ${v.label}</a>`).join('')}
+        ${V.map(v => `<a class="tab ${v.id === ACTIVE ? 'active' : ''}" href="${url(v.path)}">${window.LODJ_ICON(v.svg, 'tab-icon') || v.icon}<span>${v.label}</span></a>`).join('')}
       </nav>`;
   }
 
