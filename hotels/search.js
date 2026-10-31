@@ -17,7 +17,10 @@ const whereField = window.LODJ_AUTOCOMPLETE(where, document.getElementById('stay
   featured: window.LODJ_TRENDING,
   emptyTitle: 'Trending searches'
 });
-const dates = window.LODJ_DATE_RANGE(document.getElementById('stay-start'), document.getElementById('stay-end'));
+const dates = window.LODJ_DATE_RANGE(document.getElementById('stay-start'), document.getElementById('stay-end'), {
+  startLabel: 'a check-in date',
+  endLabel: 'a check-out date'
+});
 
 document.getElementById('searchBtn').addEventListener('click', () => {
   if (![whereField.validate(), dates.validate()].every(Boolean)) return;

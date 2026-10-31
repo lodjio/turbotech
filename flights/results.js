@@ -1,5 +1,10 @@
 // Renders flight result cards from flights/data.js.
-const { search, seedBase, pick, urgencyTexts, discountedPrice, regularPrice, formatSAR, setHeading } = window.LODJ_RESULTS;
+const { search, seedBase, pick, urgencyTexts, discountedPrice, regularPrice, formatSAR, setHeading, escape, parseAirport } = window.LODJ_RESULTS;
+
+// Use the customer's route on every card when they searched one.
+const fromAirport = parseAirport(search.from);
+const toAirport = parseAirport(search.to);
+const searchedRoute = fromAirport && toAirport ? `${fromAirport.code} → ${toAirport.code}` : null;
 
 function renderFlightCard(item, index) {
   const urgency = pick(urgencyTexts, seedBase, index + 3);
@@ -57,7 +62,7 @@ function renderFlightCard(item, index) {
 
       <div class="flight-mid">
         <div class="rating-pill">${item.rating}</div>
-        <div class="flight-route">${item.route}</div>
+        <div class="flight-route">${searchedRoute || item.route}</div>
         <div class="chips">
           ${item.tags.map(tag => `<div class="chip">${tag}</div>`).join('')}
         </div>
@@ -66,7 +71,7 @@ function renderFlightCard(item, index) {
       <div class="flight-meta">
         <div class="flight-class">Traveler class</div>
         <div class="flight-class-pill">${item.travelerClass}</div>
-        <div class="flight-info-line">${search.pax || '1 Traveler, Economy'}</div>
+        <div class="flight-info-line">${escape(search.pax || '1 Traveler, Economy')}</div>
         <div class="flight-info-line">${item.businessBundle ? 'Bundle incentive available' : 'Standalone fare option'}</div>
       </div>
 
@@ -81,7 +86,12 @@ function renderFlightCard(item, index) {
   `;
 }
 
-setHeading(`${window.LODJ_FLIGHTS.length} flight results`,
-  'Flights are now compact. First two are highlighted, one includes a Business Class hotel bundle offer.');
+setHeading(
+  searchedRoute
+    ? `${window.LODJ_FLIGHTS.length} flights from ${fromAirport.city} to ${toAirport.city}`
+    : `${window.LODJ_FLIGHTS.length} flight results`,
+  searchedRoute
+    ? `${searchedRoute}${search.start !== 'Any selected date' ? ` · ${search.start}` : ''}${search.end !== 'Any selected date' ? ` → ${search.end}` : ''}${search.pax ? ` · ${search.pax}` : ''}`
+    : 'Flights are now compact. First two are highlighted, one includes a Business Class hotel bundle offer.');
 document.getElementById('resultsContainer').innerHTML =
   window.LODJ_FLIGHTS.map(renderFlightCard).join('');

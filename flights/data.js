@@ -6,7 +6,7 @@ window.LODJ_FLIGHTS = [
     code: 'EK',
     route: 'JED → DXB',
     travelerClass: 'Economy',
-    tags: ['Direct', '1 traveler', 'Baggage optional'],
+    tags: ['Direct', 'Refundable', 'Baggage optional'],
     rating: '9.0 Featured',
     featured: true,
     businessBundle: false
@@ -26,7 +26,7 @@ window.LODJ_FLIGHTS = [
     code: 'FZ',
     route: 'JED → RUH',
     travelerClass: 'Economy',
-    tags: ['Domestic', 'Morning flight', 'Flexible'],
+    tags: ['Morning flight', 'Flexible', 'Low fare'],
     rating: '8.5 Good',
     featured: false,
     businessBundle: false
@@ -36,7 +36,7 @@ window.LODJ_FLIGHTS = [
     code: 'QR',
     route: 'DXB → HKT',
     travelerClass: 'Economy',
-    tags: ['1 stop', 'Leisure route', 'Popular'],
+    tags: ['1 stop via DOH', 'Popular', 'Baggage included'],
     rating: '8.8 Very Good',
     featured: false,
     businessBundle: false
@@ -46,7 +46,7 @@ window.LODJ_FLIGHTS = [
     code: 'CX',
     route: 'RUH → HKG',
     travelerClass: 'Economy',
-    tags: ['APAC', 'Evening departure', 'City break'],
+    tags: ['1 stop', 'Evening departure', 'Flexible'],
     rating: '8.7 Very Good',
     featured: false,
     businessBundle: false

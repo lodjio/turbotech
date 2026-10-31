@@ -12,7 +12,10 @@ const toField = window.LODJ_AUTOCOMPLETE(toInput, document.getElementById('holid
   featured: window.LODJ_TRENDING,
   emptyTitle: 'Trending holidays'
 });
-const dates = window.LODJ_DATE_RANGE(document.getElementById('holiday-start'), document.getElementById('holiday-end'));
+const dates = window.LODJ_DATE_RANGE(document.getElementById('holiday-start'), document.getElementById('holiday-end'), {
+  startLabel: 'a departure date',
+  endLabel: 'a return date'
+});
 
 document.getElementById('searchBtn').addEventListener('click', () => {
   if (![fromField.validate(), toField.validate(), dates.validate()].every(Boolean)) return;

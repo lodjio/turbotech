@@ -9,7 +9,24 @@ const airportField = (input, box, label) => window.LODJ_AUTOCOMPLETE(input, docu
 
 const originField = airportField(originInput, 'flight-origin-box', 'origin airport');
 const destinationField = airportField(destinationInput, 'flight-destination-box', 'destination airport');
-const dates = window.LODJ_DATE_RANGE(document.getElementById('flight-start'), document.getElementById('flight-end'));
+// One Way needs only a departure date; Round Trip / Multi City need both.
+const endInput = document.getElementById('flight-end');
+const tripType = () => (document.querySelector('.pill.active[data-trip]') || {}).dataset?.trip || 'oneway';
+
+const dates = window.LODJ_DATE_RANGE(document.getElementById('flight-start'), endInput, {
+  endRequired: () => tripType() !== 'oneway',
+  startLabel: 'a departure date',
+  endLabel: 'a return date'
+});
+
+function syncTripType() {
+  const oneWay = tripType() === 'oneway';
+  endInput.disabled = oneWay;
+  document.getElementById('flight-end-field').classList.toggle('disabled', oneWay);
+  if (oneWay) { endInput.value = ''; dates.clearEnd(); }
+}
+document.querySelectorAll('.pill[data-trip]').forEach(p => p.addEventListener('click', () => setTimeout(syncTripType)));
+syncTripType();
 
 document.getElementById('searchBtn').addEventListener('click', () => {
   const ok = [originField.validate(), destinationField.validate(), dates.validate()].every(Boolean);
@@ -26,7 +43,8 @@ document.getElementById('searchBtn').addEventListener('click', () => {
     from: originInput.value,
     to: destinationInput.value,
     start: document.getElementById('flight-start').value,
-    end: document.getElementById('flight-end').value,
+    end: endInput.value,
+    trip: tripType(),
     pax: document.getElementById('flight-pax').value
   });
   window.location.href = `results.html?${params}`;

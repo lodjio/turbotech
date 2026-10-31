@@ -20,7 +20,7 @@
   setText('summaryType', vertical.label);
   setText('summaryRoute', vertical.id === 'flights' ? `${search.from} → ${search.to}` : search.to);
   setText('summaryStart', search.start);
-  setText('summaryEnd', search.end);
+  setText('summaryEnd', params.get('trip') === 'oneway' ? 'One way' : search.end);
 
   const modify = document.getElementById('modifySearch');
   if (modify) modify.href = './';
@@ -78,6 +78,13 @@
       return Math.round(min + ((seedBase + index * 29) % (max - min + 1)));
     },
     formatSAR: (n) => `SAR ${n.toLocaleString()}`,
+    // Anything taken from the URL must be escaped before going into HTML.
+    escape: (v) => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])),
+    // "JED - Jeddah" → { code: 'JED', city: 'Jeddah' }
+    parseAirport(value) {
+      const m = /^([A-Z]{3}) - (.+)$/.exec(value || '');
+      return m ? { code: m[1], city: m[2] } : null;
+    },
     setHeading(title, sub) {
       setText('resultsTitle', title);
       setText('resultsSub', sub);
