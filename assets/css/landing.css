@@ -80,15 +80,3 @@ body {
   font-size: 0.9rem;
 }
 
-footer {
-  margin-top: 60px;
-  padding: 0 16px 30px;
-  color: #777;
-  font-size: 0.85rem;
-}
-
-footer .licence {
-  color: #b9bed0;
-  font-weight: 700;
-  margin-bottom: 6px;
-}

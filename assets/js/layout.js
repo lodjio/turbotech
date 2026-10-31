@@ -84,11 +84,11 @@
   footer.className = 'site-footer';
   footer.innerHTML = `
     <div class="site-footer-inner">
-      <div class="site-footer-licence">
-        <span class="licence-mark" aria-hidden="true">✓</span>
-        Licensed Travel Agency with Permit to operate in MENA Region. Licenses in Bahrain &amp; UAE (UAE FZCO)
+      <div class="site-footer-licence">Licensed Travel Agency with Permit to operate in MENA Region. Licenses in Bahrain &amp; UAE (UAE FZCO)</div>
+      <div class="site-footer-meta">
+        © 2026 lodj.io. All rights reserved. | SJ | Made with 💜 for the <a href="${url('flights')}" class="easter-egg-link">🌏</a>
+        <span class="site-footer-fx">· Exchange rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Exchange Rate API</a></span>
       </div>
-      <div class="site-footer-meta">© ${new Date().getFullYear()} lodj.io · Exchange rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Exchange Rate API</a></div>
     </div>`;
   document.body.appendChild(footer);
 
