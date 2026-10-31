@@ -30,19 +30,14 @@ window.LODJ_FEATURED_DESTINATIONS = {
   ]
 };
 
-// Autocomplete sections for a destination field.
-window.LODJ_DESTINATION_SECTIONS = function (q) {
-  const toItem = d => ({ value: `${d.name}, ${d.country}`, main: d.name, sub: d.country, tag: d.tag });
-  if (!q) {
-    return [{
-      title: 'Trending searches',
-      items: window.LODJ_DESTINATIONS.filter(d => ['Trending', 'Sponsored'].includes(d.tag)).map(toItem)
-    }];
-  }
-  return [{
-    title: 'Destinations',
-    items: window.LODJ_DESTINATIONS
-      .filter(d => d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q))
-      .slice(0, 8).map(toItem)
-  }];
-};
+// Dropdown options for destination fields.
+window.LODJ_DESTINATION_OPTIONS = () => window.LODJ_DESTINATIONS.map(d => ({
+  value: `${d.name}, ${d.country}`,
+  main: d.name,
+  sub: d.country,
+  tag: d.tag,
+  section: 'Destinations',
+  keys: [d.name, d.country]
+}));
+
+window.LODJ_TRENDING = (opt) => ['Trending', 'Sponsored'].includes(opt.tag);

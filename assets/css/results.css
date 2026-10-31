@@ -2,9 +2,9 @@
   --brand: #2D34FF;
   --brand-dark: #1c22c7;
   --brand-soft: #e8e9ff;
-  --bg: #050505;
-  --bg-elevated: #111217;
-  --bg-card: #12141c;
+  --bg: #04060f;
+  --bg-elevated: #0b1022;
+  --bg-card: #0d1328;
   --text: #f4f4f8;
   --text-soft: #b9bed0;
   --text-muted: #8f95a8;
@@ -816,7 +816,8 @@ a.summary-btn {
   font-size: 2.4rem;
 }
 
-body[data-vertical="activities"] .promo-strip {
+body[data-vertical="activities"] .promo-strip,
+body[data-vertical="holidays"] .promo-strip {
   display: none;
 }
 
@@ -824,4 +825,12 @@ body[data-vertical="activities"] .promo-strip {
   width: auto;
   padding-left: 28px;
   padding-right: 28px;
+}
+
+/* Shown only if an airline logo can't be loaded */
+.airline-code {
+  color: #0b1022;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
 }

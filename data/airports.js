@@ -18,3 +18,13 @@ window.LODJ_AIRPORTS = [
   { code: 'IST', city: 'Istanbul', airport: 'Istanbul Airport', country: 'Turkey' },
   { code: 'MLE', city: 'Malé', airport: 'Velana International Airport', country: 'Maldives' }
 ];
+
+// Dropdown options for airport fields.
+window.LODJ_AIRPORT_OPTIONS = () => window.LODJ_AIRPORTS.map(a => ({
+  value: `${a.code} - ${a.city}`,
+  main: `${a.code} - ${a.city}`,
+  sub: `${a.airport}, ${a.country}`,
+  tag: 'Airport',
+  section: 'Airports',
+  keys: [a.code, a.city, a.airport, a.country]
+}));

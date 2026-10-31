@@ -8,7 +8,7 @@
     (function () {
       var params = new URLSearchParams(window.location.search);
       var type = (params.get('type') || 'stays').toLowerCase();
-      var path = { flights: 'flights', stays: 'hotels', hotels: 'hotels', activities: 'activities' }[type] || 'hotels';
+      var path = { flights: 'flights', stays: 'hotels', hotels: 'hotels', holidays: 'holidays', activities: 'activities' }[type] || 'hotels';
       params.delete('type');
       var qs = params.toString();
       window.location.replace(path + '/results.html' + (qs ? '?' + qs : ''));
