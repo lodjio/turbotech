@@ -25,15 +25,12 @@
   const modify = document.getElementById('modifySearch');
   if (modify) modify.href = './';
 
-  // Filters sidebar show / hide
-  const toggleBtn = document.getElementById('toggleFiltersBtn');
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      const hidden = document.getElementById('sidebar').classList.toggle('hidden');
-      document.getElementById('layout').classList.toggle('filters-hidden', hidden);
-      toggleBtn.textContent = hidden ? 'Show' : 'Hide';
-    });
-  }
+  // Filters sidebar show / hide (any [data-toggle-filters] button, incl. ones rendered later)
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('[data-toggle-filters]')) return;
+    const hidden = document.getElementById('sidebar').classList.toggle('hidden');
+    document.getElementById('layout').classList.toggle('filters-hidden', hidden);
+  });
 
   // Share note
   const note = document.getElementById('floatingNote');

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/results.css">
-  <link rel="stylesheet" href="../assets/css/locale.css">
+  <link rel="stylesheet" href="../assets/css/pos.css">
 </head>
 <body data-root="../" data-vertical="hotels">
   <header class="header" id="results-header"></header>
@@ -42,7 +42,7 @@
       <aside class="sidebar hidden" id="sidebar">
         <div class="sidebar-top">
           <h3>Live demo filters</h3>
-          <button class="toggle-filters-btn" id="toggleFiltersBtn" type="button">Show</button>
+          <button class="toggle-filters-btn" data-toggle-filters type="button">Hide</button>
         </div>
 
         <div class="filter-group">
@@ -79,6 +79,7 @@
             </div>
 
             <div class="results-actions">
+              <button class="filters-btn" data-toggle-filters type="button">Filters</button>
               <select class="sort-select">
                 <option>Sort by: Recommended</option>
                 <option>Sort by: Featured First</option>
@@ -112,9 +113,10 @@
 
   <script src="../assets/js/verticals.js"></script>
   <script src="../assets/js/theme.js"></script>
-  <script src="data.js"></script>
+  <script src="../data/accor/index.js"></script>
+  <script src="accor.js"></script>
   <script src="../assets/js/layout.js"></script>
-  <script src="../assets/js/locale.js"></script>
+  <script src="../assets/js/pos.js"></script>
   <script src="../assets/js/results-common.js"></script>
   <script src="results.js"></script>
 </body>
