@@ -1,0 +1,212 @@
+/* Country + language glass box (assets/js/locale.js) */
+.locale {
+  position: relative;
+}
+
+.locale-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  min-height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 30px rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  font-family: 'Comfortaa', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.locale-btn:hover {
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.locale-flag {
+  display: inline-flex;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.locale-flag img {
+  width: 22px;
+  height: 16px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.locale-text {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.locale-lang {
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.locale-lang::before {
+  content: '·';
+  margin-right: 6px;
+  color: var(--text-muted);
+}
+
+.locale-caret {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.locale-pop {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 290px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(11, 16, 34, 0.82);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  z-index: 10000;
+  text-align: left;
+}
+
+.locale.open .locale-pop {
+  display: block;
+}
+
+.locale-ask {
+  display: none;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.locale.asking .locale-ask {
+  display: block;
+}
+
+.locale-q {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.locale-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.locale-actions button {
+  flex: 1;
+  padding: 9px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-family: 'Comfortaa', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.locale-actions .locale-yes {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.locale-label {
+  display: block;
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.locale-select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.locale-select option {
+  background: #0b1022;
+  color: #f4f4f8;
+}
+
+.locale-lang-row {
+  margin-top: 6px;
+  color: var(--text);
+  font-size: 0.85rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.locale-note {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.locale-status {
+  margin-top: 10px;
+  color: var(--text-soft);
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-height: 1em;
+}
+
+/* Light mode */
+body.light-mode .locale-btn {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(25, 27, 34, 0.12);
+}
+
+body.light-mode .locale-pop {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(25, 27, 34, 0.12);
+}
+
+body.light-mode .locale-select,
+body.light-mode .locale-actions button:not(.locale-yes) {
+  background: #f2f4fb;
+  border-color: rgba(25, 27, 34, 0.12);
+}
+
+body.light-mode .locale-select option {
+  background: #fff;
+  color: #191b22;
+}
+
+@media (max-width: 700px) {
+  .locale-pop {
+    position: fixed;
+    top: auto;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+  }
+}
