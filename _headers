@@ -1,0 +1,5 @@
+# Cloudflare Pages response headers.
+# Browsers must check for a newer version of every file on each visit, so site updates
+# show up straight away (unchanged files still return a fast "304 Not Modified").
+/*
+  Cache-Control: public, max-age=0, must-revalidate
