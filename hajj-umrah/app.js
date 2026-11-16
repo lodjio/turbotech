@@ -41,6 +41,7 @@
     upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/>',
     info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
     train: '<rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="m8 19-2 3"/><path d="m18 22-2-3"/><path d="M8 15h0"/><path d="M16 15h0"/>',
+    car: '<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10l-2.7-3.6A2 2 0 0 0 13.7 6H8.3a2 2 0 0 0-1.6.8L4 10l-2.5 1.1C.7 11.3 0 12.1 0 13v3c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>',
     star: '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
     sparkle: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/>'
   };
@@ -448,12 +449,17 @@
     const sel = S[key];
     const hcard = (h) => {
       const on = sel && sel.type === 'hotel' && sel.code === h.code;
-      const walk = h.distance < 1500 ? `${Math.round(h.distance / 10) * 10} m to the Haram` : `${(h.distance / 1000).toFixed(1)} km to the Haram`;
+      // Straight-line distance to the Haram: walking under 1.5 km (~100 m a minute), otherwise by car (~2.7 min per km).
+      const onFoot = h.distance < 1500;
+      const dist = onFoot ? `${Math.round(h.distance / 10) * 10} m` : `${(h.distance / 1000).toFixed(1)} km`;
+      const mins = onFoot ? Math.max(1, Math.round(h.distance / 100)) : Math.max(3, Math.round(h.distance / 1000 * 2.7));
+      const haram = city === 'Makkah' ? 'Masjid al-Haram' : 'Al-Masjid an-Nabawi';
+      const near = `<span class="near" title="To ${haram}">${ic(onFoot ? 'walk' : 'car')}<b>${dist}</b><i></i><b>${mins} mins</b></span>`;
       return `<article class="hcard ${on ? 'is-on' : ''}">
-        <div class="hcard__ph"><img src="${photo(h.code, h.photos[0] || 'ho_00')}" alt="${esc(h.name)}" loading="lazy" data-ph="${h.photos.join(',')}" data-code="${h.code}" onerror="window.HU_PH(this)">${h.distance < 600 ? '<span class="chip">Steps from the Haram</span>' : ''}</div>
+        <div class="hcard__ph"><img src="${photo(h.code, h.photos[0] || 'ho_00')}" alt="${esc(h.name)}" loading="lazy" data-ph="${h.photos.join(',')}" data-code="${h.code}" onerror="window.HU_PH(this)">${near}</div>
         <div class="hcard__b">
           <div>${h.stars ? `<span class="stars" aria-label="${h.stars} stars">${'★'.repeat(h.stars)}</span>` : ''}<h3>${esc(h.name)}</h3></div>
-          <div class="hcard__meta"><span>${ic(h.distance < 1500 ? 'walk' : 'pin')}${walk}</span><span>${esc(h.brand)}</span></div>
+          <div class="hcard__meta"><span>${ic('pin')}To ${haram}: ${dist} · ${mins} mins ${onFoot ? 'walk' : 'drive'}</span><span>${esc(h.brand)}</span></div>
           ${h.amenities.length ? `<div class="chips">${h.amenities.slice(0, 3).map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
           <div class="hcard__bot"><span class="hcard__price"><small>${plural(cityNights(city), 'night')} · ${plural(rooms(), 'room')}</small><strong>${sar(h.rate * cityNights(city) * rooms())}</strong></span>
           <button type="button" class="btn ${on ? 'btn--royal' : 'btn--line'} btn--sm" data-h="${h.code}" aria-pressed="${on}">${on ? '✓ Selected' : 'Select'}</button></div>

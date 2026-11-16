@@ -506,3 +506,9 @@ body.on-dark .theme { color: #fff; border-color: rgba(255, 255, 255, .4); }
 .ac__al img { width: 22px; height: 22px; border-radius: 5px; background: #fff; padding: 1px; border: 1px solid var(--line); object-fit: contain; }
 .ac__go { width: 18px; height: 18px; color: var(--ink-3); }
 .ac .ac__back { display: flex; gap: 8px; align-items: center; grid-template-columns: none; color: var(--accent); font-weight: 600; font-size: .9rem; padding: 10px; }
+
+/* glass distance overlay on hotel photos */
+.near { position: absolute; left: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; color: #fff; font-size: .875rem; background: rgba(0, 30, 14, .28); border: 1px solid rgba(255, 255, 255, .35); backdrop-filter: blur(12px) saturate(1.4); -webkit-backdrop-filter: blur(12px) saturate(1.4); box-shadow: 0 4px 16px rgba(0, 0, 0, .18); }
+.near svg { width: 16px; height: 16px; }
+.near b { font-weight: 600; }
+.near i { width: 1px; height: 14px; background: rgba(255, 255, 255, .55); }
