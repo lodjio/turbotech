@@ -368,7 +368,8 @@
   function plan() {
     const j = JOURNEYS[S.j], o = origin(S.from);
     const tabs = `<div class="seg" role="group" aria-label="Journey">${Object.entries(JOURNEYS).map(([k, x]) => `<button type="button" data-j="${k}" aria-pressed="${k === S.j}">${x.short}</button>`).join('')}</div>`;
-    const stepperRow = (id, label, sub, val, min, max) => `<div class="stepperIn"><span><strong>${label}</strong><small>${sub}</small></span><span class="stepperIn__c"><button type="button" data-dec="${id}" ${val <= min ? 'disabled' : ''} aria-label="Fewer ${label}">−</button><output id="o-${id}">${val}</output><button type="button" data-inc="${id}" ${val >= max ? 'disabled' : ''} aria-label="More ${label}">+</button></span></div>`;
+    const stay = (c) => { const [a, b] = cityDates(c); return `<span class="stay-dates">${nice(a)} → ${nice(b)}</span>`; };
+    const stepperRow = (id, label, sub, val, min, max, extra = '') => `<div class="stepperIn"><span><strong>${label}</strong><small>${sub}</small>${extra}</span><span class="stepperIn__c"><button type="button" data-dec="${id}" ${val <= min ? 'disabled' : ''} aria-label="Fewer ${label}">−</button><output id="o-${id}">${val}</output><button type="button" data-inc="${id}" ${val >= max ? 'disabled' : ''} aria-label="More ${label}">+</button></span></div>`;
     return `
 <section class="flow"><div class="wrap">
   ${stepper('plan')}
@@ -390,7 +391,7 @@
         <div class="route"><span><b>${firstCity()}</b><small>Fly into ${inbound()}</small></span><button type="button" class="btn btn--line btn--sm" id="swap" aria-label="Start in the other city">${ic('swap', 'i18')}</button><span style="text-align:end"><b>${firstCity() === 'Makkah' ? 'Madinah' : 'Makkah'}</b><small>Fly home from ${outboundHome()}</small></span></div>
       </div>` : `<div class="field"><span>Your route</span><div class="route"><span><b>${firstCity()}</b><small>Fly into ${inbound()}</small></span><span class="route__mid">${ic('plane', 'i18')}</span><span style="text-align:end"><b>Return</b><small>Fly home from ${outboundHome()}</small></span></div></div>`}
       <label class="field"><span>Arrival date</span><input class="input" type="date" id="depart" min="${today}" value="${S.depart}"></label>
-      <div class="field"><span>Nights</span><div>${hasCity('Makkah') ? stepperRow('makkahN', 'Makkah', 'Near Masjid al-Haram', S.makkahN, 1, 14) : ''}${hasCity('Madinah') ? stepperRow('madinahN', 'Madinah', 'Near Al-Masjid an-Nabawi', S.madinahN, 1, 14) : ''}</div>
+      <div class="field"><span>Nights</span><div>${hasCity('Makkah') ? stepperRow('makkahN', 'Makkah', 'Near Masjid al-Haram', S.makkahN, 1, 14, stay('Makkah')) : ''}${hasCity('Madinah') ? stepperRow('madinahN', 'Madinah', 'Near Al-Masjid an-Nabawi', S.madinahN, 1, 14, stay('Madinah')) : ''}</div>
         <p class="fine">Home on ${nice(returnDate(), { weekday: 'long', day: 'numeric', month: 'long' })} · ${plural(totalNights(), 'night')}${both() ? ' in total' : ''}</p></div>`}
       <div class="field"><span>Travellers</span><div>${stepperRow('adults', 'Adults', '12 years and over', S.adults, 1, 9)}${stepperRow('children', 'Children', '2 to 11 years', S.children, 0, 6)}</div></div>
       ${S.j === 'fhv' ? `<label class="field"><span>Passport nationality</span><select id="nat">${[...NATS].sort((a, b) => a.name.localeCompare(b.name)).map(n => `<option value="${n.cc}" ${n.cc === S.nat ? 'selected' : ''}>${n.name}</option>`).join('')}</select></label>` : ''}
@@ -658,7 +659,14 @@
       ac.classList.add('open');
       $$('[data-o]', ac).forEach(x => x.onmousedown = (e) => { e.preventDefault(); pick(x.dataset.o); });
     };
-    const pick = (code) => { const o = origin(code); S.from = code; S.out = S.back = null; save(); inp.value = `${o.city} (${o.code})`; ac.classList.remove('open'); $('#fromField').classList.remove('has-err'); };
+    const pick = (code) => {
+      const o = origin(code); S.from = code; S.out = S.back = null;
+      // Match the passport nationality to the departure country (still editable).
+      if (NATS.some(n => n.cc === o.cc) && S.nat !== o.cc) {
+        S.nat = o.cc; S.visa = {};
+        const sel = $('#nat'); if (sel) { sel.value = o.cc; sel.classList.add('flash'); setTimeout(() => sel.classList.remove('flash'), 900); }
+      }
+      save(); inp.value = `${o.city} (${o.code})`; ac.classList.remove('open'); $('#fromField').classList.remove('has-err'); };
     inp.onfocus = () => { inp.select(); act = -1; typed = false; draw(); ac.scrollTop = 0; };
     inp.oninput = () => { act = -1; typed = true; S.from = null; draw(); };
     inp.onblur = () => setTimeout(() => { ac.classList.remove('open'); if (!S.from && opts.length === 1) pick(opts[0].code); }, 120);
