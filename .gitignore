@@ -1,1 +1,3 @@
 .accor_cache/
+.dev.vars
+.wrangler/

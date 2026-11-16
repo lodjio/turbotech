@@ -1,0 +1,31 @@
+:root { --royal: #006937; --palm: #6abf4b; --emerald: #003216; --ink: #0b2a19; --sand: #f3ede1; --paper: #fbf8f2; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: Arial, "Segoe UI", Tahoma, sans-serif; color: var(--ink); background: var(--paper);
+  display: grid; place-items: center; padding: 24px; -webkit-font-smoothing: antialiased;
+}
+.gate { width: 100%; max-width: 380px; text-align: center; }
+.gate__logo { width: 190px; height: auto; margin: 0 auto 36px; display: block; }
+.gate__eyebrow { color: var(--royal); font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; margin: 0 0 10px; font-weight: 700; }
+.gate__title { color: var(--royal); font-size: 1.6rem; line-height: 1.2; margin: 0 0 10px; }
+.gate__lead { color: rgba(11, 42, 25, .7); margin: 0 0 28px; line-height: 1.55; }
+.pin { display: flex; gap: 12px; justify-content: center; margin-bottom: 10px; }
+.pin input {
+  width: 58px; height: 68px; border: 1.5px solid rgba(0, 50, 22, .2); border-radius: 16px; background: #fff;
+  font: 600 1.8rem/1 inherit; text-align: center; color: var(--emerald); outline: none; transition: border-color .2s, box-shadow .2s;
+  font-family: inherit;
+}
+.pin input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(0, 105, 55, .12); }
+.pin.ok input { border-color: var(--palm); }
+.pin.shake { animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+.gate__msg { min-height: 1.4em; margin: 8px 0 14px; color: #a4262c; font-size: .9rem; }
+.pin.ok + .gate__msg { color: var(--royal); }
+.btn {
+  width: 100%; height: 54px; border: 0; border-radius: 999px; background: var(--royal); color: #fff;
+  font: 700 1rem inherit; font-family: inherit; cursor: pointer; transition: background .2s, opacity .2s;
+}
+.btn:hover:not(:disabled) { background: var(--emerald); }
+.btn:disabled { opacity: .4; cursor: default; }
+.gate__fine { margin-top: 36px; font-size: .75rem; color: rgba(11, 42, 25, .5); }
