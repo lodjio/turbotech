@@ -54,8 +54,8 @@
   const photo = (code, id, size = '1024x768') => `https://ota.ahstatic.com/media/${code.toLowerCase()}/${code.toLowerCase()}_${id}_p_${size}.jpg`;
 
   const JOURNEYS = {
-    flight: { name: 'Flight', short: 'Flight', icons: ['plane'], text: 'Saudia flights to Jeddah or Madinah.', steps: ['plan', 'flights', 'review'] },
-    fh: { name: 'Flight + Hotel', short: 'Flight + Hotel', icons: ['plane', 'bed'], text: 'Saudia flights with stays in Makkah and Madinah.', steps: ['plan', 'flights', 'makkah', 'madinah', 'review'] },
+    flight: { name: 'Flight', short: 'Flight', icons: ['plane'], text: 'Saudia and flyadeal flights to Jeddah or Madinah.', steps: ['plan', 'flights', 'review'] },
+    fh: { name: 'Flight + Hotel', short: 'Flight + Hotel', icons: ['plane', 'bed'], text: 'Saudia or flyadeal flights with stays in Makkah, Madinah or both.', steps: ['plan', 'flights', 'makkah', 'madinah', 'review'] },
     fhv: { name: 'Flight + Hotel + Visa', short: 'Flight + Hotel + Visa', icons: ['plane', 'bed', 'passport'], text: 'Everything for your Umrah, with your visa submitted alongside.', steps: ['plan', 'flights', 'makkah', 'madinah', 'visa', 'review'] }
   };
   const STEP = {
@@ -110,7 +110,7 @@
     const slots = [2.25, 9.5, 15.75, 21.1].filter(() => r() > .22).slice(0, 3);
     if (slots.length < 2) slots.push(11.4, 19.2);
     const tzFrom = isOut ? TZ[home.cc] : 3, tzTo = isOut ? 3 : TZ[home.cc];
-    return slots.slice(0, 3).map((dep, i) => {
+    const sv = slots.slice(0, 3).map((dep, i) => {
       dep = Math.round((dep + r() * 1.2) * 4) / 4;
       const legH = Math.round(baseH * 12) / 12;
       const lay = viaJed ? 1.5 + Math.round(r() * 4) / 4 : 0;
@@ -124,10 +124,36 @@
         stops: viaJed ? `1 stop · ${isOut ? 'JED' : 'JED'} ${dur(lay)}` : 'Non-stop',
         fare, biz: Math.round(fare * 3.1 / 10) * 10,
         aircraft: dist > 3500 ? 'Boeing 787-10' : dist > 1800 ? 'Boeing 777-300ER' : 'Airbus A320neo',
-        tag: ''
+        al: 'SV', tag: ''
       };
-    }).map((f, _, all) => (f.fare === Math.min(...all.map(x => x.fare)) ? { ...f, tag: 'Lowest fare' } : f));
+    });
+    // flyadeal (Saudia Group low-cost airline): Guest cabin only, on routes within A320neo range.
+    const fa = [];
+    if (S.cabin !== 'Business' && dist < 4300) {
+      [6.5, 18.4].forEach((dep, i) => {
+        dep = Math.round((dep + r() * 1.5) * 4) / 4;
+        const legH = Math.round((dist / 760 + 0.5) * 12) / 12;
+        const lay = viaJed ? 1.75 + Math.round(r() * 4) / 4 : 0;
+        const total = legH + (viaJed ? lay + 1.1 : 0);
+        const arr = dep - tzFrom + total + tzTo;
+        const fare = Math.round(((dist < 1200 ? 260 : 230) + dist * 0.2) * (0.9 + r() * 0.25) / 10) * 10;
+        fa.push({
+          id: `${fromCode}-${toCode}-${date}-F${i}`, no: 'F3 ' + (100 + (hash(toCode + fromCode + i) % 800)), from: fromCode, to: toCode, date,
+          dep: hhmm(dep), arr: hhmm(arr), plus: Math.floor(arr / 24), dur: dur(total),
+          stops: viaJed ? `1 stop · JED ${dur(lay)}` : 'Non-stop',
+          fare, biz: fare, aircraft: 'Airbus A320neo', al: 'F3', tag: ''
+        });
+      });
+    }
+    return [...sv, ...fa]
+      .sort((a, b) => a.dep.localeCompare(b.dep))
+      .map((f, _, all) => (f.fare === Math.min(...all.map(x => x.fare)) ? { ...f, tag: 'Lowest fare' } : f));
   }
+  const AIRLINES = {
+    SV: { name: 'Saudia', mark: 'media/brand/saudia.png', bags: () => S.cabin === 'Business' ? '2 × 32 kg' : '2 × 23 kg', extra: true },
+    F3: { name: 'flyadeal', mark: 'media/brand/flyadeal-mark.svg', bags: () => '7 kg cabin bag', extra: false }
+  };
+  const alOf = (f) => AIRLINES[f.al || 'SV'];
   const hhmm = (h) => { h = ((h % 24) + 24) % 24; const m = Math.round((h % 1) * 60); return `${pad(Math.floor(h) + (m === 60 ? 1 : 0))}:${pad(m === 60 ? 0 : m)}`; };
   const dur = (h) => `${Math.floor(h)}h ${pad(Math.round((h % 1) * 60))}m`;
   const fareOf = (f) => (S.cabin === 'Business' ? f.biz : f.fare);
@@ -144,8 +170,8 @@
     const L = [];
     const pax = travellers();
     const fl = [S.out, S.back].filter(Boolean);
-    if (S.out) L.push({ k: 'flights', icon: 'plane', t: `Saudia flights · ${S.cabin === 'Business' ? 'Business' : 'Guest (Economy)'}`, s: fl.map(f => `${f.no} ${f.from}→${f.to} ${nice(f.date, { day: 'numeric', month: 'short' })}`).join(' · ') + ` · ${plural(pax, 'traveller')}`, a: fl.reduce((a, f) => a + fareOf(f), 0) * (S.adults + S.children * 0.75) });
-    else L.push({ k: 'flights', icon: 'plane', t: 'Saudia flights', s: 'Not chosen yet', pending: true });
+    if (S.out) L.push({ k: 'flights', icon: 'plane', t: `${[...new Set(fl.map(f => alOf(f).name))].join(' & ')} flights · ${S.cabin === 'Business' ? 'Business' : 'Guest (Economy)'}`, s: fl.map(f => `${f.no} ${f.from}→${f.to} ${nice(f.date, { day: 'numeric', month: 'short' })}`).join(' · ') + ` · ${plural(pax, 'traveller')}`, a: fl.reduce((a, f) => a + fareOf(f), 0) * (S.adults + S.children * 0.75) });
+    else L.push({ k: 'flights', icon: 'plane', t: 'Flights', s: 'Not chosen yet', pending: true });
     if (hotelTrip()) {
       cityList().forEach(c => {
         const key = c.toLowerCase(), sel = S[key];
@@ -225,7 +251,7 @@
     <div class="hero__brand"><img src="media/brand/samaa-al-haramain-white.png" alt="Samaa Al Haramain" width="96" height="59"><p>Saudia Hajj &amp; Umrah<br>Flight, hotel and visa</p></div>
     <span class="tier">${esc(ME.tier)}</span>
     <h1 id="hi" class="hi">Hayyakum, <span data-me>${esc(ME.name || 'Guest')}</span></h1>
-    <p class="hero__lead">Your Umrah in one booking: Saudia flights, a stay steps from the Haram, and your visa, planned together.</p>
+    <p class="hero__lead">Your Umrah in one booking: Saudia and flyadeal flights, a stay steps from the Haram, and your visa, planned together.</p>
     <div class="hero__cta"><a class="btn btn--palm" href="#/plan/fhv">Let's book ${ic('arrow', 'i20')}</a><a class="btn btn--ghost" href="#journeys">Explore the journeys</a></div>
   </div>
 </section>
@@ -257,7 +283,7 @@
       <div class="compare__col compare__col--today rv-in"><h3>The long road</h3><ol class="steps-list">
         <li>Searching for someone you can trust</li><li>Flights in one place, hotels in another</li><li>Chasing transport bookings and vouchers</li><li>Waiting on a visa, through someone else’s hands</li><li>Finding your own way to your permits</li></ol></div>
       <div class="compare__col compare__col--logio rv-in"><h3>The straight path</h3><ol class="steps-list">
-        <li>Choose your Saudia flights</li><li>Pick your stay beside the Haram</li><li>Your visa goes in with your booking, with no middlemen</li><li>Arrive as our guest: Meet &amp; Greet, transfers and permits ready</li></ol></div>
+        <li>Choose your Saudia or flyadeal flights</li><li>Pick your stay beside the Haram</li><li>Your visa goes in with your booking, with no middlemen</li><li>Arrive as our guest: Meet &amp; Greet, transfers and permits ready</li></ol></div>
     </div>
     <div class="stat-row rv-in"><div class="stat"><strong>1</strong><span>trusted host, from intention to return</span></div><div class="stat"><strong>0</strong><span>middlemen between you and your journey</span></div><div class="stat"><strong>2</strong><span>holy cities, one seamless itinerary</span></div></div>
     <p class="why__close rv-in">Your intention is yours. The arrangements are ours.</p>
@@ -269,7 +295,12 @@
     <div class="sec__head rv-in"><span class="label"><b>03</b><i></i>Hospitality</span><h2 class="h2">From your seat on board to your hotel suite</h2><p class="lead">Every Samaa Al Haramain package in Madinah includes the services below, from take-off to farewell.</p></div>
     <div class="hosp">
       <article class="hosp__item rv-in"><figure class="media"><img src="media/img/hosp-flight-coffee-900.webp" alt="A guest in his window seat, sipping Saudi coffee on board Saudia" loading="lazy"><figcaption>On board Saudia</figcaption></figure><span class="label"><b>01</b><i></i>The flight</span><h3>Under the umbrella of Saudia hospitality</h3><p class="muted">Available on selected Saudia flights. Terms and conditions apply.</p></article>
-      <article class="hosp__item rv-in"><figure class="media"><img src="media/img/hosp-arrival-900.webp" alt="The Peninsula Worth atrium, with its calligraphy panel and glass lifts" loading="lazy"><figcaption>The Peninsula Worth atrium</figcaption></figure><span class="label"><b>02</b><i></i>Arrival</span><h3>We welcome you to Madinah with comfort and privacy</h3><ul class="check"><li>Transportation in VIP vehicles</li><li>Personalized VIP welcome</li><li>Complete privacy</li><li>Direct transfers</li></ul></article>
+      <article class="hosp__item rv-in"><div class="onestop" aria-label="Saudia, flyadeal and Saudia Holidays">
+        <div class="onestop__row"><img src="media/brand/saudia.png" alt="Saudia" width="84" height="84"><span class="onestop__plus">+</span><img class="onestop__fa" src="media/brand/flyadeal.svg" alt="flyadeal" width="132" height="45"></div>
+        <span class="onestop__plus">+</span>
+        <div class="onestop__sh"><span>Saudia</span><b>Holidays</b><small>Hotels</small></div>
+        <span class="onestop__eq">One booking</span>
+      </div><span class="label"><b>02</b><i></i>One stop</span><h3>Every flight and every stay, in one place</h3><p class="muted">We bring together Saudia and flyadeal flights with Saudia Holidays hotels, so your whole journey is as easy as it should be.</p><ul class="check"><li>Saudia and flyadeal flights</li><li>Saudia Holidays hotels in Makkah and Madinah</li><li>One booking, one payment, one point of contact</li></ul></article>
       <article class="hosp__item rv-in"><figure class="media"><img src="media/img/hosp-care-900.webp" alt="The reception desk at Peninsula Worth Hotel" loading="lazy"><figcaption>Reception, around the clock</figcaption></figure><span class="label"><b>03</b><i></i>Care</span><h3>Guest Experience Consultant</h3><p class="muted">Our team tailors your itinerary around:</p><div class="chips"><span class="chip chip--palm">Flight times</span><span class="chip chip--palm">Prayer times and mosque visits</span><span class="chip chip--palm">Madinah experiences</span><span class="chip chip--palm">Weather conditions</span></div></article>
     </div>
   </div>
@@ -335,7 +366,7 @@
     return `
 <section class="flow"><div class="wrap">
   ${stepper('plan')}
-  ${title(`<b>${j.icons.length}</b><i></i>${j.name}`, S.j === 'flight' ? 'Where would you like to fly?' : 'Plan your Umrah', S.j === 'flight' ? 'Saudia flights to the gateways of the two holy cities.' : (both() ? 'Fly into one holy city, travel on by train, and fly home from the other.' : `A Saudia flight to ${GW[inbound()].city} and your stay in ${firstCity()}.`))}
+  ${title(`<b>${j.icons.length}</b><i></i>${j.name}`, S.j === 'flight' ? 'Where would you like to fly?' : 'Plan your Umrah', S.j === 'flight' ? 'Saudia and flyadeal flights to the gateways of the two holy cities.' : (both() ? 'Fly into one holy city, travel on by train, and fly home from the other.' : `A Saudia flight to ${GW[inbound()].city} and your stay in ${firstCity()}.`))}
   <div class="flow__grid"><div>
     <div class="panel" style="padding:8px">${tabs}</div>
     <form class="panel form" id="planForm" novalidate>
@@ -363,34 +394,38 @@
     </form>
   </div>
   <aside class="flow__aside"><div class="sum"><div class="sum__card"><div class="sum__head"><small>Saudia Hajj &amp; Umrah</small><h3>Hayyakum, <span data-me>${esc(ME.name || 'Guest')}</span></h3></div>
-    <ul class="sum__list">${j.icons.map(n => `<li>${ic(n)}<span><b>${n === 'plane' ? 'Saudia flights only' : n === 'bed' ? 'Makkah and Madinah stays' : 'Visa submitted with your booking'}</b><small>${n === 'plane' ? 'Non-stop where Saudia flies direct' : n === 'bed' ? 'Accor hotels and Samaa Al Haramain packages' : 'Nusuk-ready hotel and transport included'}</small></span><em></em></li>`).join('')}</ul></div></div></aside>
+    <ul class="sum__list">${j.icons.map(n => `<li>${ic(n)}<span><b>${n === 'plane' ? 'Saudia and flyadeal flights' : n === 'bed' ? 'Makkah and Madinah stays' : 'Visa submitted with your booking'}</b><small>${n === 'plane' ? 'Saudia Group airlines only' : n === 'bed' ? 'Saudia Holidays hotels and Samaa Al Haramain packages' : 'Nusuk-ready hotel and transport included'}</small></span><em></em></li>`).join('')}</ul></div></div></aside>
   </div>
 </div></section>`;
   }
 
   // ---------- flights ----------
-  let legTab = 'out';
+  let legTab = 'out', alF = 'all';
   function flightsView() {
     const oneway = !hotelTrip() && S.trip === 'oneway';
     if (oneway) legTab = 'out';
     const out = flightsFor(S.from, inbound(), S.depart);
     const back = oneway ? [] : flightsFor(outboundHome(), S.from, returnDate());
-    const list = legTab === 'out' ? out : back;
+    const all = legTab === 'out' ? out : back;
+    const list = all.filter(f => alF === 'all' || f.al === alF);
+    const hasFa = all.some(f => f.al === 'F3');
     const chosen = legTab === 'out' ? S.out : S.back;
     const o = origin(S.from);
     const card = (f) => `
       <button type="button" class="fcard" data-f="${f.id}" aria-pressed="${chosen && chosen.id === f.id}">
-        <span class="fcard__top"><img src="../assets/airlines/SV.png" alt="" width="26" height="26">Saudia · ${f.no} · ${f.aircraft}${f.tag ? `<span class="chip chip--palm">${f.tag}</span>` : ''}</span>
+        <span class="fcard__top"><img src="${alOf(f).mark}" alt="" width="26" height="26">${alOf(f).name} · ${f.no} · ${f.aircraft}${f.tag ? `<span class="chip chip--palm">${f.tag}</span>` : ''}</span>
         <span class="fcard__times"><span><strong>${f.dep}</strong><small>${f.from}</small></span><span class="fcard__line"><i></i>${f.dur}<br>${f.stops}</span><span style="text-align:end"><strong>${f.arr}${f.plus ? `<sup>+${f.plus}</sup>` : ''}</strong><small>${f.to}</small></span></span>
-        <span class="fcard__bot"><span class="chips"><span class="chip">${S.cabin === 'Business' ? 'Business' : 'Guest'}</span><span class="chip">${S.cabin === 'Business' ? '2 × 32 kg' : '2 × 23 kg'}</span>${hotelTrip() ? '<span class="chip">Zamzam 5 L</span>' : ''}</span><span class="fcard__fare"><small>per adult</small><strong>${sar(fareOf(f))}</strong></span></span>
+        <span class="fcard__bot"><span class="chips"><span class="chip">${S.cabin === 'Business' ? 'Business' : 'Guest'}</span><span class="chip">${alOf(f).bags()}</span>${hotelTrip() && alOf(f).extra ? '<span class="chip">Zamzam 5 L</span>' : ''}${!alOf(f).extra ? '<span class="chip">Bags from SAR 95</span>' : ''}</span><span class="fcard__fare"><small>per adult</small><strong>${sar(fareOf(f))}</strong></span></span>
       </button>`;
     return `
 <section class="flow"><div class="wrap">
   ${stepper('flights')}
-  ${title('<b>Saudia</b><i></i>Flights', `${o.city} ⇄ ${hotelTrip() ? (both() ? 'Jeddah · Madinah' : GW[inbound()].city) : GW[S.to].city}`, `${plural(travellers(), 'traveller')} · ${S.cabin === 'Business' ? 'Business' : 'Guest (Economy)'} · Indicative demo schedules`)}
+  ${title('<b>Saudia Group</b><i></i>Flights', `${o.city} ⇄ ${hotelTrip() ? (both() ? 'Jeddah · Madinah' : GW[inbound()].city) : GW[S.to].city}`, `${plural(travellers(), 'traveller')} · ${S.cabin === 'Business' ? 'Business' : 'Guest (Economy)'} · Indicative demo schedules`)}
   <div class="flow__grid"><div>
     ${oneway ? '' : `<div class="seg fltabs" role="tablist"><button type="button" role="tab" data-leg="out" aria-pressed="${legTab === 'out'}">${S.out ? '✓ ' : ''}${S.from} → ${inbound()} · ${nice(S.depart, { day: 'numeric', month: 'short' })}</button><button type="button" role="tab" data-leg="back" aria-pressed="${legTab === 'back'}">${S.back ? '✓ ' : ''}${outboundHome()} → ${S.from} · ${nice(returnDate(), { day: 'numeric', month: 'short' })}</button></div>`}
     ${hotelTrip() && both() && legTab === 'out' ? `<div class="notice" style="margin-bottom:14px">${ic('info')}<span>Open-jaw itinerary: fly into ${GW[inbound()].city} for ${firstCity()}, take the Haramain train, and fly home from ${GW[outboundHome()].city}. No backtracking.</span></div>` : ''}
+    <div class="filters" role="group" aria-label="Airline">${[['all', 'All flights'], ['SV', 'Saudia'], ['F3', 'flyadeal']].map(([k, l]) => `<button type="button" data-al="${k}" aria-pressed="${alF === k}" ${k === 'F3' && !hasFa ? 'disabled' : ''}>${k !== 'all' ? `<img src="${AIRLINES[k].mark}" alt="" width="18" height="18" style="display:inline;vertical-align:-4px;margin-inline-end:6px">` : ''}${l}</button>`).join('')}</div>
+    ${!hasFa ? `<p class="fine" style="margin:-6px 0 12px">${S.cabin === 'Business' ? 'flyadeal flies a single Guest cabin, so it shows with Guest (Economy) searches.' : 'flyadeal doesn\u2019t fly this route.'}</p>` : ''}
     <div class="fl">${list.map(card).join('')}</div>
   </div>${summary('Continue', 'flights')}</div>
 </div></section>`;
@@ -426,7 +461,7 @@
     ${city === 'Madinah' ? '<h2 class="label" style="margin:8px 0 14px"><b>Or</b><i></i>Choose a hotel</h2>' : ''}
     ${filters}
     <div class="hgrid">${list.map(hcard).join('') || '<p class="muted">No hotels match this filter.</p>'}</div>
-    <p class="fine" style="margin-top:14px">Hotel content from Accor. Distances are straight-line to the Haram; rates are indicative demo prices.</p>
+    <p class="fine" style="margin-top:14px">Saudia Holidays hotels (demo content from Accor). Distances are straight-line to the Haram; rates are indicative demo prices.</p>
   </div>${summary('Continue', key)}</div>
 </div></section>`;
   }
@@ -469,7 +504,7 @@
     if (n.path === 'agent') path = `
       <div class="vpath vpath--agent"><span class="chip chip--palm vpath__tag">Umrah visa · submitted for you</span>
         <h3>${esc(n.name)} passports: we apply on your behalf</h3>
-        <p class="muted">${esc(n.name)} nationals apply for the Umrah visa through a provider licensed by the Ministry of Hajj and Umrah. Your Saudia flights, Nusuk-approved hotels and registered transfers are already in this booking, so the application can go in straight away.</p>
+        <p class="muted">${esc(n.name)} nationals apply for the Umrah visa through a provider licensed by the Ministry of Hajj and Umrah. Your flights, Nusuk-approved hotels and registered transfers are already in this booking, so the application can go in straight away.</p>
         <ol class="timeline">
           <li class="done"><i>✓</i><span><b>Flights, hotels and transfers</b><small>Chosen in this booking and ready for Nusuk</small></span></li>
           <li class="now"><i>2</i><span><b>Passport details</b><small>For each traveller, below</small></span></li>
@@ -549,6 +584,7 @@
       const oneway = !hotelTrip() && S.trip === 'oneway';
       const ready = () => !!S.out && (oneway || !!S.back);
       $$('[data-leg]').forEach(x => x.onclick = () => { legTab = x.dataset.leg; render(); });
+      $$('[data-al]').forEach(x => x.onclick = () => { alF = x.dataset.al; render(); });
       $$('[data-f]').forEach(x => x.onclick = () => {
         const list = legTab === 'out' ? flightsFor(S.from, inbound(), S.depart) : flightsFor(outboundHome(), S.from, returnDate());
         const f = list.find(y => y.id === x.dataset.f);
@@ -581,7 +617,7 @@
     $$('[data-j]').forEach(x => x.onclick = () => go('#/plan/' + x.dataset.j));
     $$('[data-to]').forEach(x => x.onclick = () => { S.to = x.dataset.to; S.out = S.back = null; save(); render(); });
     $$('[data-trip]').forEach(x => x.onclick = () => { S.trip = x.dataset.trip; S.back = null; save(); render(); });
-    $$('[data-cabin]').forEach(x => x.onclick = () => { S.cabin = x.dataset.cabin; save(); render(); });
+    $$('[data-cabin]').forEach(x => x.onclick = () => { S.cabin = x.dataset.cabin; S.out = S.back = null; save(); render(); });
     $$('[data-cities]').forEach(x => x.onclick = () => { S.cities = x.dataset.cities; S.out = S.back = null; S.makkah = hasCity('Makkah') ? S.makkah : null; S.madinah = hasCity('Madinah') ? S.madinah : null; save(); render(); });
     const sw = $('#swap'); if (sw) sw.onclick = () => { S.order = S.order === 'makkah' ? 'madinah' : 'makkah'; S.out = S.back = null; save(); render(); };
     const lim = { makkahN: [1, 14], madinahN: [1, 14], adults: [1, 9], children: [0, 6] };
