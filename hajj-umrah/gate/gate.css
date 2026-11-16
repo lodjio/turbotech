@@ -13,8 +13,7 @@ body {
 .pin { display: flex; gap: 12px; justify-content: center; margin-bottom: 10px; }
 .pin input {
   width: 58px; height: 68px; border: 1.5px solid rgba(0, 50, 22, .2); border-radius: 16px; background: #fff;
-  font: 600 1.8rem/1 inherit; text-align: center; color: var(--emerald); outline: none; transition: border-color .2s, box-shadow .2s;
-  font-family: inherit;
+  font-family: inherit; font-weight: 600; font-size: 28px; line-height: 1; text-align: center; color: var(--emerald); outline: none; transition: border-color .2s, box-shadow .2s;
 }
 .pin input:focus { border-color: var(--royal); box-shadow: 0 0 0 4px rgba(0, 105, 55, .12); }
 .pin.ok input { border-color: var(--palm); }
@@ -24,8 +23,22 @@ body {
 .pin.ok + .gate__msg { color: var(--royal); }
 .btn {
   width: 100%; height: 54px; border: 0; border-radius: 999px; background: var(--royal); color: #fff;
-  font: 700 1rem inherit; font-family: inherit; cursor: pointer; transition: background .2s, opacity .2s;
+  font-family: inherit; font-weight: 700; font-size: 16px; cursor: pointer; transition: background .2s, opacity .2s;
 }
 .btn:hover:not(:disabled) { background: var(--emerald); }
 .btn:disabled { opacity: .4; cursor: default; }
 .gate__fine { margin-top: 36px; font-size: .75rem; color: rgba(11, 42, 25, .5); }
+
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: dark; }
+  body { background: #002812; color: #eaf3ec; }
+  .gate__logo { filter: brightness(0) invert(1); }
+  .gate__eyebrow, .gate__title { color: #8fd474; }
+  .gate__lead { color: rgba(234, 243, 236, .75); }
+  .pin input { background: #00341a; border-color: rgba(234, 243, 236, .2); color: #fff; }
+  .pin input:focus { border-color: #6abf4b; box-shadow: 0 0 0 4px rgba(106, 191, 75, .18); }
+  .btn { background: #6abf4b; color: #002812; }
+  .btn:hover:not(:disabled) { background: #8fd474; }
+  .gate__fine { color: rgba(234, 243, 236, .45); }
+  .gate__msg { color: #ff9b9b; }
+}

@@ -696,6 +696,21 @@
     bar(v.done ? 'Visa details added' : 'Add passport details', 'Continue', true, submit);
   }
 
+  // ---------- light / dark ----------
+  const themeBtn = $('#themeBtn');
+  const setTheme = (t, keep) => {
+    document.documentElement.setAttribute('data-theme', t);
+    $('#themeColor').setAttribute('content', t === 'dark' ? '#002812' : '#ffffff');
+    themeBtn.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    if (keep) try { localStorage.setItem('hu_theme', t); } catch (e) { /* private mode */ }
+  };
+  setTheme(document.documentElement.getAttribute('data-theme') || 'light');
+  themeBtn.onclick = () => setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    let saved; try { saved = localStorage.getItem('hu_theme'); } catch (err) { /* */ }
+    if (!saved) setTheme(e.matches ? 'dark' : 'light');
+  });
+
   // ---------- header + reveal ----------
   function onScroll() {
     const hero = $('.hero');
