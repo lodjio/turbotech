@@ -410,13 +410,14 @@ body.in-flow .ftr { padding-bottom: 120px; }
 .onestop { aspect-ratio: 4 / 3; border-radius: var(--r); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); display: grid; place-content: center; justify-items: center; gap: 10px; padding: 20px; position: relative; overflow: hidden; }
 .onestop::before { content: ""; position: absolute; inset: 0; background: url(media/brand/pattern-madinah-keyline-white.png) center / 420px repeat; filter: invert(1); opacity: .04; }
 .onestop > * { position: relative; }
-.onestop__row { display: flex; align-items: center; gap: 14px; }
-.onestop__row img { height: 64px; width: auto; }
-.onestop__row .onestop__fa { height: 40px; }
-.onestop__plus { font-size: 1.4rem; color: var(--palm); font-weight: 600; line-height: 1; }
-.onestop__sh { display: inline-flex; align-items: baseline; gap: 6px; padding: 8px 16px; border-radius: 999px; background: var(--royal); color: #fff; }
-.onestop__sh span { font-weight: 600; letter-spacing: .02em; }
-.onestop__sh b { font-weight: 400; }
-.onestop__sh small { font-size: .75rem; color: var(--palm-2); margin-inline-start: 4px; text-transform: uppercase; letter-spacing: .12em; }
+.onestop__main { height: 68px; width: auto; padding-bottom: 14px; margin-bottom: 4px; border-bottom: 1px solid var(--line); }
+.onestop__row { display: flex; align-items: center; gap: 12px; }
+.onestop__air { display: inline-flex; align-items: center; gap: 8px; }
+.onestop__air img { height: 54px; width: auto; }
+.onestop__air .onestop__fa { height: 26px; }
+.onestop__air small { font-size: .75rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: .1em; }
+.onestop__plus { font-size: 1.5rem; color: var(--palm); font-weight: 600; line-height: 1; }
+.onestop__sh { height: 40px; width: auto; }
 .onestop__eq { margin-top: 6px; font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; color: var(--royal); border-top: 1px solid var(--line); padding-top: 10px; }
+@media (max-width: 380px) { .onestop__air img { height: 44px; } .onestop__air .onestop__fa { height: 22px; } .onestop__sh { height: 32px; } }
 .filters button:disabled { opacity: .4; cursor: default; }

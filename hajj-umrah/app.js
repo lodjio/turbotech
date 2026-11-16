@@ -295,10 +295,13 @@
     <div class="sec__head rv-in"><span class="label"><b>03</b><i></i>Hospitality</span><h2 class="h2">From your seat on board to your hotel suite</h2><p class="lead">Every Samaa Al Haramain package in Madinah includes the services below, from take-off to farewell.</p></div>
     <div class="hosp">
       <article class="hosp__item rv-in"><figure class="media"><img src="media/img/hosp-flight-coffee-900.webp" alt="A guest in his window seat, sipping Saudi coffee on board Saudia" loading="lazy"><figcaption>On board Saudia</figcaption></figure><span class="label"><b>01</b><i></i>The flight</span><h3>Under the umbrella of Saudia hospitality</h3><p class="muted">Available on selected Saudia flights. Terms and conditions apply.</p></article>
-      <article class="hosp__item rv-in"><div class="onestop" aria-label="Saudia, flyadeal and Saudia Holidays">
-        <div class="onestop__row"><img src="media/brand/saudia.png" alt="Saudia" width="84" height="84"><span class="onestop__plus">+</span><img class="onestop__fa" src="media/brand/flyadeal.svg" alt="flyadeal" width="132" height="45"></div>
-        <span class="onestop__plus">+</span>
-        <div class="onestop__sh"><span>Saudia</span><b>Holidays</b><small>Hotels</small></div>
+      <article class="hosp__item rv-in"><div class="onestop" aria-label="Saudia Hajj and Umrah: Saudia or flyadeal flights plus Saudia Holidays hotels">
+        <img class="onestop__main" src="media/brand/hu-en-green.png" alt="Saudia Hajj &amp; Umrah" width="173" height="50">
+        <div class="onestop__row">
+          <span class="onestop__air"><img src="media/brand/saudia.png" alt="Saudia" width="56" height="70"><small>or</small><img class="onestop__fa" src="media/brand/flyadeal.svg" alt="flyadeal" width="96" height="33"></span>
+          <span class="onestop__plus">+</span>
+          <img class="onestop__sh" src="media/brand/saudia-holidays.png" alt="Saudia Holidays" width="120" height="44">
+        </div>
         <span class="onestop__eq">One booking</span>
       </div><span class="label"><b>02</b><i></i>One stop</span><h3>Every flight and every stay, in one place</h3><p class="muted">We bring together Saudia and flyadeal flights with Saudia Holidays hotels, so your whole journey is as easy as it should be.</p><ul class="check"><li>Saudia and flyadeal flights</li><li>Saudia Holidays hotels in Makkah and Madinah</li><li>One booking, one payment, one point of contact</li></ul></article>
       <article class="hosp__item rv-in"><figure class="media"><img src="media/img/hosp-care-900.webp" alt="The reception desk at Peninsula Worth Hotel" loading="lazy"><figcaption>Reception, around the clock</figcaption></figure><span class="label"><b>03</b><i></i>Care</span><h3>Guest Experience Consultant</h3><p class="muted">Our team tailors your itinerary around:</p><div class="chips"><span class="chip chip--palm">Flight times</span><span class="chip chip--palm">Prayer times and mosque visits</span><span class="chip chip--palm">Madinah experiences</span><span class="chip chip--palm">Weather conditions</span></div></article>
