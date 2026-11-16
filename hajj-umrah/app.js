@@ -49,7 +49,8 @@
   // ---------- data ----------
   const ORIGINS = window.HU_ORIGINS, GW = window.HU_GATEWAYS, PKGS = window.HU_PACKAGES, NATS = window.HU_NATIONALITIES;
   const HOTELS = window.HU_HOTELS, WORTH = window.HU_WORTH;
-  const TZ = { IN: 5.5, PK: 5, BD: 6, ID: 7, MY: 8, EG: 2, NG: 1, GB: 0, FR: 1, DE: 1, TR: 3, US: -5, AE: 4, KW: 3, SA: 3 };
+  const TZ = { IN: 5.5, PK: 5, BD: 6, ID: 7, MY: 8, EG: 2, NG: 1, GB: 0, FR: 1, DE: 1, TR: 3, US: -5, AE: 4, KW: 3, SA: 3, CN: 8, UZ: 5, KZ: 5, AZ: 4, LK: 5.5, MV: 5, BN: 8, PH: 8, JO: 3, LB: 2, IQ: 3, MA: 1, DZ: 1, TN: 1, SD: 2, ET: 3, KE: 3, SN: 0, BA: 1, QA: 3, BH: 3, OM: 4 };
+  const flag = (cc) => String.fromCodePoint(...[...cc].map(c => 127397 + c.charCodeAt(0)));
   const origin = (code) => ORIGINS.find(o => o.code === code);
   const photo = (code, id, size = '1024x768') => `https://ota.ahstatic.com/media/${code.toLowerCase()}/${code.toLowerCase()}_${id}_p_${size}.jpg`;
 
@@ -390,7 +391,7 @@
       <div class="field"><span>Nights</span><div>${hasCity('Makkah') ? stepperRow('makkahN', 'Makkah', 'Near Masjid al-Haram', S.makkahN, 1, 14) : ''}${hasCity('Madinah') ? stepperRow('madinahN', 'Madinah', 'Near Al-Masjid an-Nabawi', S.madinahN, 1, 14) : ''}</div>
         <p class="fine">Home on ${nice(returnDate(), { weekday: 'long', day: 'numeric', month: 'long' })} · ${plural(totalNights(), 'night')}${both() ? ' in total' : ''}</p></div>`}
       <div class="field"><span>Travellers</span><div>${stepperRow('adults', 'Adults', '12 years and over', S.adults, 1, 9)}${stepperRow('children', 'Children', '2 to 11 years', S.children, 0, 6)}</div></div>
-      ${S.j === 'fhv' ? `<label class="field"><span>Passport nationality</span><select id="nat">${NATS.map(n => `<option value="${n.cc}" ${n.cc === S.nat ? 'selected' : ''}>${n.name}</option>`).join('')}</select></label>` : ''}
+      ${S.j === 'fhv' ? `<label class="field"><span>Passport nationality</span><select id="nat">${[...NATS].sort((a, b) => a.name.localeCompare(b.name)).map(n => `<option value="${n.cc}" ${n.cc === S.nat ? 'selected' : ''}>${n.name}</option>`).join('')}</select></label>` : ''}
       <div class="field"><span>Cabin</span><div class="seg" role="group"><button type="button" data-cabin="Economy" aria-pressed="${S.cabin === 'Economy'}">Guest (Economy)</button><button type="button" data-cabin="Business" aria-pressed="${S.cabin === 'Business'}">Business</button></div></div>
       <p class="msg-err" id="planErr" role="alert"></p>
       <button class="btn btn--royal btn--block" type="submit">Let's book ${ic('arrow', 'i20')}</button>
@@ -527,7 +528,7 @@
   ${stepper('visa')}
   ${title('<b>New</b><i></i>Visa', 'Your visa, with your booking', `${plural(pax, 'traveller')} · ${esc(n.name)} passport${pax > 1 ? 's' : ''}`)}
   <div class="flow__grid"><div style="display:grid;gap:14px">
-    <div class="panel" style="padding:12px"><label class="field"><span>Passport nationality</span><select id="vnat">${NATS.map(x => `<option value="${x.cc}" ${x.cc === S.nat ? 'selected' : ''}>${x.name}</option>`).join('')}</select></label></div>
+    <div class="panel" style="padding:12px"><label class="field"><span>Passport nationality</span><select id="vnat">${[...NATS].sort((a, b) => a.name.localeCompare(b.name)).map(x => `<option value="${x.cc}" ${x.cc === S.nat ? 'selected' : ''}>${x.name}</option>`).join('')}</select></label></div>
     ${path}
     <form class="panel form" id="visaForm" novalidate>
       <h2>Lead traveller</h2>
@@ -636,21 +637,28 @@
 
     // origin autocomplete (wildcards like the main Logio search: Kar*, *bad, L?E)
     const inp = $('#from'), ac = $('#acList');
-    let act = -1, opts = [];
+    let act = -1, opts = [], typed = false;
     const match = (q) => {
       q = q.trim().toLowerCase(); if (!q) return ORIGINS;
       const re = /[*?]/.test(q) ? new RegExp('^' + q.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.') + '$') : null;
       return ORIGINS.filter(o => [o.city, o.code, o.country].some(v => re ? re.test(v.toLowerCase()) : v.toLowerCase().includes(q)));
     };
     const draw = () => {
-      opts = match(inp.value.replace(/\s*\([A-Z]{3}\)$/, '')).slice(0, 8);
-      ac.innerHTML = opts.map((o, i) => `<button type="button" role="option" data-o="${o.code}" class="${i === act ? 'is-active' : ''}"><b>${o.code}</b><span>${esc(o.city)}<small>${esc(o.country)}</small></span></button>`).join('') || '<p class="fine" style="padding:10px">No Saudia departures match.</p>';
+      const q = typed ? inp.value.replace(/\s*\([A-Z]{3}\)$/, '') : '';
+      const rank = (o) => { const i = ['PK', 'IN', 'ID', 'BD', 'MY', 'CN', 'TR', 'EG', 'NG', 'UZ'].indexOf(o.cc); return i < 0 ? 99 : i; };
+      opts = q ? match(q) : [...ORIGINS].sort((a, b) => rank(a) - rank(b) || a.country.localeCompare(b.country));
+      let last = '';
+      ac.innerHTML = opts.map((o, i) => {
+        const head = !q && o.country !== last ? `<p class="ac__h">${flag(o.cc)} ${esc(o.country)}</p>` : '';
+        last = o.country;
+        return `${head}<button type="button" role="option" data-o="${o.code}" class="${i === act ? 'is-active' : ''}"><b>${o.code}</b><span>${q ? flag(o.cc) + ' ' : ''}${esc(o.city)}<small>${esc(o.country)}</small></span></button>`;
+      }).join('') || '<p class="fine" style="padding:10px">No departures match.</p>';
       ac.classList.add('open');
       $$('[data-o]', ac).forEach(x => x.onmousedown = (e) => { e.preventDefault(); pick(x.dataset.o); });
     };
     const pick = (code) => { const o = origin(code); S.from = code; S.out = S.back = null; save(); inp.value = `${o.city} (${o.code})`; ac.classList.remove('open'); $('#fromField').classList.remove('has-err'); };
-    inp.onfocus = () => { inp.select(); act = -1; draw(); };
-    inp.oninput = () => { act = -1; S.from = null; draw(); };
+    inp.onfocus = () => { inp.select(); act = -1; typed = false; draw(); ac.scrollTop = 0; };
+    inp.oninput = () => { act = -1; typed = true; S.from = null; draw(); };
     inp.onblur = () => setTimeout(() => { ac.classList.remove('open'); if (!S.from && opts.length === 1) pick(opts[0].code); }, 120);
     inp.onkeydown = (e) => {
       if (e.key === 'ArrowDown') { act = Math.min(opts.length - 1, act + 1); draw(); e.preventDefault(); }
