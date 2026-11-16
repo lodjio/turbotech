@@ -307,7 +307,7 @@
         </div>
         <span class="onestop__eq">One booking</span>
       </div><span class="label"><b>02</b><i></i>One stop</span><h3>Every flight and every stay, in one place</h3><p class="muted">We bring together Saudia and flyadeal flights with Saudia Holidays hotels, so your whole journey is as easy as it should be.</p><ul class="check"><li>Saudia and flyadeal flights</li><li>Saudia Holidays hotels in Makkah and Madinah</li><li>One booking, one payment, one point of contact</li></ul></article>
-      <article class="hosp__item rv-in"><figure class="media"><img src="media/img/hosp-care-900.webp" alt="The reception desk at Peninsula Worth Hotel" loading="lazy"><figcaption>Reception, around the clock</figcaption></figure><span class="label"><b>03</b><i></i>Care</span><h3>Guest Experience Consultant</h3><p class="muted">Our team tailors your itinerary around:</p><div class="chips"><span class="chip chip--palm">Flight times</span><span class="chip chip--palm">Prayer times and mosque visits</span><span class="chip chip--palm">Madinah experiences</span><span class="chip chip--palm">Weather conditions</span></div></article>
+      <article class="hosp__item hosp__item--text rv-in"><span class="label"><b>03</b><i></i>Care</span><h3>Guest Experience Consultant</h3><p class="muted">Our team tailors your itinerary around:</p><div class="chips"><span class="chip chip--palm">Flight times</span><span class="chip chip--palm">Prayer times and mosque visits</span><span class="chip chip--palm">Madinah experiences</span><span class="chip chip--palm">Weather conditions</span></div></article>
     </div>
   </div>
 </section>
