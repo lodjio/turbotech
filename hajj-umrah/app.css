@@ -118,7 +118,7 @@ body.on-dark .hdr__nav a:hover { background: rgba(255, 255, 255, .12); color: #f
 .jcard__new { position: absolute; top: -10px; inset-inline-end: 18px; background: var(--palm); color: var(--emerald); font-size: .6875rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
 @media (min-width: 900px) {
   .journeys { grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .jcard { grid-template-columns: 1fr; align-content: start; padding: 28px; min-height: 260px; }
+  .jcard { grid-template-columns: 1fr; align-content: start; padding: 28px 28px 80px; min-height: 260px; }
   .jcard__num { font-size: 3rem; }
   .jcard__go { position: absolute; bottom: 24px; inset-inline-end: 24px; }
 }
@@ -476,3 +476,16 @@ body.on-dark .theme { color: #fff; border-color: rgba(255, 255, 255, .4); }
 [data-theme="dark"] .tier { box-shadow: 0 2px 14px rgba(0, 0, 0, .4); }
 
 .ac__h { position: sticky; top: -6px; margin: 0 -6px; padding: 8px 12px 6px; background: var(--surface); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; border-bottom: 1px solid var(--line); z-index: 1; }
+
+/* journey card extras */
+.jcard__tag { display: inline-block; margin: 4px 0 2px !important; font-size: .8125rem !important; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent) !important; }
+.jcard--hero .jcard__tag { color: var(--palm-2) !important; }
+.jcard__al { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.jcard__al img { height: 30px; width: auto; background: #fff; border-radius: 6px; padding: 2px 4px; }
+.jcard__al img.fa { height: 28px; }
+.jcard__new { animation: newPulse 2.4s ease-in-out infinite; box-shadow: 0 0 0 0 rgba(106, 191, 75, .6); }
+.jcard__new::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .7) 50%, transparent 70%); background-size: 250% 100%; animation: newShine 2.4s ease-in-out infinite; }
+.jcard__new { overflow: hidden; }
+@keyframes newPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(106, 191, 75, .55); } 50% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(106, 191, 75, 0); } }
+@keyframes newShine { 0% { background-position: 150% 0; } 60%, 100% { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .jcard__new, .jcard__new::after { animation: none; } }

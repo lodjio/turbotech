@@ -55,9 +55,9 @@
   const photo = (code, id, size = '1024x768') => `https://ota.ahstatic.com/media/${code.toLowerCase()}/${code.toLowerCase()}_${id}_p_${size}.jpg`;
 
   const JOURNEYS = {
-    flight: { name: 'Flight', short: 'Flight', icons: ['plane'], text: 'Saudia and flyadeal flights to Jeddah or Madinah.', steps: ['plan', 'flights', 'review'] },
-    fh: { name: 'Flight + Hotel', short: 'Flight + Hotel', icons: ['plane', 'bed'], text: 'Saudia or flyadeal flights with stays in Makkah, Madinah or both.', steps: ['plan', 'flights', 'makkah', 'madinah', 'review'] },
-    fhv: { name: 'Flight + Hotel + Visa', short: 'Flight + Hotel + Visa', icons: ['plane', 'bed', 'passport'], text: 'Everything for your Umrah, with your visa submitted alongside.', steps: ['plan', 'flights', 'makkah', 'madinah', 'visa', 'review'] }
+    fhv: { name: 'Umrah Package / Ziyarah Package', short: 'Complete package', icons: ['plane', 'bed', 'passport'], text: 'Complete solution', sub: 'Flight, hotel and visa, all in one booking.', steps: ['plan', 'flights', 'makkah', 'madinah', 'visa', 'review'] },
+    fh: { name: 'Umrah', short: 'Umrah', icons: ['plane', 'bed'], text: 'Flight + Hotel', sub: 'Stays in Makkah, Madinah or both.', steps: ['plan', 'flights', 'makkah', 'madinah', 'review'] },
+    flight: { name: 'Flight', short: 'Flight', icons: ['plane'], text: '', sub: 'flights only', steps: ['plan', 'flights', 'review'] }
   };
   const STEP = {
     plan: ['Search', '#/plan/'], flights: ['Flights', '#/flights'], makkah: ['Makkah', '#/stay/makkah'],
@@ -259,12 +259,14 @@
 
 <section class="sec" id="journeys">
   <div class="wrap">
-    <div class="sec__head rv-in"><span class="label"><b>01</b><i></i>Choose your journey</span><h2 class="h2">Three ways to answer the call</h2><p class="lead">Start with a Saudia flight, add your stays in Makkah and Madinah, or let us handle the visa as well.</p></div>
+    <div class="sec__head rv-in"><span class="label"><b>01</b><i></i>Choose your journey</span><h2 class="h2">Three ways to answer the call</h2><p class="lead">The complete Umrah or Ziyarah package, Umrah with your flight and hotel, or simply your flight.</p></div>
     <div class="journeys">${Object.entries(JOURNEYS).map(([k, j], i) => `
       <a class="jcard rv-in ${k === 'fhv' ? 'jcard--hero' : ''}" href="#/plan/${k}">
-        ${k === 'fhv' ? '<span class="jcard__new">New</span>' : ''}
+        ${k === 'fhv' ? '<span class="jcard__new" aria-label="New">New</span>' : ''}
         <span class="jcard__num">${i + 1}</span>
-        <span><span class="jcard__icons">${j.icons.map(n => ic(n)).join('')}</span><h3>${j.name}</h3><p>${j.text}</p></span>
+        <span><span class="jcard__icons">${j.icons.map(n => ic(n)).join('')}</span><h3>${j.name}</h3>${k === 'flight'
+          ? `<p class="jcard__al"><img src="media/brand/saudia.png" alt="Saudia" width="22" height="28"><span>or</span><img class="fa" src="media/brand/flyadeal.svg" alt="flyadeal" width="70" height="24"><span>${j.sub}</span></p>`
+          : `<p class="jcard__tag">${j.text}</p><p>${j.sub}</p>`}</span>
         <span class="jcard__go">${ic('arrow', 'i20')}</span>
       </a>`).join('')}
     </div>
@@ -370,7 +372,7 @@
     return `
 <section class="flow"><div class="wrap">
   ${stepper('plan')}
-  ${title(`<b>${j.icons.length}</b><i></i>${j.name}`, S.j === 'flight' ? 'Where would you like to fly?' : 'Plan your Umrah', S.j === 'flight' ? 'Saudia and flyadeal flights to the gateways of the two holy cities.' : (both() ? 'Fly into one holy city, travel on by train, and fly home from the other.' : `A Saudia flight to ${GW[inbound()].city} and your stay in ${firstCity()}.`))}
+  ${title(`<b>${Object.keys(JOURNEYS).indexOf(S.j) + 1}</b><i></i>${j.name}`, S.j === 'flight' ? 'Where would you like to fly?' : 'Plan your Umrah', S.j === 'flight' ? 'Saudia and flyadeal flights to the gateways of the two holy cities.' : (both() ? 'Fly into one holy city, travel on by train, and fly home from the other.' : `A Saudia flight to ${GW[inbound()].city} and your stay in ${firstCity()}.`))}
   <div class="flow__grid"><div>
     <div class="panel" style="padding:8px">${tabs}</div>
     <form class="panel form" id="planForm" novalidate>
