@@ -68,7 +68,7 @@
   const fresh = (j = 'fhv') => ({
     j, from: 'KHI', to: 'JED', trip: 'return', cabin: 'Economy',
     depart: addDays(today, 21), ret: addDays(today, 28),
-    makkahN: 3, madinahN: 2, order: 'makkah', adults: 2, children: 0, nat: 'PK',
+    makkahN: 3, madinahN: 2, order: 'makkah', cities: 'both', adults: 2, children: 0, nat: 'PK',
     out: null, back: null, makkah: null, madinah: null, visa: {}, ref: null
   });
   let S;
@@ -77,15 +77,23 @@
   const save = () => { try { sessionStorage.setItem('hu_state', JSON.stringify(S)); } catch (e) { /* private mode */ } };
 
   const hotelTrip = () => S.j !== 'flight';
-  const firstCity = () => S.order === 'makkah' ? 'Makkah' : 'Madinah';
-  const inbound = () => hotelTrip() ? (S.order === 'makkah' ? 'JED' : 'MED') : S.to;
-  const outboundHome = () => hotelTrip() ? (S.order === 'makkah' ? 'MED' : 'JED') : S.to;
-  const returnDate = () => hotelTrip() ? addDays(S.depart, S.makkahN + S.madinahN) : S.ret;
+  // Which holy cities this trip includes: both (open-jaw), Makkah only or Madinah only.
+  const both = () => !S.cities || S.cities === 'both';
+  const hasCity = (c) => both() || S.cities === c.toLowerCase();
+  const cityList = () => ['Makkah', 'Madinah'].filter(hasCity);
+  const otherCity = (c) => c === 'Makkah' ? 'Madinah' : 'Makkah';
+  const firstCity = () => both() ? (S.order === 'makkah' ? 'Makkah' : 'Madinah') : cityList()[0];
+  const gwOf = (c) => c === 'Makkah' ? 'JED' : 'MED';
+  const inbound = () => hotelTrip() ? gwOf(firstCity()) : S.to;
+  const outboundHome = () => hotelTrip() ? gwOf(both() ? otherCity(firstCity()) : firstCity()) : S.to;
+  const totalNights = () => cityList().reduce((a, c) => a + cityNights(c), 0);
+  const returnDate = () => hotelTrip() ? addDays(S.depart, totalNights()) : S.ret;
+  const stepsOf = () => JOURNEYS[S.j].steps.filter(s => !(s === 'makkah' || s === 'madinah') || hasCity(s === 'makkah' ? 'Makkah' : 'Madinah'));
   const rooms = () => Math.ceil(S.adults / 2);
   const travellers = () => S.adults + S.children;
   const cityNights = (c) => c === 'Makkah' ? S.makkahN : S.madinahN;
   const cityDates = (c) => {
-    const first = firstCity() === c;
+    const first = firstCity() === c || !both();
     const inD = first ? S.depart : addDays(S.depart, cityNights(firstCity()));
     return [inD, addDays(inD, cityNights(c))];
   };
@@ -139,7 +147,7 @@
     if (S.out) L.push({ k: 'flights', icon: 'plane', t: `Saudia flights · ${S.cabin === 'Business' ? 'Business' : 'Guest (Economy)'}`, s: fl.map(f => `${f.no} ${f.from}→${f.to} ${nice(f.date, { day: 'numeric', month: 'short' })}`).join(' · ') + ` · ${plural(pax, 'traveller')}`, a: fl.reduce((a, f) => a + fareOf(f), 0) * (S.adults + S.children * 0.75) });
     else L.push({ k: 'flights', icon: 'plane', t: 'Saudia flights', s: 'Not chosen yet', pending: true });
     if (hotelTrip()) {
-      ['Makkah', 'Madinah'].forEach(c => {
+      cityList().forEach(c => {
         const key = c.toLowerCase(), sel = S[key];
         const [a, b] = cityDates(c);
         if (sel && sel.type === 'package') {
@@ -151,7 +159,7 @@
           L.push({ k: key, icon: 'bed', t: h.name, s: `${plural(cityNights(c), 'night')} · ${plural(rooms(), 'room')} · ${nice(a, { day: 'numeric', month: 'short' })}–${nice(b, { day: 'numeric', month: 'short' })}`, a: h.rate * cityNights(c) * rooms() });
         } else L.push({ k: key, icon: 'bed', t: `${c} stay`, s: `${plural(cityNights(c), 'night')} · not chosen yet`, pending: true });
       });
-      L.push({ k: 'rail', icon: 'train', t: `${firstCity()} → ${firstCity() === 'Makkah' ? 'Madinah' : 'Makkah'} transfer`, s: 'Haramain High Speed Railway, with hotel transfers', a: 0, incl: true });
+      if (both()) L.push({ k: 'rail', icon: 'train', t: `${firstCity()} → ${firstCity() === 'Makkah' ? 'Madinah' : 'Makkah'} transfer`, s: 'Haramain High Speed Railway, with hotel transfers', a: 0, incl: true });
     }
     if (S.j === 'fhv') {
       const n = NATS.find(x => x.cc === S.nat);
@@ -198,7 +206,7 @@
 
   // Steps must be done in order; jump back to the first missing one.
   function guard(step) {
-    const steps = JOURNEYS[S.j].steps;
+    const steps = stepsOf();
     if (!steps.includes(step)) return null;
     for (const s of steps.slice(1, steps.indexOf(step))) {
       if (s === 'flights' && !(S.out && (S.trip === 'oneway' && !hotelTrip() || S.back))) { setTimeout(() => go('#/flights')); return ' '; }
@@ -282,7 +290,7 @@
 
   // ---------- shared flow chrome ----------
   function stepper(now) {
-    const steps = JOURNEYS[S.j].steps, idx = steps.indexOf(now);
+    const steps = stepsOf(), idx = steps.indexOf(now);
     return `<ol class="stepper" aria-label="Booking steps">${steps.map((s, i) => {
       const [label, href] = STEP[s];
       const cls = i < idx ? 'is-done' : i === idx ? 'is-now' : '';
@@ -310,7 +318,7 @@
     button.textContent = btn; button.disabled = !enabled; button.onclick = onClick;
     $$('[data-next]').forEach(x => { x.disabled = !enabled; x.onclick = onClick; });
   }
-  const nextStep = (now) => { const st = JOURNEYS[S.j].steps; const n = st[st.indexOf(now) + 1]; return n === 'plan' ? '#/plan/' + S.j : STEP[n][1]; };
+  const nextStep = (now) => { const st = stepsOf(); const n = st[st.indexOf(now) + 1]; return n === 'plan' ? '#/plan/' + S.j : STEP[n][1]; };
 
   // ---------- plan (search) ----------
   function plan() {
@@ -320,7 +328,7 @@
     return `
 <section class="flow"><div class="wrap">
   ${stepper('plan')}
-  ${title(`<b>${j.icons.length}</b><i></i>${j.name}`, S.j === 'flight' ? 'Where would you like to fly?' : 'Plan your Umrah', S.j === 'flight' ? 'Saudia flights to the gateways of the two holy cities.' : 'Fly into one holy city, travel on by train, and fly home from the other.')}
+  ${title(`<b>${j.icons.length}</b><i></i>${j.name}`, S.j === 'flight' ? 'Where would you like to fly?' : 'Plan your Umrah', S.j === 'flight' ? 'Saudia flights to the gateways of the two holy cities.' : (both() ? 'Fly into one holy city, travel on by train, and fly home from the other.' : `A Saudia flight to ${GW[inbound()].city} and your stay in ${firstCity()}.`))}
   <div class="flow__grid"><div>
     <div class="panel" style="padding:8px">${tabs}</div>
     <form class="panel form" id="planForm" novalidate>
@@ -333,12 +341,13 @@
       <div class="field"><span>Trip</span><div class="seg" role="group"><button type="button" data-trip="return" aria-pressed="${S.trip === 'return'}">Return</button><button type="button" data-trip="oneway" aria-pressed="${S.trip === 'oneway'}">One way</button></div></div>
       <div class="row2"><label class="field"><span>Depart</span><input class="input" type="date" id="depart" min="${today}" value="${S.depart}"></label>
       ${S.trip === 'return' ? `<label class="field"><span>Return</span><input class="input" type="date" id="ret" min="${S.depart}" value="${S.ret}"></label>` : '<span></span>'}</div>` : `
-      <div class="field"><span>Your route</span>
+      <div class="field"><span>Destination</span><div class="seg" role="group" aria-label="Destination">${[['both', 'Makkah + Madinah'], ['makkah', 'Makkah only'], ['madinah', 'Madinah only']].map(([k, l]) => `<button type="button" data-cities="${k}" aria-pressed="${(S.cities || 'both') === k}">${l}</button>`).join('')}</div></div>
+      ${both() ? `<div class="field"><span>Your route</span>
         <div class="route"><span><b>${firstCity()}</b><small>Fly into ${inbound()}</small></span><button type="button" class="btn btn--line btn--sm" id="swap" aria-label="Start in the other city">${ic('swap', 'i18')}</button><span style="text-align:end"><b>${firstCity() === 'Makkah' ? 'Madinah' : 'Makkah'}</b><small>Fly home from ${outboundHome()}</small></span></div>
-      </div>
+      </div>` : `<div class="field"><span>Your route</span><div class="route"><span><b>${firstCity()}</b><small>Fly into ${inbound()}</small></span><span class="route__mid">${ic('plane', 'i18')}</span><span style="text-align:end"><b>Return</b><small>Fly home from ${outboundHome()}</small></span></div></div>`}
       <label class="field"><span>Arrival date</span><input class="input" type="date" id="depart" min="${today}" value="${S.depart}"></label>
-      <div class="field"><span>Nights</span><div>${stepperRow('makkahN', 'Makkah', 'Near Masjid al-Haram', S.makkahN, 1, 10)}${stepperRow('madinahN', 'Madinah', 'Near Al-Masjid an-Nabawi', S.madinahN, 1, 10)}</div>
-        <p class="fine">Home on ${nice(returnDate(), { weekday: 'long', day: 'numeric', month: 'long' })} · ${plural(S.makkahN + S.madinahN, 'night')} in total</p></div>`}
+      <div class="field"><span>Nights</span><div>${hasCity('Makkah') ? stepperRow('makkahN', 'Makkah', 'Near Masjid al-Haram', S.makkahN, 1, 14) : ''}${hasCity('Madinah') ? stepperRow('madinahN', 'Madinah', 'Near Al-Masjid an-Nabawi', S.madinahN, 1, 14) : ''}</div>
+        <p class="fine">Home on ${nice(returnDate(), { weekday: 'long', day: 'numeric', month: 'long' })} · ${plural(totalNights(), 'night')}${both() ? ' in total' : ''}</p></div>`}
       <div class="field"><span>Travellers</span><div>${stepperRow('adults', 'Adults', '12 years and over', S.adults, 1, 9)}${stepperRow('children', 'Children', '2 to 11 years', S.children, 0, 6)}</div></div>
       ${S.j === 'fhv' ? `<label class="field"><span>Passport nationality</span><select id="nat">${NATS.map(n => `<option value="${n.cc}" ${n.cc === S.nat ? 'selected' : ''}>${n.name}</option>`).join('')}</select></label>` : ''}
       <div class="field"><span>Cabin</span><div class="seg" role="group"><button type="button" data-cabin="Economy" aria-pressed="${S.cabin === 'Economy'}">Guest (Economy)</button><button type="button" data-cabin="Business" aria-pressed="${S.cabin === 'Business'}">Business</button></div></div>
@@ -371,10 +380,10 @@
     return `
 <section class="flow"><div class="wrap">
   ${stepper('flights')}
-  ${title('<b>Saudia</b><i></i>Flights', `${o.city} ⇄ ${hotelTrip() ? 'Jeddah · Madinah' : GW[S.to].city}`, `${plural(travellers(), 'traveller')} · ${S.cabin === 'Business' ? 'Business' : 'Guest (Economy)'} · Indicative demo schedules`)}
+  ${title('<b>Saudia</b><i></i>Flights', `${o.city} ⇄ ${hotelTrip() ? (both() ? 'Jeddah · Madinah' : GW[inbound()].city) : GW[S.to].city}`, `${plural(travellers(), 'traveller')} · ${S.cabin === 'Business' ? 'Business' : 'Guest (Economy)'} · Indicative demo schedules`)}
   <div class="flow__grid"><div>
     ${oneway ? '' : `<div class="seg fltabs" role="tablist"><button type="button" role="tab" data-leg="out" aria-pressed="${legTab === 'out'}">${S.out ? '✓ ' : ''}${S.from} → ${inbound()} · ${nice(S.depart, { day: 'numeric', month: 'short' })}</button><button type="button" role="tab" data-leg="back" aria-pressed="${legTab === 'back'}">${S.back ? '✓ ' : ''}${outboundHome()} → ${S.from} · ${nice(returnDate(), { day: 'numeric', month: 'short' })}</button></div>`}
-    ${hotelTrip() && legTab === 'out' ? `<div class="notice" style="margin-bottom:14px">${ic('info')}<span>Open-jaw itinerary: fly into ${GW[inbound()].city} for ${firstCity()}, take the Haramain train, and fly home from ${GW[outboundHome()].city}. No backtracking.</span></div>` : ''}
+    ${hotelTrip() && both() && legTab === 'out' ? `<div class="notice" style="margin-bottom:14px">${ic('info')}<span>Open-jaw itinerary: fly into ${GW[inbound()].city} for ${firstCity()}, take the Haramain train, and fly home from ${GW[outboundHome()].city}. No backtracking.</span></div>` : ''}
     <div class="fl">${list.map(card).join('')}</div>
   </div>${summary('Continue', 'flights')}</div>
 </div></section>`;
@@ -404,7 +413,7 @@
     return `
 <section class="flow"><div class="wrap">
   ${stepper(key)}
-  ${title(`<b>${city === firstCity() ? 'First stop' : 'Second stop'}</b><i></i>${city}`, city === 'Makkah' ? 'Your stay near Masjid al-Haram' : 'Your stay in Madinah', `${nice(a)} – ${nice(b)} · ${plural(cityNights(city), 'night')} · ${plural(rooms(), 'room')} for ${plural(S.adults, 'adult')}${S.children ? ` and ${plural(S.children, 'child', 'children')}` : ''}`)}
+  ${title(`<b>${!both() ? 'Your stay' : city === firstCity() ? 'First stop' : 'Second stop'}</b><i></i>${city}`, city === 'Makkah' ? 'Your stay near Masjid al-Haram' : 'Your stay in Madinah', `${nice(a)} – ${nice(b)} · ${plural(cityNights(city), 'night')} · ${plural(rooms(), 'room')} for ${plural(S.adults, 'adult')}${S.children ? ` and ${plural(S.children, 'child', 'children')}` : ''}`)}
   <div class="flow__grid"><div>
     ${city === 'Madinah' ? samaa() : ''}
     ${city === 'Madinah' ? '<h2 class="label" style="margin:8px 0 14px"><b>Or</b><i></i>Choose a hotel</h2>' : ''}
@@ -506,7 +515,7 @@
     <div class="panel"><div class="rv">${L.map(l => `<div class="rv__row"><span class="rv__ic">${ic(l.icon)}</span><span><b>${esc(l.t)}</b><small>${esc(l.s)}</small></span><em>${l.incl ? 'Included' : sar(l.a)}</em></div>`).join('')}</div>
       <div class="totals"><div class="grand"><span>Total</span><span>${sar(total())}</span></div><p class="fine">Indicative total in Saudi riyals for ${plural(travellers(), 'traveller')}, children's fares at 75%. Final prices are confirmed before payment.</p></div>
     </div>
-    ${hotelTrip() ? `<div class="panel"><h2>Included with your journey</h2><ul class="check"><li>Meet &amp; Greet on arrival at ${GW[inbound()].city}</li><li>Transfers between the airports, hotels and the Haramain train</li><li>Haramain High Speed Railway between Makkah and Madinah</li>${S.madinah && S.madinah.type === 'package' ? '<li>Guided Madinah tour route with a specialised guide</li><li>Guest Experience Consultant</li>' : ''}${S.j === 'fhv' ? '<li>Umrah and Rawdah permits booked in Nusuk</li>' : ''}</ul></div>` : ''}
+    ${hotelTrip() ? `<div class="panel"><h2>Included with your journey</h2><ul class="check"><li>Meet &amp; Greet on arrival at ${GW[inbound()].city}</li>${both() ? '<li>Transfers between the airports, hotels and the Haramain train</li><li>Haramain High Speed Railway between Makkah and Madinah</li>' : '<li>Return transfers between the airport and your hotel</li>'}${S.madinah && S.madinah.type === 'package' ? '<li>Guided Madinah tour route with a specialised guide</li><li>Guest Experience Consultant</li>' : ''}${S.j === 'fhv' ? '<li>Umrah and Rawdah permits booked in Nusuk</li>' : ''}</ul></div>` : ''}
     <div class="panel"><h2>Contact</h2><div class="form"><label class="field"><span>Name</span><input class="input" value="${esc(ME.name || '')}" autocomplete="off"></label><div class="row2"><label class="field"><span>Mobile</span><input class="input" inputmode="tel" placeholder="+92 300 1234567" autocomplete="off"></label><label class="field"><span>Email</span><input class="input" type="email" placeholder="name@example.com" autocomplete="off"></label></div></div></div>
     <div class="notice" style="margin-top:14px">${ic('info')}<span>Presentation prototype: no booking, visa application or payment is made.</span></div>
   </div>${summary('Send booking request', 'review')}</div>
@@ -566,8 +575,9 @@
     $$('[data-to]').forEach(x => x.onclick = () => { S.to = x.dataset.to; S.out = S.back = null; save(); render(); });
     $$('[data-trip]').forEach(x => x.onclick = () => { S.trip = x.dataset.trip; S.back = null; save(); render(); });
     $$('[data-cabin]').forEach(x => x.onclick = () => { S.cabin = x.dataset.cabin; save(); render(); });
+    $$('[data-cities]').forEach(x => x.onclick = () => { S.cities = x.dataset.cities; S.out = S.back = null; S.makkah = hasCity('Makkah') ? S.makkah : null; S.madinah = hasCity('Madinah') ? S.madinah : null; save(); render(); });
     const sw = $('#swap'); if (sw) sw.onclick = () => { S.order = S.order === 'makkah' ? 'madinah' : 'makkah'; S.out = S.back = null; save(); render(); };
-    const lim = { makkahN: [1, 10], madinahN: [1, 10], adults: [1, 9], children: [0, 6] };
+    const lim = { makkahN: [1, 14], madinahN: [1, 14], adults: [1, 9], children: [0, 6] };
     $$('[data-inc],[data-dec]').forEach(x => x.onclick = () => {
       const k = x.dataset.inc || x.dataset.dec; const d = x.dataset.inc ? 1 : -1;
       S[k] = Math.min(lim[k][1], Math.max(lim[k][0], S[k] + d));
