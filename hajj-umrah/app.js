@@ -67,9 +67,9 @@
   // ---------- state ----------
   const today = iso(new Date());
   const fresh = (j = 'fhv') => ({
-    j, from: 'KHI', to: 'JED', trip: 'return', cabin: 'Economy',
+    j, from: null, to: 'JED', trip: 'return', cabin: 'Economy',
     depart: addDays(today, 21), ret: addDays(today, 28),
-    makkahN: 3, madinahN: 2, order: 'makkah', cities: 'both', adults: 2, children: 0, nat: 'PK',
+    makkahN: 3, madinahN: 2, order: 'makkah', cities: 'both', adults: 2, children: 0, nat: null,
     out: null, back: null, makkah: null, madinah: null, visa: {}, ref: null
   });
   let S;
@@ -188,7 +188,7 @@
       });
       if (both()) L.push({ k: 'rail', icon: 'train', t: `${firstCity()} → ${firstCity() === 'Makkah' ? 'Madinah' : 'Makkah'} transfer`, s: 'Haramain High Speed Railway, with hotel transfers', a: 0, incl: true });
     }
-    if (S.j === 'fhv') {
+    if (S.j === 'fhv' && NATS.some(x => x.cc === S.nat)) {
       const n = NATS.find(x => x.cc === S.nat);
       const fee = n.path === 'agent' ? 300 * pax : 0;
       L.push({ k: 'visa', icon: 'passport', t: n.path === 'agent' ? 'Umrah visa, submitted for you' : n.path === 'evisa' ? 'Tourist eVisa guidance' : 'No visa needed', s: S.visa.done ? `${n.name} passports · ${plural(pax, 'traveller')}` : 'Details not added yet', a: fee, pending: !S.visa.done, incl: fee === 0 });
@@ -208,6 +208,7 @@
   function go(h) { if (location.hash === h) render(); else location.hash = h; }
   window.addEventListener('hashchange', render);
 
+  let lastRoute = null;
   function render() {
     const h = location.hash || '#/';
     const [, a, b] = h.split('/');
@@ -225,7 +226,7 @@
     else html = home();
     main.innerHTML = `<div class="view-enter">${html}</div>`;
     if (a && a !== 'done') document.body.classList.add('in-flow');
-    window.scrollTo(0, 0);
+    if (h !== lastRoute) { window.scrollTo(0, 0); lastRoute = h; }
     bind(a, b);
     reveal();
     onScroll();
@@ -378,7 +379,7 @@
     <div class="panel" style="padding:8px">${tabs}</div>
     <form class="panel form" id="planForm" novalidate>
       <label class="field" id="fromField"><span>Flying from</span>
-        <input class="input" id="from" value="${o ? esc(`${o.city} (${o.code})`) : ''}" autocomplete="off" placeholder="City or airport" aria-autocomplete="list" aria-controls="acList">
+        <input class="input" id="from" value="${o ? esc(`${o.city} (${o.code})`) : ''}" autocomplete="off" placeholder="Choose country, then airport" aria-autocomplete="list" aria-controls="acList">
         <div class="ac" id="acList" role="listbox"></div>
       </label>
       ${S.j === 'flight' ? `
@@ -394,7 +395,7 @@
       <div class="field"><span>Nights</span><div>${hasCity('Makkah') ? stepperRow('makkahN', 'Makkah', 'Near Masjid al-Haram', S.makkahN, 1, 14, stay('Makkah')) : ''}${hasCity('Madinah') ? stepperRow('madinahN', 'Madinah', 'Near Al-Masjid an-Nabawi', S.madinahN, 1, 14, stay('Madinah')) : ''}</div>
         <p class="fine">Home on ${nice(returnDate(), { weekday: 'long', day: 'numeric', month: 'long' })} · ${plural(totalNights(), 'night')}${both() ? ' in total' : ''}</p></div>`}
       <div class="field"><span>Travellers</span><div>${stepperRow('adults', 'Adults', '12 years and over', S.adults, 1, 9)}${stepperRow('children', 'Children', '2 to 11 years', S.children, 0, 6)}</div></div>
-      ${S.j === 'fhv' ? `<label class="field"><span>Passport nationality</span><select id="nat">${[...NATS].sort((a, b) => a.name.localeCompare(b.name)).map(n => `<option value="${n.cc}" ${n.cc === S.nat ? 'selected' : ''}>${n.name}</option>`).join('')}</select></label>` : ''}
+      ${S.j === 'fhv' ? `<label class="field"><span>Passport nationality</span><select id="nat"><option value="" ${S.nat ? '' : 'selected'} disabled>Choose your nationality</option>${[...NATS].sort((a, b) => a.name.localeCompare(b.name)).map(n => `<option value="${n.cc}" ${n.cc === S.nat ? 'selected' : ''}>${n.name}</option>`).join('')}</select></label>` : ''}
       <div class="field"><span>Cabin</span><div class="seg" role="group"><button type="button" data-cabin="Economy" aria-pressed="${S.cabin === 'Economy'}">Guest (Economy)</button><button type="button" data-cabin="Business" aria-pressed="${S.cabin === 'Business'}">Business</button></div></div>
       <p class="msg-err" id="planErr" role="alert"></p>
       <button class="btn btn--royal btn--block" type="submit">Let's book ${ic('arrow', 'i20')}</button>
@@ -646,18 +647,39 @@
       const re = /[*?]/.test(q) ? new RegExp('^' + q.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.') + '$') : null;
       return ORIGINS.filter(o => [o.city, o.code, o.country].some(v => re ? re.test(v.toLowerCase()) : v.toLowerCase().includes(q)));
     };
+    const RANK = ['PK', 'IN', 'ID', 'BD', 'MY', 'CN', 'TR', 'EG', 'NG', 'UZ'];
+    const rank = (cc) => { const i = RANK.indexOf(cc); return i < 0 ? 99 : i; };
+    // Saudia flies every listed city; flyadeal where its A320neo reaches Jeddah/Madinah non-stop.
+    const flies = (o) => km(o, GW.JED) < 4300 ? ['SV', 'F3'] : ['SV'];
+    const logos = (o) => logoSet(flies(o));
+    const logoSet = (list) => `<span class="ac__al">${list.map(a => `<img src="${AIRLINES[a].mark}" alt="${AIRLINES[a].name}" title="${AIRLINES[a].name}" width="20" height="20">`).join('')}</span>`;
+    const countries = () => {
+      const m = new Map();
+      ORIGINS.forEach(o => { if (!m.has(o.cc)) m.set(o.cc, { cc: o.cc, name: o.country, n: 0, fa: false }); const c = m.get(o.cc); c.n++; c.fa = c.fa || flies(o).includes('F3'); });
+      return [...m.values()].sort((a, b) => rank(a.cc) - rank(b.cc) || a.name.localeCompare(b.name));
+    };
+    let country = null;
+    const cityBtn = (o, i, showCountry) => `<button type="button" role="option" data-o="${o.code}" class="${i === act ? 'is-active' : ''}"><b>${o.code}</b><span>${showCountry ? flag(o.cc) + ' ' : ''}${esc(o.city)}<small>${showCountry ? esc(o.country) : flies(o).map(a => AIRLINES[a].name).join(' · ')}</small></span>${logos(o)}</button>`;
     const draw = () => {
       const q = typed ? inp.value.replace(/\s*\([A-Z]{3}\)$/, '') : '';
-      const rank = (o) => { const i = ['PK', 'IN', 'ID', 'BD', 'MY', 'CN', 'TR', 'EG', 'NG', 'UZ'].indexOf(o.cc); return i < 0 ? 99 : i; };
-      opts = q ? match(q) : [...ORIGINS].sort((a, b) => rank(a) - rank(b) || a.country.localeCompare(b.country));
-      let last = '';
-      ac.innerHTML = opts.map((o, i) => {
-        const head = !q && o.country !== last ? `<p class="ac__h">${flag(o.cc)} ${esc(o.country)}</p>` : '';
-        last = o.country;
-        return `${head}<button type="button" role="option" data-o="${o.code}" class="${i === act ? 'is-active' : ''}"><b>${o.code}</b><span>${q ? flag(o.cc) + ' ' : ''}${esc(o.city)}<small>${esc(o.country)}</small></span></button>`;
-      }).join('') || '<p class="fine" style="padding:10px">No departures match.</p>';
+      let html;
+      if (q) {
+        opts = match(q);
+        html = opts.map((o, i) => cityBtn(o, i, true)).join('') || '<p class="fine" style="padding:10px">No departures match.</p>';
+      } else if (country) {
+        opts = ORIGINS.filter(o => o.cc === country);
+        const c = countries().find(x => x.cc === country);
+        html = `<button type="button" class="ac__back" data-back>${ic('back', 'i18')}All countries</button><p class="ac__h">${flag(country)} ${esc(c.name)} · choose your airport</p>` + opts.map((o, i) => cityBtn(o, i, false)).join('');
+      } else {
+        opts = [];
+        html = '<p class="ac__h">Choose your country</p>' + countries().map(c => `<button type="button" class="ac__c" data-c="${c.cc}"><span class="ac__flag">${flag(c.cc)}</span><span>${esc(c.name)}<small>${plural(c.n, 'airport')}</small></span>${logoSet(c.fa ? ['SV', 'F3'] : ['SV'])}${ic('arrow', 'i18 ac__go')}</button>`).join('');
+      }
+      ac.innerHTML = html;
       ac.classList.add('open');
-      $$('[data-o]', ac).forEach(x => x.onmousedown = (e) => { e.preventDefault(); pick(x.dataset.o); });
+      $$('button', ac).forEach(x => x.onmousedown = (e) => e.preventDefault());
+      $$('[data-o]', ac).forEach(x => x.onclick = () => pick(x.dataset.o));
+      $$('[data-c]', ac).forEach(x => x.onclick = () => { country = x.dataset.c; act = -1; draw(); ac.scrollTop = 0; });
+      const back = $('[data-back]', ac); if (back) back.onclick = () => { country = null; draw(); ac.scrollTop = 0; };
     };
     const pick = (code) => {
       const o = origin(code); S.from = code; S.out = S.back = null;
@@ -667,13 +689,13 @@
         const sel = $('#nat'); if (sel) { sel.value = o.cc; sel.classList.add('flash'); setTimeout(() => sel.classList.remove('flash'), 900); }
       }
       save(); inp.value = `${o.city} (${o.code})`; ac.classList.remove('open'); $('#fromField').classList.remove('has-err'); };
-    inp.onfocus = () => { inp.select(); act = -1; typed = false; draw(); ac.scrollTop = 0; };
+    inp.onfocus = () => { inp.select(); act = -1; typed = false; country = S.from ? origin(S.from).cc : null; draw(); ac.scrollTop = 0; };
     inp.oninput = () => { act = -1; typed = true; S.from = null; draw(); };
-    inp.onblur = () => setTimeout(() => { ac.classList.remove('open'); if (!S.from && opts.length === 1) pick(opts[0].code); }, 120);
+    inp.onblur = () => setTimeout(() => { if (document.activeElement === inp) return; ac.classList.remove('open'); if (!S.from && typed && opts.length === 1) pick(opts[0].code); }, 150);
     inp.onkeydown = (e) => {
       if (e.key === 'ArrowDown') { act = Math.min(opts.length - 1, act + 1); draw(); e.preventDefault(); }
       else if (e.key === 'ArrowUp') { act = Math.max(0, act - 1); draw(); e.preventDefault(); }
-      else if (e.key === 'Enter' && ac.classList.contains('open') && opts.length) { pick(opts[Math.max(0, act)].code); e.preventDefault(); }
+      else if (e.key === 'Enter' && ac.classList.contains('open') && opts.length && (typed || country)) { pick(opts[Math.max(0, act)].code); e.preventDefault(); }
       else if (e.key === 'Escape') ac.classList.remove('open');
     };
 
@@ -681,10 +703,10 @@
       e.preventDefault();
       const err = $('#planErr');
       if (!S.from) { const m = match(inp.value); if (m.length === 1) pick(m[0].code); }
-      if (!S.from) { err.textContent = 'Choose a departure city from the list.'; $('#fromField').classList.add('has-err'); inp.focus(); return; }
+      if (!S.from) { err.textContent = 'Choose the country and airport you fly from.'; $('#fromField').classList.add('has-err'); inp.focus(); return; }
       if (!S.depart || S.depart < today) { err.textContent = 'Choose a travel date from today onwards.'; return; }
       if (!hotelTrip() && S.trip === 'return' && S.ret < S.depart) { err.textContent = 'Your return date is before your departure.'; return; }
-      if (S.from === 'RUH' || S.from === 'DMM') { if (S.j === 'fhv') S.nat = 'SA'; }
+      if (S.j === 'fhv' && !S.nat) { err.textContent = 'Choose your passport nationality.'; $('#nat').focus(); return; }
       save(); legTab = 'out'; go('#/flights');
     };
   }

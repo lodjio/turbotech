@@ -496,3 +496,13 @@ body.on-dark .theme { color: #fff; border-color: rgba(255, 255, 255, .4); }
 .stay-dates { display: block; margin-top: 2px; font-size: .8125rem; color: var(--accent); font-weight: 600; }
 .field select.flash { animation: flash .9s ease; }
 @keyframes flash { 0% { box-shadow: 0 0 0 0 rgba(106, 191, 75, .7); } 100% { box-shadow: 0 0 0 10px rgba(106, 191, 75, 0); } }
+
+/* country → airport picker */
+.ac button { grid-template-columns: 52px 1fr auto; }
+.ac .ac__c { grid-template-columns: 34px 1fr auto 18px; }
+.ac__flag { font-size: 1.5rem; line-height: 1; text-align: center; }
+.ac__c span small { display: block; }
+.ac__al { display: inline-flex; gap: 4px; align-items: center; }
+.ac__al img { width: 22px; height: 22px; border-radius: 5px; background: #fff; padding: 1px; border: 1px solid var(--line); object-fit: contain; }
+.ac__go { width: 18px; height: 18px; color: var(--ink-3); }
+.ac .ac__back { display: flex; gap: 8px; align-items: center; grid-template-columns: none; color: var(--accent); font-weight: 600; font-size: .9rem; padding: 10px; }
