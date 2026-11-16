@@ -38,9 +38,42 @@ window.HU_ORIGINS = [
   { code: 'IST', city: 'Istanbul', country: 'Türkiye', cc: 'TR', lat: 41.262, lon: 28.742 },
   { code: 'JFK', city: 'New York', country: 'United States', cc: 'US', lat: 40.641, lon: -73.778 },
   { code: 'IAD', city: 'Washington', country: 'United States', cc: 'US', lat: 38.953, lon: -77.456 },
+  // China, Central & South Asia
+  { code: 'CAN', city: 'Guangzhou', country: 'China', cc: 'CN', lat: 23.392, lon: 113.299 },
+  { code: 'PEK', city: 'Beijing', country: 'China', cc: 'CN', lat: 40.080, lon: 116.585 },
+  { code: 'TAS', city: 'Tashkent', country: 'Uzbekistan', cc: 'UZ', lat: 41.258, lon: 69.281 },
+  { code: 'ALA', city: 'Almaty', country: 'Kazakhstan', cc: 'KZ', lat: 43.352, lon: 77.040 },
+  { code: 'GYD', city: 'Baku', country: 'Azerbaijan', cc: 'AZ', lat: 40.467, lon: 50.047 },
+  { code: 'CMB', city: 'Colombo', country: 'Sri Lanka', cc: 'LK', lat: 7.181, lon: 79.884 },
+  { code: 'MLE', city: 'Malé', country: 'Maldives', cc: 'MV', lat: 4.192, lon: 73.529 },
+  { code: 'ZYL', city: 'Sylhet', country: 'Bangladesh', cc: 'BD', lat: 24.963, lon: 91.867 },
+  { code: 'AMD', city: 'Ahmedabad', country: 'India', cc: 'IN', lat: 23.077, lon: 72.635 },
+  // South-East Asia
+  { code: 'KNO', city: 'Medan', country: 'Indonesia', cc: 'ID', lat: 3.642, lon: 98.885 },
+  { code: 'UPG', city: 'Makassar', country: 'Indonesia', cc: 'ID', lat: -5.062, lon: 119.554 },
+  { code: 'PEN', city: 'Penang', country: 'Malaysia', cc: 'MY', lat: 5.297, lon: 100.277 },
+  { code: 'BWN', city: 'Bandar Seri Begawan', country: 'Brunei', cc: 'BN', lat: 4.944, lon: 114.928 },
+  { code: 'MNL', city: 'Manila', country: 'Philippines', cc: 'PH', lat: 14.509, lon: 121.020 },
+  // Middle East & Africa
+  { code: 'AMM', city: 'Amman', country: 'Jordan', cc: 'JO', lat: 31.723, lon: 35.993 },
+  { code: 'BEY', city: 'Beirut', country: 'Lebanon', cc: 'LB', lat: 33.821, lon: 35.488 },
+  { code: 'BGW', city: 'Baghdad', country: 'Iraq', cc: 'IQ', lat: 33.262, lon: 44.235 },
+  { code: 'CMN', city: 'Casablanca', country: 'Morocco', cc: 'MA', lat: 33.367, lon: -7.590 },
+  { code: 'ALG', city: 'Algiers', country: 'Algeria', cc: 'DZ', lat: 36.691, lon: 3.215 },
+  { code: 'TUN', city: 'Tunis', country: 'Tunisia', cc: 'TN', lat: 36.851, lon: 10.227 },
+  { code: 'PZU', city: 'Port Sudan', country: 'Sudan', cc: 'SD', lat: 19.434, lon: 37.234 },
+  { code: 'ADD', city: 'Addis Ababa', country: 'Ethiopia', cc: 'ET', lat: 8.978, lon: 38.799 },
+  { code: 'NBO', city: 'Nairobi', country: 'Kenya', cc: 'KE', lat: -1.319, lon: 36.928 },
+  { code: 'ABV', city: 'Abuja', country: 'Nigeria', cc: 'NG', lat: 9.007, lon: 7.263 },
+  { code: 'DSS', city: 'Dakar', country: 'Senegal', cc: 'SN', lat: 14.670, lon: -17.073 },
+  // Europe
+  { code: 'SJJ', city: 'Sarajevo', country: 'Bosnia and Herzegovina', cc: 'BA', lat: 43.825, lon: 18.331 },
   // GCC and domestic
   { code: 'DXB', city: 'Dubai', country: 'United Arab Emirates', cc: 'AE', lat: 25.253, lon: 55.364 },
   { code: 'KWI', city: 'Kuwait City', country: 'Kuwait', cc: 'KW', lat: 29.241, lon: 47.971 },
+  { code: 'DOH', city: 'Doha', country: 'Qatar', cc: 'QA', lat: 25.273, lon: 51.608 },
+  { code: 'BAH', city: 'Bahrain', country: 'Bahrain', cc: 'BH', lat: 26.271, lon: 50.634 },
+  { code: 'MCT', city: 'Muscat', country: 'Oman', cc: 'OM', lat: 23.593, lon: 58.284 },
   { code: 'RUH', city: 'Riyadh', country: 'Saudi Arabia', cc: 'SA', lat: 24.958, lon: 46.699 },
   { code: 'DMM', city: 'Dammam', country: 'Saudi Arabia', cc: 'SA', lat: 26.471, lon: 49.798 }
 ];
@@ -52,7 +85,7 @@ window.HU_GATEWAYS = {
 };
 
 // Origins with a demo non-stop into Madinah (others connect via Jeddah or Riyadh).
-window.HU_MED_NONSTOP = ['CAI', 'IST', 'KHI', 'LHE', 'ISB', 'KUL', 'CGK', 'DXB', 'RUH', 'DMM', 'DAC'];
+window.HU_MED_NONSTOP = ['CAI', 'IST', 'KHI', 'LHE', 'ISB', 'KUL', 'CGK', 'DXB', 'RUH', 'DMM', 'DAC', 'AMM', 'TAS', 'DOH', 'KWI'];
 
 // Visa pathways (demo summary of 2026 rules; always confirm against official sources).
 //   none   – GCC citizens travel with their national ID / passport
@@ -65,7 +98,26 @@ window.HU_NATIONALITIES = [
   { cc: 'ID', name: 'Indonesia', path: 'agent', bio: false },
   { cc: 'EG', name: 'Egypt', path: 'agent', bio: false },
   { cc: 'NG', name: 'Nigeria', path: 'agent', bio: false },
+  { cc: 'PH', name: 'Philippines', path: 'agent', bio: false },
+  { cc: 'LK', name: 'Sri Lanka', path: 'agent', bio: false },
+  { cc: 'JO', name: 'Jordan', path: 'agent', bio: false },
+  { cc: 'LB', name: 'Lebanon', path: 'agent', bio: false },
+  { cc: 'IQ', name: 'Iraq', path: 'agent', bio: false },
+  { cc: 'MA', name: 'Morocco', path: 'agent', bio: false },
+  { cc: 'DZ', name: 'Algeria', path: 'agent', bio: false },
+  { cc: 'TN', name: 'Tunisia', path: 'agent', bio: false },
+  { cc: 'SD', name: 'Sudan', path: 'agent', bio: false },
+  { cc: 'ET', name: 'Ethiopia', path: 'agent', bio: false },
+  { cc: 'KE', name: 'Kenya', path: 'agent', bio: false },
+  { cc: 'SN', name: 'Senegal', path: 'agent', bio: false },
+  { cc: 'BA', name: 'Bosnia and Herzegovina', path: 'agent', bio: false },
   { cc: 'MY', name: 'Malaysia', path: 'evisa' },
+  { cc: 'BN', name: 'Brunei', path: 'evisa' },
+  { cc: 'CN', name: 'China', path: 'evisa' },
+  { cc: 'KZ', name: 'Kazakhstan', path: 'evisa' },
+  { cc: 'UZ', name: 'Uzbekistan', path: 'evisa' },
+  { cc: 'AZ', name: 'Azerbaijan', path: 'evisa' },
+  { cc: 'MV', name: 'Maldives', path: 'evisa' },
   { cc: 'TR', name: 'Türkiye', path: 'evisa' },
   { cc: 'GB', name: 'United Kingdom', path: 'evisa' },
   { cc: 'FR', name: 'France', path: 'evisa' },
@@ -73,6 +125,9 @@ window.HU_NATIONALITIES = [
   { cc: 'US', name: 'United States', path: 'evisa' },
   { cc: 'AE', name: 'United Arab Emirates', path: 'none' },
   { cc: 'KW', name: 'Kuwait', path: 'none' },
+  { cc: 'QA', name: 'Qatar', path: 'none' },
+  { cc: 'BH', name: 'Bahrain', path: 'none' },
+  { cc: 'OM', name: 'Oman', path: 'none' },
   { cc: 'SA', name: 'Saudi Arabia', path: 'none' }
 ];
 
