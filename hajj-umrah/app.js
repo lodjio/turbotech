@@ -314,7 +314,7 @@
 
 <section class="sec dark dark--deep">
   <div class="wrap">
-    <div class="sec__head rv-in"><span class="label"><b>04</b><i></i>Discover Madinah</span><h2 class="h2">The joy of discovering Madinah</h2><p class="lead">Every route is led by a qualified guide, licensed by the Ministry of Tourism, in your language.</p></div>
+    <div class="sec__head rv-in"><span class="label"><b>04</b><i></i>New Exclusive Offering: Madinah</span><h2 class="h2">The joy of discovering Madinah</h2><p class="lead">Every route is led by a qualified guide, licensed by the Ministry of Tourism, in your language.</p></div>
     <div class="rail">${window.HU_DISCOVER.map(d => `
       <article class="dcard"><figure class="media"><img src="media/img/${d.img}.webp" alt="${esc(d.name)}" loading="lazy"></figure><div class="dcard__b"><small>${esc(d.cat)}</small><h3>${esc(d.name)}</h3><p>${esc(d.text)}</p></div></article>`).join('')}
     </div>
