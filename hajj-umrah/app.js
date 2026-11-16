@@ -244,16 +244,23 @@
   </div>
 </section>
 
-<section class="sec dark pattern">
+<section class="sec dark pattern why">
   <div class="wrap">
-    <div class="sec__head rv-in"><span class="label"><b>02</b><i></i>Why it matters</span><h2 class="h2">For millions of guests, Umrah starts with paperwork</h2><p class="lead">Pilgrims from India, Pakistan and Bangladesh cannot apply for an Umrah visa on their own today. They go through a licensed agent, who must also book Nusuk-approved hotels and transport before the visa is issued.</p></div>
-    <div class="compare">
-      <div class="compare__col compare__col--today rv-in"><h3>Today</h3><ol class="steps-list">
-        <li>Find a licensed Umrah agent</li><li>Book flights separately</li><li>Book Nusuk-approved hotels in Makkah and Madinah</li><li>Arrange registered ground transport</li><li>Submit the visa and enrol biometrics where required</li><li>Book the Umrah and Rawdah permits in Nusuk</li></ol></div>
-      <div class="compare__col compare__col--logio rv-in"><h3>With Saudia Hajj &amp; Umrah</h3><ol class="steps-list">
-        <li>Choose your Saudia flights</li><li>Pick your hotels in Makkah and Madinah</li><li>Add your passport details: your visa goes in with your booking</li><li>Arrive to Meet &amp; Greet, transfers and your permits in Nusuk</li></ol></div>
+    <div class="sec__head rv-in">
+      <span class="label"><b>02</b><i></i>Why it matters</span>
+      <p class="talbiyah" lang="ar" dir="rtl">لبّيك اللهمّ لبّيك</p>
+      <h2 class="h2">Answer the call.<br>We’ll carry the rest.</h2>
+      <p class="lead">The journey to the House of Allah begins with a sincere intention, not a stack of paperwork. Saudia Hajj &amp; Umrah stands between you and no one: one trusted host, with no middlemen, from the moment you intend to travel until you return home with a heart at peace.</p>
     </div>
-    <div class="stat-row rv-in"><div class="stat"><strong>1</strong><span>booking for flight, hotel and visa</span></div><div class="stat"><strong>2</strong><span>holy cities in one itinerary</span></div><div class="stat"><strong>3</strong><span>journeys, from flight only to all-in</span></div></div>
+    <blockquote class="ayah rv-in"><p>“They will come to you on foot and on every lean camel, from every distant path.”</p><cite>Surah Al-Hajj · 22:27</cite></blockquote>
+    <div class="compare">
+      <div class="compare__col compare__col--today rv-in"><h3>The long road</h3><ol class="steps-list">
+        <li>Searching for someone you can trust</li><li>Flights in one place, hotels in another</li><li>Chasing transport bookings and vouchers</li><li>Waiting on a visa, through someone else’s hands</li><li>Finding your own way to your permits</li></ol></div>
+      <div class="compare__col compare__col--logio rv-in"><h3>The straight path</h3><ol class="steps-list">
+        <li>Choose your Saudia flights</li><li>Pick your stay beside the Haram</li><li>Your visa goes in with your booking, with no middlemen</li><li>Arrive as our guest: Meet &amp; Greet, transfers and permits ready</li></ol></div>
+    </div>
+    <div class="stat-row rv-in"><div class="stat"><strong>1</strong><span>trusted host, from intention to return</span></div><div class="stat"><strong>0</strong><span>middlemen between you and your journey</span></div><div class="stat"><strong>2</strong><span>holy cities, one seamless itinerary</span></div></div>
+    <p class="why__close rv-in">Your intention is yours. The arrangements are ours.</p>
   </div>
 </section>
 

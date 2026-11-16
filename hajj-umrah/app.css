@@ -398,3 +398,10 @@ body.in-flow .ftr { padding-bottom: 120px; }
 .samaa .label b, .samaa .label { color: var(--palm); }
 
 @media (max-width: 420px) { .seg button { font-size: .8125rem; padding: 10px 4px; } }
+
+/* why it matters */
+.talbiyah { text-align: left; font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem); color: var(--palm); line-height: 1.3; }
+.ayah { margin: 0 0 clamp(28px, 4vw, 44px); padding: 22px 24px; border-inline-start: 3px solid var(--palm); background: rgba(255, 255, 255, .05); border-radius: 0 var(--r) var(--r) 0; max-width: 760px; }
+.ayah p { font-size: clamp(1.15rem, 1rem + .6vw, 1.5rem); line-height: 1.5; color: #fff; }
+.ayah cite { display: block; margin-top: 10px; font-style: normal; font-size: .8125rem; letter-spacing: .12em; text-transform: uppercase; color: var(--palm); }
+.why__close { margin-top: clamp(32px, 5vw, 52px); text-align: center; font-size: clamp(1.25rem, 1.05rem + .9vw, 1.9rem); color: #fff; line-height: 1.35; }
