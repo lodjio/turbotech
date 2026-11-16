@@ -218,7 +218,18 @@
     $$('.hdr__nav a').forEach(x => x.toggleAttribute('aria-current', x.getAttribute('href') === h));
     let html;
     if (!a) html = home();
-    else if (a === 'plan') { if (JOURNEYS[b] && b !== S.j) { const keep = { from: S.from, adults: S.adults, children: S.children, nat: S.nat }; S = { ...fresh(b), ...keep }; save(); } html = plan(); }
+    else if (a === 'plan') {
+      // A new search (from the home page, the header, or on opening the site) always starts blank:
+      // no remembered departure airport or nationality. Going back from a later step keeps the choices.
+      const changed = h !== lastRoute;
+      const fromPlan = lastRoute && lastRoute.startsWith('#/plan');
+      const fromLaterStep = lastRoute && !fromPlan && lastRoute !== '#/' && !lastRoute.startsWith('#/done');
+      if (JOURNEYS[b] && changed) {
+        if (fromPlan) { const keep = { from: S.from, adults: S.adults, children: S.children, nat: S.nat }; S = { ...fresh(b), ...keep }; save(); }
+        else if (!fromLaterStep || b !== S.j) { S = fresh(b); save(); legTab = 'out'; }
+      }
+      html = plan();
+    }
     else if (a === 'flights') html = guard('flights') || flightsView();
     else if (a === 'stay') html = guard(b) || stayView(b === 'makkah' ? 'Makkah' : 'Madinah');
     else if (a === 'visa') html = guard('visa') || visaView();
