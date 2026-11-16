@@ -208,10 +208,12 @@ const GATE_HTML = `<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#002812" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
 <title>Saudia Hajj &amp; Umrah · Private preview</title>
 <link rel="icon" href="${PREFIX}/gate/favicon-32.png">
-<link rel="stylesheet" href="${PREFIX}/gate/gate.css">
+<link rel="stylesheet" href="${PREFIX}/gate/gate.css?v=2">
 </head>
 <body>
 <main class="gate">
@@ -254,7 +256,7 @@ const GATE_HTML = `<!DOCTYPE html>
     try {
       const r = await fetch('${PREFIX}/api/unlock', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: code() }) });
       const j = await r.json();
-      if (j.ok) { msg.textContent = 'Welcome, ' + j.name + '.'; pin.classList.add('ok'); location.reload(); return; }
+      if (j.ok) { msg.textContent = 'Welcome, ' + j.name + '.'; pin.classList.add('ok'); if (document.activeElement) document.activeElement.blur(); location.replace(location.pathname + location.hash); return; }
       pin.classList.add('shake'); setTimeout(() => pin.classList.remove('shake'), 500);
       msg.textContent = j.error === 'locked' ? 'Too many attempts. Please try again in 15 minutes.'
         : j.error === 'revoked' ? 'This code is no longer active.'
